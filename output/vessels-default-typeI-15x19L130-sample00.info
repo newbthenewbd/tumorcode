@@ -1,0 +1,127 @@
+lattice_size "<8, 10, 10>"
+lattice_spacing 130.000000
+lattice_type "FCC"
+seed 86003419
+message "default-typeI"
+out_fn "vessels-default-typeI-15x19L130-sample00"
+full_debug_output false
+max_num_iter 1000
+num_threads 4
+num_hierarchical_iterations 1
+max_sprout_radius_artery 8.0
+max_sprout_radius_vein 8.0
+radius_vein 3.8
+radius_capi 2.5
+radius_artery 2.5
+capillariesUntilLevel 0
+changeRateThreshold 0.001000
+murray_alpha_vein 3.0
+murray_alpha_artery 3.0
+ensemble_index 0
+generate_more_capillaries 0
+o2 {
+  diffusion_range 300.0
+}
+calcflow {
+  viscosityPlasma 1.2e-06
+  rheology RheologySecomb2005
+  inletHematocrit 0.37
+  includePhaseSeparationEffect 1
+}
+roots {
+"" {
+    p "<3, 9, 5>"
+    t v
+    l 1
+  }
+"" {
+    p "<0, 8, 4>"
+    t a
+    l 1
+  }
+"" {
+    p "<0, 9, 5>"
+    t a
+    l 1
+  }
+"" {
+    p "<2, 0, 9>"
+    t v
+    l 1
+  }
+"" {
+    p "<0, 4, 5>"
+    t v
+    l 1
+  }
+"" {
+    p "<4, 0, 0>"
+    t a
+    l 1
+  }
+"" {
+    p "<6, 9, 7>"
+    t a
+    l 1
+  }
+"" {
+    p "<0, 1, 0>"
+    t v
+    l 1
+  }
+"" {
+    p "<0, 7, 5>"
+    t a
+    l 1
+  }
+"" {
+    p "<7, 5, 6>"
+    t a
+    l 1
+  }
+"" {
+    p "<7, 5, 4>"
+    t a
+    l 1
+  }
+"" {
+    p "<7, 2, 2>"
+    t v
+    l 1
+  }
+"" {
+    p "<0, 9, 1>"
+    t a
+    l 1
+  }
+"" {
+    p "<7, 5, 7>"
+    t v
+    l 1
+  }
+"" {
+    p "<0, 2, 4>"
+    t a
+    l 1
+  }
+"" {
+    p "<0, 0, 7>"
+    t v
+    l 1
+  }
+"" {
+    p "<7, 5, 8>"
+    t a
+    l 1
+  }
+"" {
+    p "<7, 9, 4>"
+    t a
+    l 1
+  }
+"" {
+    p "<7, 2, 6>"
+    t v
+    l 1
+  }
+}
