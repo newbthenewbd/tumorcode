@@ -215,11 +215,7 @@ message(STATUS "running on sytem: ${RELEASE_CODENAME}")
 ## 14.04 trusty
 ## 16.04 xenial
 ## 18.04 bionic
-if( "${RELEASE_CODENAME}" MATCHES "bionic" OR "${RELEASE_CODENAME}" MATCHES "trusty" OR "${RELEASE_CODENAME}" MATCHES "xenial")
-  set(Trilinos_LIBRARIES "trilinos_belos;trilinos_belosepetra;trilinos_ml")
-else()
-  set(Trilinos_LIBRARIES "belos;belosepetra;ml")
-endif()
+set(Trilinos_LIBRARIES "trilinos_belos;trilinos_belosepetra;trilinos_ml")
 
 message(STATUS "Trilinos libs       	= ${Trilinos_LIBRARIES}")
 message(STATUS "Your Trilions depends on: ${Trilinos_TPL_LIST}")
