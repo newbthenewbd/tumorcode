@@ -1,5 +1,5 @@
 cmake \
-    -DCMAKE_INSTALL_PREFIX=/tc_install \
+    -DCMAKE_INSTALL_PREFIX=/tc_app/tc_install \
     -DCMAKE_BUILD_TYPE=Release \
     -DADDITIONAL_INCLUDE_DIRS="" \
     -DADDITIONAL_LIBRARY_DIRS="" \
