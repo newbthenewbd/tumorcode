@@ -439,10 +439,10 @@ def submit_qsub(obj, submission_program, **qsubopts):
   first_line = cases[obj.interpreter]
   # add qsub stuff + python script
   f = io.BytesIO()
-  print(first_line.encode(), file=f)
+  f.write(first_line.encode())
   if not submission_program == 'run_locally':
     write_directives_qsub_(f, **qsubopts)
-  print(obj.generate_script(qsubopts).encode(), file=f)
+  f.write(obj.generate_script(qsubopts).encode())
   return submit_(obj.interpreter, submission_program, f.getvalue())
   
 
