@@ -280,10 +280,10 @@ def submit_(interpreter, submission_program, script):
       jobID = 0
       if prog == 'sbatch':
         ''' expect return of form "Submitted batch job 3522973'''
-	jobID= int(return_from_queuing_system.split()[-1])
+        jobID= int(return_from_queuing_system.split()[-1])
         #print(return_from_queuing_system.split()[-1])
       else:
-      	print("Error, no queuing system identified")
+              print("Error, no queuing system identified")
       #print(return_from_queuing_system)
       #subprocess.check_output("%s <<EOFQSUB\n%s\nEOFQSUB" % (submission_program, script), shell=True)
   return jobID

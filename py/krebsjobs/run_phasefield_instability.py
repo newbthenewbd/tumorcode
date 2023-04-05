@@ -139,7 +139,7 @@ if False:
 if False:
   for size in [ 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600 ]:
     run('phasetum-scaling-%i' % size,
-	relparams, initial_radius = 5, out_intervall=20, max_time=100, domain_size = size)
+        relparams, initial_radius = 5, out_intervall=20, max_time=100, domain_size = size)
 
 if False:
   run('phasetum-hele-shaw-10x-sigma-01', relparams, interface_width = 1.5, triangulation_smoothing_level = 2, tumor_mobility = 10, surface_tension = 0.1, num_threads = 1)

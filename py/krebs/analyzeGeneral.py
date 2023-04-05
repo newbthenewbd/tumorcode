@@ -423,7 +423,7 @@ def CalcPhiVessels(dataman, vesselgroup, ld, scaling, samples_per_cell = 5):
   print('vessels filtered before fraction calculation!')
   theRadii = np.asarray(graph['radius'])*scaling
   if(theRadii.ndim>1):
-  	theRadii = theRadii[:,0]
+          theRadii = theRadii[:,0]
   if theRadii.dtype == np.float32: 
     thePositions = np.asarray(graph['position'],dtype=np.float32)*scaling
   else:

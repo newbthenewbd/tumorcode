@@ -332,23 +332,23 @@ def vtkIntegrateData(dataset):
       v = self.value
       k = 0
       for a in self.fd_arrays:
-	for c in range(a.GetNumberOfComponents()):
-	  v[k] += weight * a.GetComponent(i, c)
-	  k += 1
+        for c in range(a.GetNumberOfComponents()):
+          v[k] += weight * a.GetComponent(i, c)
+          k += 1
     def get_values(self):
       values = []
       k = 0
       for a in self.fd_arrays:
-	nc = a.GetNumberOfComponents()
-	if nc == 1:
-	  values.append(self.value[k])
-	  k += 1
-	else:
-	  r = np.empty(nc, dtype = self.value.dtype)
-	  for i in range(nc):
-	    r[i] = self.value[k]
-	    k += 1
-	  values.append(r)
+        nc = a.GetNumberOfComponents()
+        if nc == 1:
+          values.append(self.value[k])
+          k += 1
+        else:
+          r = np.empty(nc, dtype = self.value.dtype)
+          for i in range(nc):
+            r[i] = self.value[k]
+            k += 1
+          values.append(r)
       return values
       
   pd_handler = ValueHandler(dataset.GetPointData())

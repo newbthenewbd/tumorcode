@@ -119,12 +119,12 @@ milotti_mts_7['detailedo2'].update(
     )
 milotti_mts_7b = deepcopy(milotti_mts_7)
 milotti_mts_7b.update(
-	tend=9999.,
+        tend=9999.,
 )
 milotti_mts_7c = deepcopy(milotti_mts_7b)
 milotti_mts_7c.update(
-	rGf = 1.,
-	gf_production_threshold = 0.01,
+        rGf = 1.,
+        gf_production_threshold = 0.01,
 )
 milotti_mts_8 = deepcopy(milotti_mts_7)
 #milotti_mts_8['useTumorcodeVessels'] = False
@@ -165,15 +165,15 @@ milotti_mts_12.update(
     )
 milotti_mts_13 = deepcopy(milotti_mts_7c)
 milotti_mts_13.update(
-	rGf = 1.,
-	gf_production_threshold = 1e8,
+        rGf = 1.,
+        gf_production_threshold = 1e8,
 )
 milotti_mts_14 = deepcopy(milotti_mts_13)
 milotti_mts_14.update(
-	useConstO2 = True,
+        useConstO2 = True,
 )
 milotti_mts_14['vessels'].update(
-	gfVessProl = 1e8,
+        gfVessProl = 1e8,
 )
 vbl = dict(
     tissuePressureDistribution = 'sphere',

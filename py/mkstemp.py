@@ -27,7 +27,7 @@ class File:
     """
       A temporary file which is deleted when the File object is destroyed.
       Diffierence to the ordinary mkstemp call:
-	The file descriptor is immediately closed, but the file remains.
+        The file descriptor is immediately closed, but the file remains.
       Therefore subprocessed can open the file again to do IO,
     """
     def __init__(self,*args,**kw):

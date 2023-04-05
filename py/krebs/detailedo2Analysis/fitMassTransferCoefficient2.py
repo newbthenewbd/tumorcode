@@ -123,7 +123,7 @@ originalSecombDataOfK = '''
    32           0.779
    40           0.750
    50           0.730
-   54		    0.747
+   54                    0.747
 '''
 originalSecombDataOfK = np.asarray(list(map(float, [s for s in map(str.strip, originalSecombDataOfK.split(' ')) if s])))
 originalSecombDataOfK = originalSecombDataOfK.reshape(-1,2)

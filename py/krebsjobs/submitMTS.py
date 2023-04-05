@@ -187,7 +187,7 @@ def run(vessel_fn, name, paramSet, mem, days):
                             mem = mem,
                             days = days,
                             #num_cpus = paramSet['num_threads'],
-			    #set by slurm
+                            #set by slurm
                             change_cwd = True)
 
 def rerun(fn_of_previous_run, job_name, mem, days):
@@ -202,9 +202,9 @@ def rerun(fn_of_previous_run, job_name, mem, days):
                             name = 'job_'+ job_name,
                             #mem = mem,
                             #hours = estimateMTS_runtime(fn_of_previous_run),
-			    #days = days,
+                            #days = days,
                             #num_cpus = 2,
-			    #set by slurm
+                            #set by slurm
                             change_cwd = True)
 
 if __name__ == '__main__':

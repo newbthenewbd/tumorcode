@@ -397,17 +397,17 @@ class EasyPovRayRender(object):
           @staticmethod
           def node_style(i):
             return ClipStyler.styleString
-  #	  ambient 0.05 * c
+  #          ambient 0.05 * c
       epv.pvfile.write("""
       #macro MkStyle(c)
       texture {
-  	pigment {
-  	  color rgb c
-  	}
-  	finish {
-  	  specular 0.1
+          pigment {
+            color rgb c
+          }
+          finish {
+            specular 0.1
         ambient 1.
-  	}
+          }
       }
       #end
       """)
@@ -539,17 +539,17 @@ class EasyPovRayRender(object):
         @staticmethod
         def cell_style(i):
           return ClipStyler.styleString
-  #	  ambient 0.05 * c
+  #          ambient 0.05 * c
     self.pvfile.write("""
       #macro MkStyleCell(c)
       texture {
-  	pigment {
-  	  color rgb c
-  	}
-  	finish {
-  	  specular 0.1
+          pigment {
+            color rgb c
+          }
+          finish {
+            specular 0.1
         ambient 1.
-  	}
+          }
       }
       #end
       """)
