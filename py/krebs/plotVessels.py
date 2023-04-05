@@ -53,10 +53,8 @@ import krebsjobs.submitVesseltreeCalibration
 from collections import defaultdict as ddict
 
 from .analyzeBloodVolumeSimple import cylinderCollectionVolumeDensity
-from . import detailedo2Analysis.plotsForPaper
-from . import detailedo2
-
 from . import detailedo2Analysis as o2analysis
+from . import detailedo2
 
 import argparse
 
@@ -375,7 +373,7 @@ def fmt_(b):
       yield '%s = %s .. %s mm' % (c, f2l(b[0][i]*1.e-3, exponential=False), f2l(b[1][i]*1.e-3, exponential=False))
 
 def PrintGlobalDataWithOxygen(pdfpages, po2groups, vesselgroups, f_measure, dataman):
-  sample_length = detailedo2Analysis.plotsForPaper.sample_length
+  sample_length = o2analysis.plotsForPaper.sample_length
   def cachelocation(g):
     path = posixpath.join('FileCS_'+myutils.checksum(basename(g.file.filename)), g.name.strip(posixpath.sep))
     return (f_measure, path)
@@ -470,7 +468,7 @@ def PrintGlobalDataWithOxygen(pdfpages, po2groups, vesselgroups, f_measure, data
   fig = matplotlib.figure.Figure(figsize = (mpl_utils.a4size[0]*0.5, mpl_utils.a4size[0]*0.5))
   ax = fig.add_axes([0.1, 0.2, 0.8, 0.75])
   for po2group in po2groups:
-    iterations = detailedo2Analysis.plotsForPaper.GetConvergenceData(po2group)
+    iterations = o2analysis.plotsForPaper.GetConvergenceData(po2group)
     x = iterations['iteration']
     y = iterations['delta_vessM'] + iterations['delta_fieldM']
     ax.plot(x, y)
@@ -507,7 +505,7 @@ def PrintGlobalDataWithOxygen(pdfpages, po2groups, vesselgroups, f_measure, data
 #      map(make_, vesselgroups))
 #  return result
 def PrintGlobalData(pdfpages, vesselgroups, f_measure, dataman):
-  sample_length = detailedo2Analysis.plotsForPaper.sample_length
+  sample_length = o2analysis.plotsForPaper.sample_length
   def cachelocation(g):
     path = posixpath.join('FileCS_'+myutils.checksum(basename(g.file.filename)), g.name.strip(posixpath.sep))
     return (f_measure, path)
@@ -566,7 +564,7 @@ def PrintGlobalData(pdfpages, vesselgroups, f_measure, dataman):
 #  fig = matplotlib.figure.Figure(figsize = (mpl_utils.a4size[0]*0.5, mpl_utils.a4size[0]*0.5))
 #  ax = fig.add_axes([0.1, 0.2, 0.8, 0.75])
 #  for po2group in po2groups:
-#    iterations = detailedo2Analysis.plotsForPaper.GetConvergenceData(po2group)
+#    iterations = o2analysis.plotsForPaper.GetConvergenceData(po2group)
 #    x = iterations['iteration']
 #    y = iterations['delta_vessM'] + iterations['delta_fieldM']
 #    ax.plot(x, y)
@@ -854,7 +852,7 @@ def DoIt(filenames, pattern, with_o2):
             that does not work, if we have an o2 file'''
         #text = FormatParameters(original_vesselgroups[0].file)
         text = [' ']
-        text += detailedo2Analysis.plotsForPaper.FormatParameters(groups[0])
+        text += o2analysis.plotsForPaper.FormatParameters(groups[0])
         fig, _ = mpl_utils.MakeTextPage(text,figsize = (mpl_utils.a4size[0], mpl_utils.a4size[0]))
         pdfpages.savefig(fig, postfix='_vesselsparams')
       if 1:
