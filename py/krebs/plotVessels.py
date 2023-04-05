@@ -52,7 +52,7 @@ import krebsjobs.submitVesseltreeCalibration
 
 from collections import defaultdict as ddict
 
-from .analyzeBloodVolumeSimple import cylinderCollectionVolumeDensity
+from analyzeBloodVolumeSimple import cylinderCollectionVolumeDensity
 from . import detailedo2Analysis as o2analysis
 from . import detailedo2
 
