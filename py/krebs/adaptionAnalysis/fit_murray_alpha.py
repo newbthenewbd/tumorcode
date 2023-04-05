@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -34,11 +34,11 @@ def func(alpha, *data ):
   return np.power(data[0],alpha)-2*np.power(data[1], alpha)
   
 if __name__=="__main__":
-  print(calc_rc(13.1,1))
+  print((calc_rc(13.1,1)))
   def func2(alpha):
     return(func(6.3,5,alpha))
   data = (17.45,8.079)
   alpha = fsolve(func,4.5,args = data,full_output=True)
   alpha2 = minimize_scalar(func,bounds=(1,6), method='bounded',args = data)
   print(alpha)  
-  print(alpha2.x)
+  print((alpha2.x))

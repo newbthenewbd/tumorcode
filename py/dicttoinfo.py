@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -26,7 +26,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   Tools to convert nested dicts to .info files from boost::property_tree.
 """
 
-import cStringIO
+import io
 import numpy
 
 __all__ = ['Vec', 'dicttoinfo']
@@ -56,7 +56,7 @@ def print_dicttoinfo(write, name, obj, indent):
   not_toplevel = indent>=0
   if isinstance(obj, dict):
     if not_toplevel: write("%s%s {\n" % (indentstr, name,))
-    for k, v in obj.iteritems():
+    for k, v in obj.items():
       print_dicttoinfo(write, k, v, indent+1)
     if not_toplevel: write("%s}\n" % (indentstr))
   elif type(obj) in (tuple, list, numpy.ndarray):
@@ -65,7 +65,7 @@ def print_dicttoinfo(write, name, obj, indent):
       print_dicttoinfo(write, '""', q, indent+1)
     if not_toplevel: write("%s}\n" % indentstr)  
   else:
-    if isinstance(obj, (str,unicode)):
+    if isinstance(obj, str):
       obj = '"%s"' % obj
     elif isinstance(obj, bool):
       obj = "true" if obj else "false"
@@ -77,7 +77,7 @@ def dicttoinfo(args):
     convert nested dicts to a string which contains a .info file from boost::property_tree
     args = a dictionary, can have nested dictornaries
   """ 
-  f = cStringIO.StringIO()
+  f = io.StringIO()
   print_dicttoinfo(f.write, "", args, -1)
   return f.getvalue()
   
@@ -91,4 +91,4 @@ if __name__ == '__main__':
     c = np.concatenate((np.arange(0., 1., 0.25), np.arange(1., 3., 1.), np.arange(3., 97., 3.))),
     d = Vec((1,2,3,4))
   )
-  print dicttoinfo(d)
+  print(dicttoinfo(d))

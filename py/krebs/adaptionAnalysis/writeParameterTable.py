@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -41,7 +41,7 @@ def create_main_adaption_table():
   ### change here for different types    
   #parameter_set_name_from_pipe = parameter_set_name #begins with auto_
   #parameter_set_name =  parameter_set_name_from_pipe[5:]
-  print('Found param identifiyer: %s' % parameter_set_name)
+  print(('Found param identifiyer: %s' % parameter_set_name))
   type_to_paramset = create_auto_dicts(parameter_set_name+'_')
 #  \newcommand{\wallstress}{\tau_w}
 #\newcommand{\refflow}{Q_{ref}}
@@ -55,7 +55,7 @@ def create_main_adaption_table():
     texfile.write(' & $k_m$ & $\\refflow$ & $L$ & $\\conducConst$ & $\\conducRef$ & $\\shrinkConst$ \\\\ \n \\hline \n');
     for t in typelist:
       print(t)
-      print(type_to_paramset[t])
+      print((type_to_paramset[t]))
       adaptionParams_this_type = getattr(parameterSets_tum, type_to_paramset[t])
       #print(adaptionParams_this_type['adaption'])
       #texfile.write('%s \\\\ %s\\midrule \n' % ('blub', 'bla'))

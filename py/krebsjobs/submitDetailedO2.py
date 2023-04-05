@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -39,7 +39,7 @@ from krebs import detailedo2Analysis
 
 
 def worker_on_client(fn, pattern, o2params):
-  print 'detailedo2 on %s / %s' % (fn, pattern)
+  print('detailedo2 on %s / %s' % (fn, pattern))
   
   o2_refs = detailedo2.doit(fn, pattern, (o2params, o2params['name']))
   if 0: #this is for data analysis on the clusters
@@ -79,9 +79,9 @@ def prepareParametersWithNumThreads(o2params, numThreadsOverride):
 
 
 def run(parameter_set_name, filenames, grp_pattern, systemsize):
-  print 'submitting ...', parameter_set_name
-  print dicttoinfo.dicttoinfo(getattr(parameterSetsO2, parameter_set_name))
-  print 'for files', filenames
+  print('submitting ...', parameter_set_name)
+  print(dicttoinfo.dicttoinfo(getattr(parameterSetsO2, parameter_set_name)))
+  print('for files', filenames)
 
   dirs = set()
   for fn in filenames:
@@ -89,7 +89,7 @@ def run(parameter_set_name, filenames, grp_pattern, systemsize):
       d = myutils.walkh5(f, grp_pattern)
       assert len(d), 'you fucked up, pattern "%s" not found in "%s"!' % (grp_pattern, fn)
       dirs =set.union(dirs, d)
-  print 'and resolved groups therein: %s' % ','.join(dirs)
+  print('and resolved groups therein: %s' % ','.join(dirs))
 
   o2params = getattr(parameterSetsO2, parameter_set_name)
   o2params['name'] = parameter_set_name
@@ -122,7 +122,7 @@ if not qsub.is_client and __name__=='__main__':
   qsub.parse_args(otherArguments)
   #print('after: %i' % qsub.defaultDays)
   if qsub.goodArgumentsQueue.days:
-    print('qsub, days used: set to %i' % qsub.goodArgumentsQueue.days)
+    print(('qsub, days used: set to %i' % qsub.goodArgumentsQueue.days))
 
   #create filename due to former standards
   filenames=[]
@@ -135,7 +135,7 @@ if not qsub.is_client and __name__=='__main__':
     try:
       systemsize = int(goodArguments.systemsize)
     except:
-      print 'no valid --systemsize given, using 2 as default'
+      print('no valid --systemsize given, using 2 as default')
       systemsize = 2
     qsub.submit(qsub.func(worker_plots_for_paper, filenames, grp_pattern),
                   name = 'job_o2_analysis',
@@ -149,7 +149,7 @@ if not qsub.is_client and __name__=='__main__':
     try:
       systemsize = int(goodArguments.systemsize)
     except:
-      print 'no valid --systemsize given, using 2 as default'
+      print('no valid --systemsize given, using 2 as default')
       systemsize = 2
     for fn in filenames:
       qsub.submit(qsub.func(worker_render_images, fn, grp_pattern, systemsize),
@@ -166,7 +166,7 @@ if not qsub.is_client and __name__=='__main__':
       for fn in filenames:
           if not os.path.isfile(fn):
               raise AssertionError('The file %s is not present!'%fn)
-    except Exception, e:
-      print e.message
+    except Exception as e:
+      print(e.message)
       sys.exit(-1)
     run(goodArguments.o2params, filenames, goodArguments.grp_pattern, systemsize)

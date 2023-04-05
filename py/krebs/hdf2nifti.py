@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -91,7 +91,7 @@ def from_vessel_file(filenames,grp_pattern):
             print("try to read vessel lattice data")
             ldvessels = ku.read_lattice_data_from_hdf_by_filename(str(vesselgroup.file.filename), str(vesselgroup.name)+'/lattice') #['lattice']
             print('worldbox:')
-            print(ldvessels.worldBox)
+            print((ldvessels.worldBox))
             fieldld = ku.SetupFieldLattice(ldvessels.worldBox, 3, 10, 0.)
             print("extract vessel fraction")
             phi_vessels = krebs.analyzeGeneral.CalcPhiVessels(dataman, vesselgroup, fieldld, scaling = 1., samples_per_cell = 5)

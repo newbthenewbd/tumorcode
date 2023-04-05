@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -35,7 +35,7 @@ import glob
 import time
 import md5
 import re
-import cPickle
+import pickle
 from collections import defaultdict
 from pprint import pprint
 import qsub
@@ -45,14 +45,14 @@ from mystruct import Struct
 import myutils
 import krebs
 from krebs import plotBulkTissue
-from plotBulkTissue import commonOutputName, colorbar, contour, imslice, imshow
-from analyzeGeneral import calc_distmap, CalcPhiVessels, DataDistanceFromCenter, DataBasicVessel
+from .plotBulkTissue import commonOutputName, colorbar, contour, imslice, imshow
+from .analyzeGeneral import calc_distmap, CalcPhiVessels, DataDistanceFromCenter, DataBasicVessel
 
 import matplotlib
 import matplotlib.pyplot as pyplot
 import mpl_utils
 
-import plotVessels
+from . import plotVessels
 
 
 ##############################################################################
@@ -99,25 +99,25 @@ fig_numbering = [ x for x in 'ABCDEFGHIJ' ]
 
 
 def mk_LF_():
-  levelsetfunc = ur'\theta'
-  dqualimax = ur'ICMAX'
-  dqualiauc = ur'ICAUC'
-  avgOver = lambda x,y: ur'\langle %s \rangle_{%s}' % (x,y)
-  stdOver = lambda x,y: ur'\mathrm{std}_{%s}(%s)' % (y,x)
-  avgOverTumor = lambda x: ur'\langle %s \rangle_T' % x
-  minOverTumor = lambda x: ur'\min_T(%s)' % x
-  maxOverTumor = lambda x: ur'\max_T(%s)' % x
-  avgOverViableTumor = lambda x: ur'\langle %s \rangle_V' % x
-  stdOverViableTumor = lambda x: ur'\mathrm{std}_V(%s)' % x
-  probForIn = lambda x: ur'\tilde{p}_{%s}' % x
-  probForInViableTumorAuc = ur'\tilde{p}(%s)' % dqualiauc
-  probForInViableTumorMax = ur'\tilde{p}(%s)' % dqualimax
-  math = lambda x: ur'$%s$' % x
+  levelsetfunc = r'\theta'
+  dqualimax = r'ICMAX'
+  dqualiauc = r'ICAUC'
+  avgOver = lambda x,y: r'\langle %s \rangle_{%s}' % (x,y)
+  stdOver = lambda x,y: r'\mathrm{std}_{%s}(%s)' % (y,x)
+  avgOverTumor = lambda x: r'\langle %s \rangle_T' % x
+  minOverTumor = lambda x: r'\min_T(%s)' % x
+  maxOverTumor = lambda x: r'\max_T(%s)' % x
+  avgOverViableTumor = lambda x: r'\langle %s \rangle_V' % x
+  stdOverViableTumor = lambda x: r'\mathrm{std}_V(%s)' % x
+  probForIn = lambda x: r'\tilde{p}_{%s}' % x
+  probForInViableTumorAuc = r'\tilde{p}(%s)' % dqualiauc
+  probForInViableTumorMax = r'\tilde{p}(%s)' % dqualimax
+  math = lambda x: r'$%s$' % x
   source = 'Q'
-  transmural_flow_coeff = ur'L^v_l 2 \pi r'
-  transmural_flow_per_length = ur'L^v_l 2 \pi r_v (p_v - p_i)'
-  relative_extravasation_flow = ur'\lambda'
-  vessel_flow_rate = ur'q_v'
+  transmural_flow_coeff = r'L^v_l 2 \pi r'
+  transmural_flow_per_length = r'L^v_l 2 \pi r_v (p_v - p_i)'
+  relative_extravasation_flow = r'\lambda'
+  vessel_flow_rate = r'q_v'
 
   return Struct(locals())
 
@@ -297,7 +297,7 @@ class DataGlobalIff(object):
     obtain_data = lambda *args: dataman.obtain_data(args[0], f, args[1:])
 
     def read(gmeasure, groupname):
-      return dict((k, float(v[...])) for (k,v) in gmeasure[groupname].iteritems())
+      return dict((k, float(v[...])) for (k,v) in gmeasure[groupname].items())
 
     def write(gmeasure, groupname):
       ld = obtain_data('ld')
@@ -325,7 +325,7 @@ class DataGlobalIff(object):
     #  res['ext_src_plus'] = np.sum(src*(1-tum)*plus)*volelem
     #  res['ext_src_minus'] = np.sum(src*(1-tum)*(1-plus))*volelem
 
-      print 'glob, distmap: %f %f, ld.scale %f' % (distmap.min(), distmap.max(), ld.scale)
+      print('glob, distmap: %f %f, ld.scale %f' % (distmap.min(), distmap.max(), ld.scale))
       src_plus = np.asarray(f['iff/iff_sources_vess_in'])
       src_lymph = np.asarray(f['iff/iff_sources_lymph_out'])
       src_minus_vess = np.asarray(f['iff/iff_sources_vess_out'])
@@ -355,7 +355,7 @@ class DataGlobalIff(object):
       for n in ['src_plus', 'lymph_src_minus', 'vess_src_minus' ]:
         res[n+'_per_vol'] = res[n]/res['sys_volume']
       g = gmeasure.create_group(groupname)
-      for k,v in res.iteritems():
+      for k,v in res.items():
         g.create_dataset(k, data = v)
 
     ret = myutils.hdf_data_caching(read, write, f, ('measurements','global',), (None, 2,))
@@ -448,7 +448,7 @@ def averaged(getter, sources, names):
         all_res[name] += dat.avg
       else:
         all_res[name] += dat
-  for k, v in all_res.iteritems():
+  for k, v in all_res.items():
     all_res[k] = (v.avg, v.std)
   return all_res
 
@@ -464,9 +464,9 @@ class DataGlobalAverageIff(object):
     datlist = defaultdict(list)
     for f in files:
       d = dataman('iff_global', f)
-      for k,v in d.iteritems():
+      for k,v in d.items():
         datlist[k].append(v)
-    for k,v in datlist.iteritems():
+    for k,v in datlist.items():
       datlist[k] = np.average(datlist[k]), np.std(datlist[k])
     return datlist
 
@@ -499,25 +499,25 @@ class DataIffAverages(object):
 
           g = gmeasure.create_group(groupname)
           g.create_dataset('bins', data = bins, compression = 4)
-          for k, (a, b) in radial.iteritems():
+          for k, (a, b) in radial.items():
             h = g.create_group(k)
             h.create_dataset('avg', data = a, compression = 4)
             h.create_dataset('std', data = b, compression = 4)
 
         def read(gmeasure, groupname):
           g = gmeasure[groupname]
-          items = dict(g.iteritems())
+          items = dict(iter(g.items()))
           bins = np.asarray(items.pop('bins'))
-          data = dict((k, (np.asarray(h['avg']), np.asarray(h['std']))) for k, h in items.iteritems())
+          data = dict((k, (np.asarray(h['avg']), np.asarray(h['std']))) for k, h in items.items())
           return bins, data
 
         return myutils.hdf_data_caching(read, write, favg, (dataname, identifier), (0,1))
 
       if dataname in ('iff_global_cached_average'):
         def write(gmeasure, groupname):
-          keys = dataman('iff_global',files[0]).keys()
+          keys = list(dataman('iff_global',files[0]).keys())
           data = averaged(lambda f, name: dataman('iff_global',f)[name], files, keys)
-          tbl = [ (k, float(v[0][...]), float(v[1][...])) for k,v in data.iteritems() ]
+          tbl = [ (k, float(v[0][...]), float(v[1][...])) for k,v in data.items() ]
           tbl = np.array(tbl, dtype = [('name', np.str_, 128), ('avg', float), ('std', float)])
           gmeasure.create_dataset(groupname, data = tbl)
 
@@ -566,7 +566,7 @@ class DataRadialIff(object):
       vessels = vessels.get_filtered(edge_indices = np.nonzero(vessels.edges['flags'] & krebsutils.CIRCULATED)[0])
       #vessels['radius'] = vessels['radius'][:,0]
       q = vessels['pressure']
-      print q.min(), q.max(), np.average(q)
+      print(q.min(), q.max(), np.average(q))
 
       # distance maps
       radialmap = krebsutils.make_radial_field(ld)
@@ -697,7 +697,7 @@ def ComputeIfpVsIffCorrelationDataLocal(dataman, iff_file):
     return gmeasure[gname]
 
   def write(gmeasure, gname):
-    print('compute Ifp vs Iff correlation for %s' % iff_file)
+    print(('compute Ifp vs Iff correlation for %s' % iff_file))
     ld = krebsutils.read_lattice_data_from_hdf(iff_file['field_ld'])
 
     iff_radial_field = dataman.obtain_data('iffvelocity_outward', iff_file)
@@ -735,7 +735,7 @@ def ComputeIfpVsIffCorrelationData(dataman, global_data_filename, filenamelist):
 
   def read(gmeasure, gname):
     # return those two datasets in a dict with their names, as numpy arrays
-    return dict(map(lambda s: (s,np.asarray(gmeasure[gname][s])), ['iff_means', 'ifp_means']))
+    return dict([(s,np.asarray(gmeasure[gname][s])) for s in ['iff_means', 'ifp_means']])
 
   def write(gmeasure, gname):
     result = []  
@@ -749,7 +749,7 @@ def ComputeIfpVsIffCorrelationData(dataman, global_data_filename, filenamelist):
         del resultgroup
         result.append((iff_mean, ifp_mean))
     
-    iff_means, ifp_means = zip(*result)
+    iff_means, ifp_means = list(zip(*result))
     gmeasure = gmeasure.create_group(gname)
     gmeasure.create_dataset('filenames', data = filenames)
     gmeasure.create_dataset('iff_means', data = iff_means)
@@ -774,7 +774,7 @@ def plot_global_header(files, dataman, pdfpages):
     #res['extravasated_fraction'] = res['tumor_src_plus']/res['flow_in']
     results.append(res)
   results = myutils.zipListOfDicts(results)
-  for k, v in results.iteritems():
+  for k, v in results.items():
     results[k] = np.average(v), np.std(v)
 
   as_str = lambda name, scale: r'$%s \pm %s$' % (lf2s(results[name][0]*scale), lf2s(results[name][1]*scale))
@@ -846,7 +846,7 @@ def plot_radial(files, dataman, pdfpages):
   ax.legend()
 
   ax = axes[1]
-  ax.set(ylabel = ur'[\u03BCm/s]') #, xlabel = r'$\theta$ [mm]', title = 'velocity')
+  ax.set(ylabel = r'[\u03BCm/s]') #, xlabel = r'$\theta$ [mm]', title = 'velocity')
   ax.set(xticklabels=[])
   plot('iff_velocity_out', label = r'$v_{||}$', marker = 'o', color = 'r')
   plot('iff_velocity_mag', label = r'$|v|$', marker = 's', color = 'b')
@@ -880,7 +880,7 @@ def plot_radial(files, dataman, pdfpages):
       for name in ['v_wcond', 'v_flow', 'v_outflux', 'v_outflux_per_flow', 'v_lambda']:
         smpl = samplegetter(f, name)
         samples[name].append(smpl[mask])
-    for k,v in samples.iteritems():
+    for k,v in samples.items():
       samples[k] = np.concatenate(v)
     #radial = averaged(radialgetter, files, ['v_wcond', 'v_flow', 'v_outflux', 'v_outflux_per_flow', 'v_lambda'])
 
@@ -902,7 +902,7 @@ def plot_radial(files, dataman, pdfpages):
     axes = axes.ravel()
 
     ax = axes[0]
-    ax.set(ylabel=ur'[$\u03BCm^3 / \u03BCm\,kPa\,s$]', yscale = yscale) #title=r'transmural flow coefficient'
+    ax.set(ylabel=r'[$\u03BCm^3 / \u03BCm\,kPa\,s$]', yscale = yscale) #title=r'transmural flow coefficient'
     ax.set(xticklabels=[])
     plot(ax, 'v_wcond')
     text1(ax, LF.math(LF.transmural_flow_coeff))
@@ -910,7 +910,7 @@ def plot_radial(files, dataman, pdfpages):
     #ax.legend()
 
     ax = axes[1]
-    ax.set(ylabel=ur'[$\u03BCm^3 / \u03BCm\,s$]', yscale = yscale) #title=r'transmural flux per length'
+    ax.set(ylabel=r'[$\u03BCm^3 / \u03BCm\,s$]', yscale = yscale) #title=r'transmural flux per length'
     ax.set(xticklabels=[])
     plot(ax, 'v_outflux')
     text1(ax, LF.math(LF.transmural_flow_per_length))
@@ -920,7 +920,7 @@ def plot_radial(files, dataman, pdfpages):
 
     ax = axes[2]
     ax.set(xticklabels=[])
-    ax.set(ylabel=ur'[$\u03BCm^3/s$]', yscale = yscale)  #xlabel=r'$\theta$ [mm]' title=r'vessel flow rate'
+    ax.set(ylabel=r'[$\u03BCm^3/s$]', yscale = yscale)  #xlabel=r'$\theta$ [mm]' title=r'vessel flow rate'
     plot(ax, 'v_flow')
     text1(ax, LF.math(LF.vessel_flow_rate))
     ax.set(ylim = (1.e0, 1.e10))
@@ -928,7 +928,7 @@ def plot_radial(files, dataman, pdfpages):
     #ax.legend()
 
     ax = axes[3]
-    ax.set(xlabel=r'$\theta$ [mm]', ylabel=ur'[\u03BCm]', yscale = yscale) #title=r'$\lambda$'
+    ax.set(xlabel=r'$\theta$ [mm]', ylabel=r'[\u03BCm]', yscale = yscale) #title=r'$\lambda$'
     plot(ax, 'v_lambda') #, value_prefactor = 1.e-3)
     text1(ax, LF.math(LF.relative_extravasation_flow))
     text2(ax, fig_numbering[3])
@@ -978,7 +978,7 @@ def plot_single_images2(f, dataman, pdfpages):
       vesselfraction = tc['phi_vessels'],
       iff_velocity = dataman('iffvelocity', f)[0]
     )
-    for k,v in imgs.iteritems():
+    for k,v in imgs.items():
       imgs[k] = imslice(v)
 
     def mkfig(nrows, ncols): # sizes set up for image plots
@@ -997,7 +997,7 @@ def plot_single_images2(f, dataman, pdfpages):
       elif crange == 'zero-centered':
         q = np.abs(a).max()
         crange = (-q,q)
-      if vscale <> 1.:
+      if vscale != 1.:
         a = a*vscale
       return imshow(ax, a, ld, vmin=vscale*crange[0], vmax=vscale*crange[1], cmap = cmap)
 
@@ -1022,43 +1022,43 @@ def plot_single_images2(f, dataman, pdfpages):
 #r'v_x' r'$v_{||}$' r'$|v|$' $p_i$ $\Gamma_l$
 
     def plt_ifp(ax):
-      ax.set(title=ur'$p_i$')
+      ax.set(title=r'$p_i$')
       p = imshow_('iff_pressure', matplotlib.cm.jet, None, 1.)
       _, cax = colorbar(fig, ax, p)
       contour_('dist_viabletumor')
-      textright(cax, ur'[kPa]')
+      textright(cax, r'[kPa]')
       textleft(ax, fig_numbering[1])
 
     def plt_ifv(ax):
-      ax.set(title=ur'$v_x$')
+      ax.set(title=r'$v_x$')
       p = imshow_('iff_velocity', matplotlib.cm.seismic, 'zero-centered', 1.)
       contour_('dist_viabletumor')
       _, cax = colorbar(fig, ax, p)
-      textright(cax, ur'[\u03BCm/s]')
+      textright(cax, r'[\u03BCm/s]')
       textleft(ax, fig_numbering[3])
 
     def plt_ifsrc(ax):
-      ax.set(title=ur'$%s_l$' % LF.source)
+      ax.set(title=r'$%s_l$' % LF.source)
       p = imshow_('iff_sources', matplotlib.cm.seismic, 'zero-centered', 1.e3)
       contour_('dist_viabletumor')
       _, cax = colorbar(fig, ax, p)
-      textright(cax, ur'[$10^3$ \u03BCm$^3$/\u03BCm$^3$s]')
+      textright(cax, r'[$10^3$ \u03BCm$^3$/\u03BCm$^3$s]')
       textleft(ax, fig_numbering[2])
 
     def plt_ifvmag(ax):
-      ax.set(title=ur'$|v|$')
+      ax.set(title=r'$|v|$')
       p = imshow_('iff_velocity_mag', matplotlib.cm.gray, None, 1.)
       contour_('dist_viabletumor')
       _, cax = colorbar(fig, ax, p)
-      textright(cax, ur'[\u03BCm/s]')
+      textright(cax, r'[\u03BCm/s]')
       textleft(ax, fig_numbering[4])
 
     def plt_ifvout(ax):
-      ax.set(title=ur'$v_{||}$')
+      ax.set(title=r'$v_{||}$')
       p = imshow_('iff_velocity_out', matplotlib.cm.gray, None, 1.)
       contour_('dist_viabletumor')
       _, cax = colorbar(fig, ax, p)
-      textright(cax, ur'[\u03BCm/s]')
+      textright(cax, r'[\u03BCm/s]')
       textleft(ax, fig_numbering[5])
 
     fig, axes = mkfig(2,3)
@@ -1139,13 +1139,13 @@ def plotComparisonsForIffPaper(pdfpages, path):
   for i in range(1, 7):
     allfiles['vE%02i' %i] = g('iff_variantE%02i_*.h5' % i)
 
-  for k, v in allfiles.iteritems():
+  for k, v in allfiles.items():
     assert v, ("missing files for case %s" % k)
 
   dataman = myutils.DataManager(100, [DataTissue(), DataGlobalIff(), DataRadialIff(), DataIffAverages(path), DataTumorBloodFlow()])
 
   allavg = {}
-  for k, v in allfiles.iteritems():
+  for k, v in allfiles.items():
     files = [ h5py.File(fn, 'r') for fn in v ]
     bins, radial = dataman('iff_radial_cached_average', files)
     data = dataman('iff_global_cached_average', files)
@@ -1242,7 +1242,7 @@ def plotComparisonsForIffPaper(pdfpages, path):
     fig.suptitle(title)
 
     ax = axes[0]
-    ax.set(ylabel = ur' [kPa]') # xlabel = r'$\theta$ [mm]'
+    ax.set(ylabel = r' [kPa]') # xlabel = r'$\theta$ [mm]'
     for name, label, _ in runs:
       plotradial(ax, name, 'iff_pressure', label = label)
     plotradial(ax, 'default', 'ivp', label = 'vessels', color = 'k')
@@ -1252,7 +1252,7 @@ def plotComparisonsForIffPaper(pdfpages, path):
 
 
     ax = axes[1]
-    ax.set(ylabel = ur'[\u03BCm/s]', xlabel = r'$\theta$ [mm]')
+    ax.set(ylabel = r'[\u03BCm/s]', xlabel = r'$\theta$ [mm]')
     for name, label, _ in runs:
       p = plotradial(ax, name, 'iff_velocity_out', label = label)
       plotradial(ax, name, 'iff_velocity_mag', color = p[0].get_color(), linestyle=':')
@@ -1262,7 +1262,7 @@ def plotComparisonsForIffPaper(pdfpages, path):
 
     if 0:
       ax = axes[2]
-      ax.set(ylabel = ur'$\times 10^3$ [s$^{-1}$]', xlabel = r'$\theta$ [mm]')
+      ax.set(ylabel = r'$\times 10^3$ [s$^{-1}$]', xlabel = r'$\theta$ [mm]')
       for name, label, _ in runs:
         plotradial(ax, name, 'iff_sources', label = label, value_prefactor = 1.e3)
       #text2(ax, fig_numbering[2])
@@ -1312,7 +1312,7 @@ def plotComparisonsForIffPaper(pdfpages, path):
     ystd *= factor
     y = np.abs(y)
     label = kwargs.pop('label', '')
-    label += ur'$\,\times %s$' % myutils.f2s(factor, latex=True, exponential=True)
+    label += r'$\,\times %s$' % myutils.f2s(factor, latex=True, exponential=True)
     kwargs.update(label = label)
     mpl_utils.errorbar(ax, x, y, yerr = ystd, **kwargs)
 #    if dofit:
@@ -1333,7 +1333,7 @@ def plotComparisonsForIffPaper(pdfpages, path):
     'vess_src_minus_per_vol' : dict(color = 'g', label = r'$-%s_{lv}^-$' % LF.source, marker = 'o'),
     'src_plus_per_vol' : dict(color = 'b', label = r'$-%s_{lv}^+$' % LF.source, marker = '<'),
   }
-  for d in props.itervalues():
+  for d in props.values():
     d.update(value_scale = 1.e3)
   props['vess_src_minus_per_vol']['value_scale'] = 1.e4
   props['tumor_vess_src_minus_per_vol']['value_scale'] = 1.e4
@@ -1353,8 +1353,8 @@ def plotComparisonsForIffPaper(pdfpages, path):
                                       wspace = mpl_utils.mm_to_inch*50,)
 
   def plot_global_measure(ax, title, xlabel, runs, datasets):
-    x = zip(*runs)[2]
-    y = zip(*runs)[0]
+    x = list(zip(*runs))[2]
+    y = list(zip(*runs))[0]
     #limits = dict(ylim = (-1, 2.))
     limits = dict()
     ax.set(xlabel = xlabel, **limits) #title = title
@@ -1367,28 +1367,28 @@ def plotComparisonsForIffPaper(pdfpages, path):
   datasets = [ 'tumor_src_plus_per_vol', 'tumor_vess_src_minus_per_vol', 'tumor_src_minus_per_vol', 'tumor_out_per_vol' ]
   runs = [ run_labels[x] for x in [ 'vA01', 'vA05', 'vA02', 'default', 'vA03', 'vA09', 'vA04','vA07', 'vA08', 'vA10', 'vA11', 'vA12' ] ]
 
-  plot_global_measure(axes[0], 'leakyness', ur'relative $\lambda_{l,T}$', runs, datasets)
+  plot_global_measure(axes[0], 'leakyness', r'relative $\lambda_{l,T}$', runs, datasets)
 
   #############################################
 
   runs = [ run_labels[x] for x in [ 'vB07', 'vB06', 'vB01', 'vB05', 'vB02', 'default', 'vB03', 'vB04', 'vB08', 'vB09' ] ]
-  plot_global_measure(axes[2], 'lymph permeability', ur'relative $L^{(L)}_l$', runs, datasets)
+  plot_global_measure(axes[2], 'lymph permeability', r'relative $L^{(L)}_l$', runs, datasets)
 
   #############################################
 
   runs = [ run_labels[x] for x in [ 'vC01', 'vC02', 'vC03', 'vC04', 'vC05', 'vC06'] ]
-  plot_global_measure(axes[3], 'tumor lymphatics', ur'$S^{(L)}_T / S^{(L)}_N$', runs, datasets)
+  plot_global_measure(axes[3], 'tumor lymphatics', r'$S^{(L)}_T / S^{(L)}_N$', runs, datasets)
 
   #############################################
 
   runs = [ run_labels[x] for x in [  'default', 'vE06', 'vE05', 'vE02', 'vE04', 'vE03', 'vE01'] ]
-  plot_global_measure(axes[1], 'tumor conductivity', ur'relative $K_l$', runs, datasets)
+  plot_global_measure(axes[1], 'tumor conductivity', r'relative $K_l$', runs, datasets)
 
   def text(ax, txt):
     ax.text(0.05, 0.9, txt, ha = "left", transform = ax.transAxes)
 
   axes[0].legend(loc = mpl_utils.loc.upper_right)
-  axes[0].set(ylabel = ur'[s$^{-1}$]')
+  axes[0].set(ylabel = r'[s$^{-1}$]')
   for i, ax in enumerate(axes):
     mpl_utils.add_crosshair(ax, (1,0), color = gridcolor)
     ax.grid(linestyle=':', linewidth=0.5, color= gridcolor)
@@ -1419,13 +1419,13 @@ def plotIfpVsIffCorrelationData(data, filenames, pdfpages):
   for i, fn in enumerate(filenames):
     variant, variant2 = VariantFromFilename.find(fn)
     variants_to_indices[(variant,variant2)].append(i)
-  for k, v in variants_to_indices.items():
+  for k, v in list(variants_to_indices.items()):
     variants_to_indices[k] = np.asarray(v)
   
   color_map = dict(default = 'k')
-  color_map.update(zip('ABCDE', 'rgbcmy'))
+  color_map.update(list(zip('ABCDE', 'rgbcmy')))
   # in C i apparently varied the lymphatic permeability as well
-  label_map = dict(zip('ABCDE', ['(A) $\lambda_{l,T}$', '(C) $L_l^{(L)}$', '(D) $S_T^{(L)} / S_N^{(L)}$', 'just tissue permeability', '(C) $K_l$ & $L_l^{(L)}$']))  
+  label_map = dict(list(zip('ABCDE', ['(A) $\lambda_{l,T}$', '(C) $L_l^{(L)}$', '(D) $S_T^{(L)} / S_N^{(L)}$', 'just tissue permeability', '(C) $K_l$ & $L_l^{(L)}$'])))  
   label_map.update(default = 'Base Case')
   
   markers = '<>do1234sphH^vD*x'
@@ -1487,13 +1487,13 @@ def plotIfpVsIffCorrelationData(data, filenames, pdfpages):
     ]
   }
   marker_map = defaultdict(list)
-  for k, l in marker_map2.items():
+  for k, l in list(marker_map2.items()):
     for v, a, b, c in l:
       marker_map[c].append(round(b, 5))
     l = dict([(v, (a,b,c)) for (v,a,b,c) in l])
     marker_map2[k] = l
 
-  for k, v in marker_map.items():
+  for k, v in list(marker_map.items()):
     v = set(v)
     marker_map[k] = v
     #print('%s -> %s' % (k, v))
@@ -1502,12 +1502,12 @@ def plotIfpVsIffCorrelationData(data, filenames, pdfpages):
   
   W, H = mpl_utils.a4size[0]/2, mpl_utils.a4size[0]/2
   order = ['E','D','A','B','C','default']
-  order = dict(zip(order, xrange(len(order))))
+  order = dict(list(zip(order, list(range(len(order))))))
 
-  variants_to_indices = sorted(variants_to_indices.items(), key = lambda ((v1,v2),lst): order[v1])
-  variants_to_indices = filter(lambda ((k1,k2),v): k1 not in 'D', variants_to_indices)
+  variants_to_indices = sorted(list(variants_to_indices.items()), key = lambda v1_v2_lst: order[v1_v2_lst[0][0]])
+  variants_to_indices = [k1_k2_v for k1_k2_v in variants_to_indices if k1_k2_v[0][0] not in 'D']
   # remove cases D and E
-  variants_to_indices2 = filter(lambda ((k1,k2),v): k1 not in 'DE', variants_to_indices)
+  variants_to_indices2 = [k1_k2_v1 for k1_k2_v1 in variants_to_indices if k1_k2_v1[0][0] not in 'DE']
   
   fig, ax = pyplot.subplots(1,1, figsize = (W/2, H/2))
   for (v1,v2), indices in variants_to_indices:
@@ -1600,14 +1600,14 @@ def do_plotting(filenames):
                   'subplot.top' : 1.-0.1,
                   'subplot.wspace' : 0.2,
                   'subplot.hspace' : 0.2})
-  print 'plotting:', str(filenames)
+  print('plotting:', str(filenames))
   fnmeasure = commonOutputName(filenames)
   dataman = myutils.DataManager(100, GetDataManDataInstances())  
 
   with mpl_utils.PageWriter(fnmeasure+'global.pdf', fileformats=['svg', 'pdf']) as pdfpages:  
     if 0:
       global_ifp_vs_iff_correlation_filename = join(dirname(fnmeasure),'measuredglobal.h5')
-      print 'store Ifp vs Iff Correlation in %s' % global_ifp_vs_iff_correlation_filename
+      print('store Ifp vs Iff Correlation in %s' % global_ifp_vs_iff_correlation_filename)
       data = ComputeIfpVsIffCorrelationData(dataman, global_ifp_vs_iff_correlation_filename, filenames)
       plotIfpVsIffCorrelationData(data, filenames, pdfpages)
       
@@ -1638,8 +1638,8 @@ if __name__ == "__main__":
     for fn in filenames:
       if not os.path.isfile(fn):
         raise AssertionError('The file %s is not present!'%fn)
-  except Exception, e:
-    print e.message
+  except Exception as e:
+    print(e.message)
     sys.exit(-1)
   
   do_plotting(filenames)

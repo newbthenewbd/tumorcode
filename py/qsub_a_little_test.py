@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -30,8 +30,8 @@ import qsub
 
 
 def ClientWorker(*args, **kwargs):
-  print ("hello, i'm running on the cluster. my args are %s and %s" % (str(args), str(kwargs)))
-  print ("my cwd is: %s" % os.getcwd())
+  print(("hello, i'm running on the cluster. my args are %s and %s" % (str(args), str(kwargs))))
+  print(("my cwd is: %s" % os.getcwd()))
 
 if not qsub.is_client and __name__=='__main__':
   argv = qsub.parse_args(sys.argv)

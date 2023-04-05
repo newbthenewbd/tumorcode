@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -122,7 +122,7 @@ def plot_cells(goodArguments):
   num_verts = len(node_pos)
   node_rad = np.zeros(num_verts)
   node_n   = np.zeros(num_verts)
-  for r,(a,b) in itertools.izip(np.asarray(graph['radius']),np.asarray(myEdges)): # itertools, or it will blow up in yr face cuz ultra slow python lists and shit will be created
+  for r,(a,b) in zip(np.asarray(graph['radius']),np.asarray(myEdges)): # itertools, or it will blow up in yr face cuz ultra slow python lists and shit will be created
     node_rad[a] += r
     node_rad[b] += r
     node_n[a] += 1.
@@ -199,7 +199,7 @@ def plot_contour_cells(goodArguments):
     
     grid1 = griddata(pos,o2,(X,Y,Z), method='linear')
     isosurface = (np.max(o2)-np.min(o2))/2
-    print("isosurface at: %f" % isosurface)
+    print(("isosurface at: %f" % isosurface))
     obj = mlab.contour3d(grid1, contours=[isosurface], transparent=True)
     
 

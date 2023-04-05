@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -40,7 +40,7 @@ def estimateFrameAL(points):
   assert N >= 3, "need more than 3 points"
   ic = N/2
   p0 = points[ic].copy()
-  for i in xrange(N):
+  for i in range(N):
     points[i] -= p0
   #np.subtract(points, p0, points)
   l = np.empty(N, dtype=np.double)
@@ -48,7 +48,7 @@ def estimateFrameAL(points):
   l[ic] = 0.
   w[ic] = 1.
   for dir in (-1, 1):
-    for i in xrange(N/2):
+    for i in range(N/2):
       i1 = ic + dir * i
       i2 = ic + dir * (i+1)
       li = dir * linalg.norm(points[i1]-points[i2])
@@ -69,7 +69,7 @@ def estimateFrameAL(points):
   A[1,1] = 0.25 * np.sum(w * np.power(l, 4.))
   A[1,0] = A[0,1]
   _dbg_out('A = %s' % A)
-  for d in xrange(dim):  
+  for d in range(dim):  
     t[0] = np.sum(w * l * points[:,d])
     t[1] = 0.5 * np.sum(w * np.power(l, 2.) * points[:,d])
     _dbg_out('t[%i] = %s' % (d, t))
@@ -146,7 +146,7 @@ class CurvEst:
     N, dim = self.N, self.dim
     M = np.zeros((dim, dim))
     w_sum = 0.
-    for i in xrange(N):
+    for i in range(N):
       w = math.exp(-float(abs(i-self.ic))*2./N)
       p = self.org_points[i] - self.p0
       M += w * np.outer(p,p)
@@ -154,17 +154,17 @@ class CurvEst:
 #      print 'w%i=%f' % (i, w)
     M *= 1./w_sum
     ew, v = linalg.eigh(M)
-    f = zip(ew, v)
-    f.sort(key = lambda (ew,v): -ew)
-    ew, v = zip(*f)
+    f = list(zip(ew, v))
+    f.sort(key = lambda ew_v: -ew_v[0])
+    ew, v = list(zip(*f))
     self.frame_scale_inv = 1./math.sqrt(ew[0])
-    self.frame = np.asarray(tuple(self.frame_scale_inv * v[i] for i in xrange(dim)))
+    self.frame = np.asarray(tuple(self.frame_scale_inv * v[i] for i in range(dim)))
     return self.p0, ew, v
   def projectPointsToFrame(self):
     N, dim = self.N, self.dim
     pp = np.empty((N, 2))
-    for d in xrange(2):
-      for i in xrange(N):
+    for d in range(2):
+      for i in range(N):
         pp[i][d] = np.dot(self.frame[d], self.org_points[i] - self.p0)    
     self.points = pp
     ycenter = np.sum(self.points[:,1])
@@ -224,7 +224,7 @@ def estimateCurvatures(components, points, filter_width):
       rng = 1,L-1
 #    print "ext index range = %s" % (c,)
 #    print "component: %s" % component
-    for i in xrange(*rng):
+    for i in range(*rng):
       W = min(filter_width/2, i, len(c)-i-1)
       indx = c[i-W:i+W+1]
 #      print 'indx = %s' % indx
@@ -253,7 +253,7 @@ def _test2():
   circle[:,1] = np.sin(angles)
   circle *= radius
   c = estimateCurvature(circle)
-  print 'N=%i, c=%f, error=%f' % (N,c,abs(c - 1./radius)*radius)
+  print('N=%i, c=%f, error=%f' % (N,c,abs(c - 1./radius)*radius))
 
 
 def _plotbox(points):
@@ -271,7 +271,7 @@ def _plotbox(points):
   k = curv.computeCurvatureByParabolicFit()
   k2 = curv.computeCurvatureByCircleFit()
   k3 = curv.computeCurvatureByCircleFit2()
-  print 'kpara=%f, kcirc=%f, kcirc2=%f' % (k, k2, k3)
+  print('kpara=%f, kcirc=%f, kcirc2=%f' % (k, k2, k3))
   
 #  print curv.__dict__  
   checkx = np.arange(-2, 2, 0.05)
@@ -341,8 +341,8 @@ if __name__=='__main__':
 #  pyplot.plot(indices, points[:,1])
 #  pyplot.show()
 
-  for i in xrange(len(points)):
-    print "%03i: %f" % (i, curv[i])
+  for i in range(len(points)):
+    print("%03i: %f" % (i, curv[i]))
 
   ic = 632
   _plotbox(points[ic-15:ic+15+1,:])

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -49,7 +49,7 @@ def boxcountImage(arr, boxsize, max_boxsize):
         res.append((boxsize,n))
 
         if 0: # debug out
-          print arr.shape, boxsize, n, arr.min(), arr.max()
+          print(arr.shape, boxsize, n, arr.min(), arr.max())
           q = zplane(arr)
           pyplot.imshow(q, interpolation='nearest', vmin=0, vmax=1)
           pyplot.show()
@@ -151,7 +151,7 @@ def calcVesselBoxCounts(graph, spacing, spacing_max):
     for offset in offsets:
       ld = makeLd(graph, spacing, offset)
       #print 'boxcounting spacing=%f, gridsize=%i, offset=%s' % (ld.scale, max(ld.GetBox(ravel = True)), str(offset))
-      print 'boxcounting spacing=%f, gridsize=%i, offset=%s' % (ld.scale, max(ld.GetBox()), str(offset))
+      print('boxcounting spacing=%f, gridsize=%i, offset=%s' % (ld.scale, max(ld.GetBox()), str(offset)))
       volume_factor = (ld.scale**3) / (5.**2*ld.scale)
       volume_threshold = 1.
       cnt += krebsutils.calc_vessel_boxcounts(graph.nodes['position'], graph.edgelist, graph.edges['radius'], ld, volume_factor, volume_threshold)
@@ -193,7 +193,7 @@ def calcBoxCounts(data, vesselgroup, dataId, opts):
         else:
           subgraph = graph
         if len(subgraph.edgelist): # if graph is not empty
-          print 'computing %s' % dataId
+          print('computing %s' % dataId)
           #krebsutils.set_num_threads(opts.num_threads)
           #do boxcounting
           spacing = opts.spacing
@@ -210,7 +210,7 @@ def boxcountTumorVessels(fn, opts):
     groups = myutils.getTimeSortedGroups(f['.'], "out")
     for g in groups[-1:]:
       data = {}
-      print '%s : %s' % (fn, g.name)
+      print('%s : %s' % (fn, g.name))
       for item_to_analyze in items_to_analyze:
         calcBoxCounts(data, g['vessels'], item_to_analyze, opts)
 
@@ -331,8 +331,8 @@ if __name__=='__main__':
         with h5py.File(fn, 'r') as f:
           if not f.attrs.get('tumorcode_file_type') == 'fractaldim_analyze_bulktum':
             raise AssertionError('This in not the right filetype %s!' % fn)
-    except Exception, e:
-      print e.message
+    except Exception as e:
+      print(e.message)
       sys.exit(-1)
       
     dflist = []
@@ -388,7 +388,7 @@ if __name__=='__main__':
     ax.legend(loc = 3)
 
     # dslee gets 2.52 +/- 0.05
-    print 'df = %f +/- %f' % (avg_df, std_df)
+    print('df = %f +/- %f' % (avg_df, std_df))
 
     pyplot.show()
 

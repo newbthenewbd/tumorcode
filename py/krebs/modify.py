@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -19,7 +19,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Created on Tue Oct  4 13:16:06 2016
@@ -134,7 +134,7 @@ def DoIt(inputFileNames, pattern, options):
     
     inGroups = list(itertools.chain.from_iterable(myutils.walkh5(f, pattern, return_h5objects=True) for f in inFiles))
     if len(inGroups)<=0:
-      print 'no matching groups in hdf file(s)'
+      print('no matching groups in hdf file(s)')
       sys.exit(0)
     for in_file in inputFileNames:
       bloodflowparams = krebsutils.pyDictFromParamGroup(h5files.open(in_file,'r')['parameters/calcflow'])

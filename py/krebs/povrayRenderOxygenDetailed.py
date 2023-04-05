@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -120,14 +120,16 @@ def InsertGraphColors(vesselgraph, po2field, data_name):
   edgecolors[uncirculated] = gray
   nodecolors[node_uncirculated] = gray
 
-  print 'colormap range ', cm.get_clim()
+  print('colormap range ', cm.get_clim())
 
   vesselgraph.edges['colors'] = edgecolors
   vesselgraph.nodes['colors'] = nodecolors
   return cm
 
 
-def renderSliceWithDistribution((vessel_ld, vessel_graph, data_name), (volume_ld, volumedata), label, options):
+def renderSliceWithDistribution(xxx_todo_changeme, xxx_todo_changeme1, label, options):
+  (vessel_ld, vessel_graph, data_name) = xxx_todo_changeme
+  (volume_ld, volumedata) = xxx_todo_changeme1
   wbbox = volume_ld.worldBox
   options.wbbox = wbbox
   trafo = calc_centering_normalization_trafo(wbbox)
@@ -159,7 +161,9 @@ def renderSliceWithDistribution((vessel_ld, vessel_graph, data_name), (volume_ld
   DoTheRendering( options)
 
 
-def renderSlice((vessel_ld, vessel_graph, data_name), (volume_ld, volumedata), label, options):
+def renderSlice(xxx_todo_changeme2, xxx_todo_changeme3, label, options):
+  (vessel_ld, vessel_graph, data_name) = xxx_todo_changeme2
+  (volume_ld, volumedata) = xxx_todo_changeme3
   wbbox = vessel_ld.worldBox
   options.wbbox = wbbox
   trafo = calc_centering_normalization_trafo(wbbox)
@@ -179,7 +183,8 @@ def renderSlice((vessel_ld, vessel_graph, data_name), (volume_ld, volumedata), l
     CallPovrayAndOptionallyMakeMPLPlot(epv, cm, label, options)
 
 
-def renderVasculatureWTumor((vessel_ld, vessel_graph, data_name), gtumor, imagefn, label, kwargs):
+def renderVasculatureWTumor(xxx_todo_changeme4, gtumor, imagefn, label, kwargs):
+  (vessel_ld, vessel_graph, data_name) = xxx_todo_changeme4
   kwargs = deepcopy(kwargs)
 
   wbbox = vessel_ld.worldBox
@@ -239,8 +244,8 @@ def renderScene(po2group, imagefn, options):
 
   po2vessels, po2field_ld, po2field, parameters = dataman('detailedPO2', po2group)
   po2vessels = np.average(po2vessels, axis=0)
-  print 'po2vessels:', po2vessels.min(), po2vessels.max()
-  print 'po2field:', np.amin(po2field), np.amax(po2field)
+  print('po2vessels:', po2vessels.min(), po2vessels.max())
+  print('po2field:', np.amin(po2field), np.amax(po2field))
 
   #vessel_ld = krebsutils.read_lattice_data_from_hdf(gvessels['lattice'])
   vessel_graph = dataman('vessel_graph', gvessels, ['position', 'flags', 'radius', 'hematocrit'])  

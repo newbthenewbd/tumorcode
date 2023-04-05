@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -29,7 +29,7 @@ import numpy as np
 import h5py
 import collections
 import vtk
-import vtkcommon
+from . import vtkcommon
 import myutils
 import krebsutils as ku
 
@@ -70,7 +70,7 @@ class Extractor(object):
     self.lattice_path = lattice_path
     self.recursive = recursive
     if paths is not None:
-      print('we will extract: %s' % paths)
+      print(('we will extract: %s' % paths))
       for p in paths:
         print(obj)
         self.identifyObject(obj[p], permissive = recursive)
@@ -100,7 +100,7 @@ class Extractor(object):
         self.data[ldpath].append(g)
         return
     elif isinstance(g, h5py.Group) and permissive:
-      for subg in g.itervalues():
+      for subg in g.values():
         self.identifyObject(subg, permissive)
       return
     # if we get here we don't know what to do with it
@@ -128,9 +128,9 @@ class Extractor(object):
         # iterate over hdf datasets and add them to the image data
         try:
           vtkcommon.vtkImageDataAddData(ds, q, 'CellData', posixpath.basename(q.name))
-        except RuntimeError, e:
-          print 'Warning: cannot add data %s' % q.name
-          print '  Exception reads "%s"' % str(e)
+        except RuntimeError as e:
+          print('Warning: cannot add data %s' % q.name)
+          print('  Exception reads "%s"' % str(e))
           pass
       writer = vtk.vtkDataSetWriter()
       if int(vtk.vtkVersion.GetVTKSourceVersion()[12])>5:
@@ -144,7 +144,7 @@ class Extractor(object):
   def asVtkDataSets(self, return_ld_path = False):
     import krebsutils
     result = {}
-    for k, gg in self.data.iteritems():
+    for k, gg in self.data.items():
       if k == VtkFiles:
         for g in gg:
 #          ds = vtkcommon.vtkStringToDataset(
@@ -165,14 +165,14 @@ class Extractor(object):
           result[name] = ds
         else:
           result[name] = (ds, k)
-    return result.values()
+    return list(result.values())
     
   def getDatasetPaths(self):
     def it(x0):
       for x1 in x0:
         for x2 in x1:
           yield x2.name
-    return list(it(self.data.itervalues()))
+    return list(it(iter(self.data.values())))
 
 
 if __name__=="__main__":
@@ -186,13 +186,13 @@ if __name__=="__main__":
   
   e = Extractor(f, [grpname], recursive = True)
 
-  print 'found datasets:'
+  print('found datasets:')
   pprint.pprint(e.getDatasetPaths())
   
   out = basename(fn);
   if out.endswith('.h5'):
     out = splitext(out)[0]
-  if grpname and grpname <> '.':
+  if grpname and grpname != '.':
     tmp = grpname.replace('/','-')
     if not tmp.startswith('-'):
       tmp = '-'+tmp

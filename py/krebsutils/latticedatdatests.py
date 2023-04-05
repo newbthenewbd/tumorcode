@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -37,21 +37,21 @@ import collections
 def TestBasics():
   x0, x1, y0, y1, z0, z1 = bb = (0,4, 0,4 ,-3,6)
   ld = krebs.LatticeDataQuad3d(bb, 100.)
-  print ld.GetWorldBox()
-  print ld.worldBox
-  print ld.GetBox()
-  print ld.box
-  print ld.scale
-  print ld.GetScale()
-  print ld.shape
-  print ld.GetWorldSize()
-  print ld.worldSize
+  print(ld.GetWorldBox())
+  print(ld.worldBox)
+  print(ld.GetBox())
+  print(ld.box)
+  print(ld.scale)
+  print(ld.GetScale())
+  print(ld.shape)
+  print(ld.GetWorldSize())
+  print(ld.worldSize)
 
   ld2 = krebs.LatticeDataQuad3d(bb, 100.)  
-  print ld == ld2
+  print(ld == ld2)
   
   ld3 = krebs.LatticeDataQuad3d((0,3,0,4,-3,6), 100.)
-  print ld == ld3
+  print(ld == ld3)
   
   
 
@@ -98,7 +98,7 @@ def testunicells():
   hexa_c2 = hexa_c1 / 3.
   hexa_mat = ((0, 0.5, 0.5), (0, 0, 1./3.), (0,0,0))
   hexa_scale = (1, hexa_c1, hexa_c0)
-  print hexa_scale
+  print(hexa_scale)
   plotunitcells(generate_unitcell('bcc'), hexa_mat, hexa_scale)
 
 
@@ -119,29 +119,29 @@ def generatefccneighbors():
       wp1 = ld.LatticeToWorld(p1) - ld.LatticeToWorld(p0)
       if (np.linalg.norm(wp1)-1.)**2 < 0.1:
         nbs.append(np.asarray(p1) - np.asarray(p0))
-    nbs.sort(key = lambda (i,j,k): k*100+10*j+i)
+    nbs.sort(key = lambda i_j_k: i_j_k[2]*100+10*i_j_k[1]+i_j_k[0])
     if 0:
-      print '%i nbs of %s = {' % (len(nbs), p0,)
-      print ','.join(str(p) for p in nbs)
-      print '}'
+      print('%i nbs of %s = {' % (len(nbs), p0,))
+      print(','.join(str(p) for p in nbs))
+      print('}')
     else:
       x,y,z = p0
-      print 'k=0;'
+      print('k=0;')
       for num, (i,j,k) in enumerate(nbs):
-        print 'vnb[%i][%i][k++] = Int3(%2i,%2i,%2i);' % (y,z,i,j,k)
+        print('vnb[%i][%i][k++] = Int3(%2i,%2i,%2i);' % (y,z,i,j,k))
 
 def testhcplattice():
   x0, x1, y0, y1, z0, z1 = bb = (0,4, 0,4 ,-1,3)
   ld = krebs.LatticeDataFCC(bb, 1.)
-  print type(ld), ld
+  print(type(ld), ld)
 
   if 1:
-    print 'neighbors'
+    print('neighbors')
     nbcnt = ld.NbCount()
-    for i in xrange(nbcnt):
+    for i in range(nbcnt):
       p = ld.NbLattice((0,0,0), i)
       wp = ld.LatticeToWorld(p)
-      print '%i -> %s = <%.1f, %.1f, %.1f>' % ((i, p)+tuple(wp))
+      print('%i -> %s = <%.1f, %.1f, %.1f>' % ((i, p)+tuple(wp)))
 
   import matplotlib
   matplotlib.use('Qt4Agg')
@@ -150,7 +150,7 @@ def testhcplattice():
 
   def plotsiteneighbors(ax, ld, p, axes, **kwargs):
     wp = ld.LatticeToWorld(p)
-    for i in xrange(ld.NbCount()):
+    for i in range(ld.NbCount()):
       wq = ld.LatticeToWorld(ld.NbLattice(p, i))
       a = np.asarray([wp,0.5*(wq-wp)+wp])
       if len(axes)==3:
@@ -170,7 +170,7 @@ def testhcplattice():
       i,j,k = (i+x0, j+y0, k+z0)
       plotsiteneighbors(ax, ld, (i,j,k), axes=axes, color=colors[k % len(colors)])
       points[k].append(ld.LatticeToWorld((i,j,k)))
-    for k, pts in points.iteritems():
+    for k, pts in points.items():
       pts = np.asarray(pts)
       if len(axes)==3:
         ax.plot(pts[:,axes[0]], pts[:,axes[1]], pts[:,axes[2]], '.', color=colors[k % len(colors)], markersize=20)
@@ -207,15 +207,15 @@ def printFCCLatticeDirections():
   LD = krebs.LatticeDataFCC
   sz = (4,4,4)
   ld = LD((0, sz[0]-1, 0, sz[1]-1, 0, sz[2]-1), 1.)
-  for d in xrange(ld.NbCount()):
+  for d in range(ld.NbCount()):
     indexv = ld.NbLattice((0,0,0), d)
     wp     = ld.LatticeToWorld(indexv)
-    print '%i -> %s' % (d, wp)
+    print('%i -> %s' % (d, wp))
 
 
 def march(ld, p, d, l):
   t1 = p
-  for q in xrange(l):
+  for q in range(l):
     #print t1,
     t1 = ld.NbLattice(t1, d)
   #print t1
@@ -227,32 +227,32 @@ def testhcplattice2():
   sz = (4,4,4)
   ld = LD((0, sz[0]-1, 0, sz[1]-1, 0, sz[2]-1), 1.)
 
-  print ld.GetAxisDirLen((2,15,1),(3,14,0))
+  print(ld.GetAxisDirLen((2,15,1),(3,14,0)))
 
   if 0:
     for p0 in fcc_points_of_interest:
       if 1:
-        for d_test in xrange(ld.NbCount()):
+        for d_test in range(ld.NbCount()):
           p1 = ld.NbLattice(p0, d_test)
           d, l = ld.GetAxisDirLen(p0, p1)
           if d is not None:
             t1 = march(ld, p0, d, l)
             ok = all(t1 == p1)
-            print '%s -> %s has dir %s and length %s, marching result: %s, %s' % (str(p0),str(p1), d, l, str(t1), 'ok' if ok else 'FAIL')
+            print('%s -> %s has dir %s and length %s, marching result: %s, %s' % (str(p0),str(p1), d, l, str(t1), 'ok' if ok else 'FAIL'))
     if 0:
-      inner_region = set([tuple(ld.NbLattice(p0, d1)) for d1 in xrange(ld.NbCount())] + [p0])
-      for d1 in xrange(ld.NbCount()):
+      inner_region = set([tuple(ld.NbLattice(p0, d1)) for d1 in range(ld.NbCount())] + [p0])
+      for d1 in range(ld.NbCount()):
         p1 = ld.NbLattice(p0, d1)
-        for d2 in xrange(ld.NbCount()):
+        for d2 in range(ld.NbCount()):
           p2 = ld.NbLattice(p1, d2)
           if tuple(p2) in inner_region: continue
           d, l = ld.GetAxisDirLen(p0, p2)
           if d is not None:
             t1 = march(ld, p0, d, l)
-            if d<>d1 or d<>d2 or any(t1<>p2):
-              print 'FAIL','%s -> %s has dir (%s,%s)->%s and length %s, marching result: %s' % (str(p0),str(p2), d1,d2 , d, l, str(t1))
+            if d!=d1 or d!=d2 or any(t1!=p2):
+              print('FAIL','%s -> %s has dir (%s,%s)->%s and length %s, marching result: %s' % (str(p0),str(p2), d1,d2 , d, l, str(t1)))
             else:
-              print 'OK','%s -> %s has dir %s and length %s'  % (str(p0),str(p2), d, l)
+              print('OK','%s -> %s has dir %s and length %s'  % (str(p0),str(p2), d, l))
 
 
 if __name__ == '__main__':

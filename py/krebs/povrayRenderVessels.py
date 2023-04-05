@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -140,7 +140,7 @@ def make_any_color_arrays(vesselgraph, data_name,options):
   if data_name == 'hematocrit':
     h0 = np.min(edgedata[np.nonzero(edgedata)])
     if h0<0.1:
-      print("Minimal hematocrit is: %f" % h0)
+      print(("Minimal hematocrit is: %f" % h0))
       print("using 0.1 instead")
       h0 = 0.1
     h1 = np.max(edgedata[np.nonzero(edgedata)])
@@ -150,8 +150,8 @@ def make_any_color_arrays(vesselgraph, data_name,options):
       cm.set_clim(h0, h1)
     else:
       print('setting colors limits for vessels')
-      print(options.vesselsColorLimits[0])
-      print(options.vesselsColorLimits[1])
+      print((options.vesselsColorLimits[0]))
+      print((options.vesselsColorLimits[1]))
       cm.set_clim(vmin=options.vesselsColorLimits[0], vmax=options.vesselsColorLimits[1])
     
     edgecolors[mask[:,0]] = colors(edgedata[mask])
@@ -170,8 +170,8 @@ def make_any_color_arrays(vesselgraph, data_name,options):
       cm.set_clim(p0, p1)
     else:
       print('setting colors limits for vessels')
-      print(options.vesselsColorLimits[0])
-      print(options.vesselsColorLimits[1])
+      print((options.vesselsColorLimits[0]))
+      print((options.vesselsColorLimits[1]))
       cm.set_clim(vmin=options.vesselsColorLimits[0], vmax=options.vesselsColorLimits[1])
     
     edgecolors[mask[:,0]] = colors(edgedata[mask])
@@ -195,8 +195,8 @@ def make_any_color_arrays(vesselgraph, data_name,options):
       cm.set_clim(p0, p1)
     else:
       print('setting colors limits for vessels')
-      print(options.vesselsColorLimits[0])
-      print(options.vesselsColorLimits[1])
+      print((options.vesselsColorLimits[0]))
+      print((options.vesselsColorLimits[1]))
       cm.set_clim(vmin=options.vesselsColorLimits[0], vmax=options.vesselsColorLimits[1])
     edgecolors[mask[:,0]] = colors(edgedata)
     nodecolors[nmask[:,0]] = colors(nodedata)
@@ -216,8 +216,8 @@ def make_any_color_arrays(vesselgraph, data_name,options):
       cm.set_clim(p0, p1)
     else:
       print('setting colors limits for vessels')
-      print(options.vesselsColorLimits[0])
-      print(options.vesselsColorLimits[1])
+      print((options.vesselsColorLimits[0]))
+      print((options.vesselsColorLimits[1]))
       cm.set_clim(vmin=options.vesselsColorLimits[0], vmax=options.vesselsColorLimits[1])
     edgecolors[mask[:,0]] = colors(edgedata)
     nodecolors[nmask[:,0]] = colors(nodedata)
@@ -257,8 +257,8 @@ def make_any_color_arrays(vesselgraph, data_name,options):
       cm.set_clim(p0, p1)
     else:
       print('setting colors limits for vessels')
-      print(options.vesselsColorLimits[0])
-      print(options.vesselsColorLimits[1])
+      print((options.vesselsColorLimits[0]))
+      print((options.vesselsColorLimits[1]))
       cm.set_clim(vmin=options.vesselsColorLimits[0], vmax=options.vesselsColorLimits[1])
     edgecolors[mask[:,0]] = colors(edgedata)
     nodecolors[nmask[:,0]] = colors(nodedata)
@@ -368,7 +368,7 @@ def ComputeBoundingBox(vesselgroup, vesselgraph):
     #wbbox = krebsutils.read_lattice_data_from_hdf(vess_ldgroup).worldBox
     fn=str(vess_ldgroup.file.filename)
     path=str(vess_ldgroup.name)
-    print("reading bounding box from file: %s at %s" %(fn,path))
+    print(("reading bounding box from file: %s at %s" %(fn,path)))
     
     Pyld = krebsutils.read_lattice_data_from_hdf_by_filename(fn, path)
     wbbox = Pyld.worldBox
@@ -379,7 +379,7 @@ def ComputeBoundingBox(vesselgroup, vesselgraph):
     minval = np.amin(pos, axis=0)
     maxval = np.amax(pos, axis=0)
     wbbox = np.vstack((minval, maxval)).transpose().ravel()  # xmin ,xmax, ymin, ymax, zmin ,zmax ...
-    print 'WBBOX = ', wbbox
+    print('WBBOX = ', wbbox)
   return wbbox
   
 #  pos = vesselgraph['position']
@@ -469,7 +469,7 @@ def render_different_data_types( vesselgroup, options):
     cm, (datamin, datamax) = make_any_color_arrays(graph, data_name, options)
     fn = vesselgroup.file.filename
     options.imageFileName = splitext(basename(fn))[0]+'_'+ myutils.sanitize_posixpath(vesselgroup.name).replace('/','-')+'_'+data_name+filenamepostfix+'.'+ options.format
-    print(options.imageFileName)
+    print((options.imageFileName))
     with EasyPovRayRender(options) as epv:
       CreateScene2(vesselgroup,epv, graph, options)
       if options.noOverlay:

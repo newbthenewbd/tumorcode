@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -36,7 +36,7 @@ from scipy.optimize import leastsq
 import collections
 import glob
 import md5
-import cPickle
+import pickle
 import pprint
 import qsub
 
@@ -48,12 +48,12 @@ import krebsutils
 from mystruct import Struct
 import myutils
 
-from plotBulkTissue import commonOutputName, contour, imslice, imshow, colorbar
+from .plotBulkTissue import commonOutputName, contour, imslice, imshow, colorbar
 from mpl_utils import PageWriter
-from plotIff import LabelFactory, ColorMaps, fig_numbering
-import analyzeGeneral
+from .plotIff import LabelFactory, ColorMaps, fig_numbering
+from . import analyzeGeneral
 
-import plotIff
+from . import plotIff
 
 
 import matplotlib
@@ -107,7 +107,7 @@ class DataDrugAverages(object):
       d = collections.defaultdict(cons)
       for f in files:
         df = dataman.obtain_data('drug_global_series', f)
-        for k, v in df.iteritems():
+        for k, v in df.items():
           #d[k] += v.avg
           if d[k]:
             l = min(len(d[k]), len(v.sum))
@@ -354,7 +354,7 @@ class DataDrugSingle(object):
     if dataname == 'drug_global':
       def read(gmeasure, group):
         s = dict( # this shit goes over a group and converts 0-dim datasets to floats
-          (k, float(np.asarray(v))) for k, v in gmeasure[group].iteritems()
+          (k, float(np.asarray(v))) for k, v in gmeasure[group].items()
         )
         return s
 
@@ -373,7 +373,7 @@ class DataDrugSingle(object):
           r['tum_avg'] = np.ma.average(ctum)
           r['tum_sum'] = ctum.sum()
           # add this stuff to the group
-          for k, v in r.iteritems():
+          for k, v in r.items():
             g[name+'_'+k] = v # this creates a 0-dimensional hdf dataset
         # make a flat group with globally averaged ata
         g = gmeasure.create_group(group)
@@ -393,7 +393,7 @@ class DataDrugSingle(object):
     if dataname == 'drug_global_series':
       def read(gmeasure, group):
         return dict(
-          (k, np.asarray(v)) for k, v in gmeasure[group].iteritems()
+          (k, np.asarray(v)) for k, v in gmeasure[group].items()
         )
 
       def write(gmeasure, group):
@@ -402,12 +402,12 @@ class DataDrugSingle(object):
               for g in groups ]
         l = myutils.zipListOfDicts(l)
         g = gmeasure.create_group(group)
-        for k, v in l.iteritems():
+        for k, v in l.items():
           g.create_dataset(k, data = v)
 
       fm = myutils.MeasurementFile(f, h5files)
       l = myutils.hdf_data_caching(read, write, fm, ('measurements', 'drug_global_series'), (0, 1))
-      for k, v in l.iteritems():
+      for k, v in l.items():
         l[k] = myutils.MeanValueArray(np.ones_like(v), v, v*v)
       return l
 
@@ -419,7 +419,7 @@ class DataDrugSingle(object):
     ####
     if dataname == 'local_integral':
       g = f['measurements/drug_local_integral']
-      return dict((k,v) for k, v in g.iteritems())
+      return dict((k,v) for k, v in g.items())
 
     ####
     if dataname == 'exposure_histograms':
@@ -527,7 +527,7 @@ class DataDrugAverages2(object):
 
           mean = np.average(datalist)
           std = np.std(datalist)
-          print 'mean %s = %f' % (str(args), mean)
+          print('mean %s = %f' % (str(args), mean))
 
           bins = np.linspace(-10, 10, 400)
           datalist /= mean #make the histogram relative to the mean
@@ -557,7 +557,7 @@ class DataDrugAverages2(object):
             return r
 
 
-        identifier = md5.new(cPickle.dumps(tuple(f.filename for f in files)+(regionid, quantity))).hexdigest()
+        identifier = md5.new(pickle.dumps(tuple(f.filename for f in files)+(regionid, quantity))).hexdigest()
         return myutils.hdf_data_caching(read, write, favg, ('drug_delivery_histogram', identifier), (0,2))
 
 
@@ -570,12 +570,12 @@ class DataDrugMovie(object):
     f, args = args[0], args[1:]
     #obtain_data = lambda *args: dataman.obtain_data(args[0], f, *args[1:])
     movie_fn = join(dirname(f.filename), 'moviedata', 'iffdrugmv'+basename(f.filename)[len('iffdrug'):])
-    print movie_fn
+    print(movie_fn)
     with h5py.File(movie_fn, 'r') as movie_f:
       getgroup = lambda i: movie_f['frames']['%04i' % i]
       if dataname == 'movieinfo':
         n = movie_f['frames'].attrs['num_frames']
-        times = [ getgroup(i).attrs['time'] for i in xrange(n) ]
+        times = [ getgroup(i).attrs['time'] for i in range(n) ]
         return times
       elif dataname == 'movieframes':
         idx_list, quantity = args[0], args[1]
@@ -583,7 +583,8 @@ class DataDrugMovie(object):
 
 
 
-def gieve_histogram(ax, files, dataman, mask_factory, name, (xlabel, ylabel, meanlabel), pdfpages):
+def gieve_histogram(ax, files, dataman, mask_factory, name, xxx_todo_changeme, pdfpages):
+    (xlabel, ylabel, meanlabel) = xxx_todo_changeme
     x, c, mean = dataman('drug_delivery_histogram', files, mask_factory, name)
     ax.bar(x, c, width = x[1]-x[0], lw = 0., color = '0.5')
     ax.set(xlabel = xlabel,
@@ -598,7 +599,7 @@ def gieve_histogram(ax, files, dataman, mask_factory, name, (xlabel, ylabel, mea
 
 def labelfactory(quali, region):
   return ('',#LF.math(quali+'/'+LF.avgOver(quali,region)),
-          LF.math(ur'%s(%s)' % (LF.probForIn(region),quali)),
+          LF.math(r'%s(%s)' % (LF.probForIn(region),quali)),
           LF.math(LF.avgOver(quali,region)),)
 
 def mask_tumorregion_factory(dataman, min_micron, max_micron):
@@ -606,7 +607,7 @@ def mask_tumorregion_factory(dataman, min_micron, max_micron):
     tc = dataman('tumor_composition', f)
     d = tc['dist_tumor']
     return np.logical_and(d > min_micron, d < max_micron)
-  return fun, __name__+cPickle.dumps((min_micron, max_micron))
+  return fun, __name__+pickle.dumps((min_micron, max_micron))
 
 mask_tumorboundary_factory = lambda dataman: mask_tumorregion_factory(dataman, -200., 30.)
 mask_tumorcenter_factory = lambda dataman: mask_tumorregion_factory(dataman, -100000., -500.)
@@ -682,7 +683,7 @@ def plot_averaged_data(files, dataman, pdfpages):
       x, c = getdata(group, 'conc')
       plts += [ plot(ax, style_num, x, c.avg, yerr = c.std, label = r't = %s' % f2s(time(group)), every = 5) ]
 
-    ax.set(xlim = (lambda (x0, x1): (max(x0, -1.5), min(x1, 1.)))(ax.get_xlim()),
+    ax.set(xlim = (lambda x0_x1: (max(x0_x1[0], -1.5), min(x0_x1[1], 1.)))(ax.get_xlim()),
            xlabel = r'$\theta$ [mm]', ylabel = label_radial_conc)
     ax.legend(plts, [p.get_label() for p in plts])
 
@@ -699,7 +700,7 @@ def plot_averaged_data(files, dataman, pdfpages):
       c = c * factors[name]
       p = plot(ax, style_num, x, c.avg, yerr = c.std, label = r'%s $\times %s$' % (name, f2s(factors[name], exponential=True)), every = 5)
 
-    ax.set(xlim = (lambda (x0, x1): (max(x0, -1.5), min(x1, 1.)))(ax.get_xlim()),
+    ax.set(xlim = (lambda x0_x11: (max(x0_x11[0], -1.5), min(x0_x11[1], 1.)))(ax.get_xlim()),
            xlabel = r'$\theta$ [mm]', ylabel = label_radial_conc,
            title = 't = %s' % f2s(time(group)))
     ax.legend()
@@ -708,11 +709,11 @@ def plot_averaged_data(files, dataman, pdfpages):
   def plt_drug_vs_vessels(ax): # drug vs distance from vessels
     getdata = lambda g: dataman('drug_vs_vessel_distance_average', files, g, 'conc') if is_averaging else dataman('drug_vs_vessel_distance', files[0], g, 'conc')
 
-    label_radial_conc = LF.math(LF.avgOver('s', ur'\rho'))
+    label_radial_conc = LF.math(LF.avgOver('s', r'\rho'))
 
 #    fig, ax = pyplot.subplots(1,1, figsize = 0.5*np.asarray((mastersize[0], mastersize[0])))
 #    fig.subplots_adjust(left = 0.15)
-    ax.set(xlabel = ur'$\rho$ [\u03BCm]', ylabel = label_radial_conc)
+    ax.set(xlabel = r'$\rho$ [\u03BCm]', ylabel = label_radial_conc)
 
     x, tum = dataman('radial_average', files, 'vessel_distance', 'tissue') if is_averaging else dataman(('radial', 'vessel_distance', 'tissue'), files[0])
     #ax2 = ax.twinx()
@@ -732,7 +733,7 @@ def plot_averaged_data(files, dataman, pdfpages):
         (a, b, l), func = fit_func_exp(x_in, y_in, (1., 0., 100.))
         #print 'fit to correlation t = %s params = %s' % (f2s(time(group)), str((a,b,l)))
         #plot
-        title = ur'$\propto\,e^{-\rho / %s}$' % myutils.f2s(l, prec=2, latex=True)
+        title = r'$\propto\,e^{-\rho / %s}$' % myutils.f2s(l, prec=2, latex=True)
         x0, x1 = ax.get_xlim()
         xx = np.arange(0., x1, 10)
         ax.plot(xx, func(xx), color = p[0].get_color(), scalex = False, scaley = False, label = title)
@@ -745,8 +746,8 @@ def plot_averaged_data(files, dataman, pdfpages):
       ax = axes[style_num]
       title = r't = %s' % f2s(time(group))
       #tissue thing
-      label_radial_conc = LF.math(LF.avgOver('s', ur'\rho'))
-      ax.set(xlabel = ur'$\rho$ [\u03BCm]', ylabel = label_radial_conc)
+      label_radial_conc = LF.math(LF.avgOver('s', r'\rho'))
+      ax.set(xlabel = r'$\rho$ [\u03BCm]', ylabel = label_radial_conc)
       x, data_from_manager = dataman('radial_average', files, 'vessel_distance', 'tissue') if is_averaging else dataman(('radial', 'vessel_distance', 'tissue'), files[0])
       p = mpl_utils.errorbar(ax, x, data_from_manager.avg, linestyle = '-', label = '$\phi_T$', color = (0.5,0.5,0.5), marker = None)
       #solutes       
@@ -790,7 +791,7 @@ def plot_averaged_data(files, dataman, pdfpages):
     mpl_utils.errorbar(ax, x*1.e-3, y.avg, yerr = y.std, every = 5, color = 'k', label = label[quali])
     ax.set(ylabel = label[quali])
     ax.set(xlim = (-1., 1.))
-    ax.set(xlabel = ur'$\theta$ [mm]')
+    ax.set(xlabel = r'$\theta$ [mm]')
 
 #  def plt_quali(ax): # auc, max_conc vs distance from vessels
 #    label = { 'auc_in' : LF.math(LF.avgOver(LF.dqualiauc, LF.levelsetfunc)),
@@ -817,7 +818,7 @@ def plot_averaged_data(files, dataman, pdfpages):
   fig, axes = mkfig(1, 2, 0.22)
   axes = axes.ravel()
 
-  for i, ax, func in zip(xrange(len(axes)), axes, [plt_drug_radial, plt_drug_vs_vessels]):#, lambda ax: plt_quali(ax, 'auc_in'), lambda ax: plt_quali(ax, 'c_max_in') ]):
+  for i, ax, func in zip(range(len(axes)), axes, [plt_drug_radial, plt_drug_vs_vessels]):#, lambda ax: plt_quali(ax, 'auc_in'), lambda ax: plt_quali(ax, 'c_max_in') ]):
     func(ax)
     ax.grid(linestyle=':', linewidth=0.5, color=gridcolor)
     mpl_utils.add_crosshair(ax, (0, 0), color = gridcolor)
@@ -916,12 +917,12 @@ def plot_single_values(files, dataman, pdfpages):
       mask = gx['time'].avg > 3.
       datalists['avg_ratio'].append(np.average(gx['conc_ratio_tum_avg'].avg[mask]))
     gd = {}
-    for k, v in datalists.iteritems():
+    for k, v in datalists.items():
       gd[k] = (np.average(v), np.std(v))
 
     intdata = dataman('global_local_integral_average', files)
-    for k,v in intdata.iteritems():
-      for k2, v2 in v.iteritems():
+    for k,v in intdata.items():
+      for k2, v2 in v.items():
         v2 = np.asarray(v2)
         if k.startswith('auc_'):
           v2 *= 1./3600.
@@ -947,7 +948,7 @@ def plot_single_values(files, dataman, pdfpages):
     }
 
     lines = [ s0 ]
-    for k, v in sorted(namemap.items(), key = lambda (k,v): k):
+    for k, v in sorted(list(namemap.items()), key = lambda k_v: k_v[0]):
       x, y = gd[k]
       lines.append(r'%s = $%s \pm %s$ (%s%%)' % (v, lf2s(x), lf2s(y), lf2s(y/x) if abs(x)>1.e-13 else 'inf'))
 
@@ -960,8 +961,8 @@ def plot_single_values(files, dataman, pdfpages):
 
 def plot_global_average_over_time(files, dataman, pdfpages):
   data_ = dataman('drug_global_series_average', files)
-  data = Struct((k,v.avg) for k,v in data_.iteritems())
-  data_std = Struct((k,v.std) for k,v in data_.iteritems())
+  data = Struct((k,v.avg) for k,v in data_.items())
+  data_std = Struct((k,v.std) for k,v in data_.items())
 
   def plotvstime_err(ax, y, yerr, fmt, **kwargs):
     return mpl_utils.errorbar(ax, data.time, y, yerr = yerr, fmt = fmt,every = 5, **kwargs)
@@ -985,7 +986,7 @@ def plot_global_average_over_time(files, dataman, pdfpages):
     label_smax = LF.math(LF.maxOverTumor('s'))
     label_savg = LF.math(LF.avgOverTumor('s'))
     label_smin = LF.math(LF.minOverTumor('s'))
-    label_sin  = ur'$s^v$'
+    label_sin  = r'$s^v$'
     label_savgcell = LF.math(LF.avgOverTumor('s_2'))
     label_sratio = LF.math(LF.avgOverTumor('s_2/s_1'))
 
@@ -1113,7 +1114,7 @@ def plot_drug_with_vessels(f, dataman_, pdfpages):
     elif crange == 'zero-centered':
       q = np.abs(a).max()
       crange = (-q,q)
-    if vscale <> 1.:
+    if vscale != 1.:
       a = a*vscale
     return imshow(ax, a, ld, vmin=vscale*crange[0], vmax=vscale*crange[1], cmap = cmap)
 
@@ -1203,21 +1204,21 @@ def plot_snapshots(f, dataman_, pdfpages):
     ax.text(0., 1.03, txt, ha = "left", transform = ax.transAxes)
 
   def plt_phitum(ax):
-    ax.set(title=ur'$\phi_T$')
+    ax.set(title=r'$\phi_T$')
     imshow(ax, imslice(tc['phi_viabletumor']), ld, vmin=0., vmax=1., cmap=CM.grey)
     #contour(ax, imslice(tc['dist_tumor']), ld, levels=[0.], colors='r')
     #contour(ax, imslice(tc['dist_necro']), ld, levels=[0.], colors='g')
     contour(ax, imslice(tc['dist_viabletumor']), ld, levels=[0], colors='r')
 
   def plt_distmap(ax):
-    ax.set(title = ur'$\theta \,\, [mm]$')
+    ax.set(title = r'$\theta \,\, [mm]$')
     # dist_necro is <0 in necrotic regions, dist_tumor is <0 in tumor+necro
     p1 = imshow(ax, 1.e-3*imslice(tc['dist_tumor']), ld, cmap=CM.spectral) #vmin=-50*ld.scale*1.e-3, vmax=50*ld.Scale()*1.e-3
     contour(ax, imslice(tc['dist_tumor']), ld, levels=[0], colors='w')
     colorbar(fig, ax, p1)
 
   def plt_distmap_vess(ax):
-    ax.set(title = ur'$\theta \,\, [mm]$')
+    ax.set(title = r'$\theta \,\, [mm]$')
     # dist_necro is <0 in necrotic regions, dist_tumor is <0 in tumor+necro
     p1 = imshow(ax, 1.e-3*imslice(tc['dist_vessels']), ld, cmap=CM.spectral) #vmin=-6*ld.scale, vmax=6*ld.Scale()
     contour(ax, imslice(tc['dist_vessels']), ld, levels=[0], colors='w')
@@ -1543,8 +1544,8 @@ def measure_and_plot(filenames):
 
   of = commonOutputName(filenames)
   path = dirname(filenames[0])
-  print 'processing: ', filenames
-  print 'out:', of
+  print('processing: ', filenames)
+  print('out:', of)
   with PageWriter(of) as pdfpages:
     files = [ h5py.File(fn, 'r+') for fn in filenames ]
     dataman = myutils.DataManager(100, [ analyzeGeneral.DataBasicVessel(),
@@ -1590,7 +1591,7 @@ def plot_comparison(path):
 
   }
   allfiles = {}
-  for k,v in allfilenames.iteritems():
+  for k,v in allfilenames.items():
     allfilenames[k] = glob.glob(join(path, v))
     allfiles[k] = list(h5py.File(fn,'r') for fn in allfilenames[k])
     assert allfiles[k] # not empty
@@ -1623,19 +1624,19 @@ def plot_comparison(path):
   averaged_data_filename = join(path,'measuredglobal.h5')
   with h5py.File(averaged_data_filename, 'a') as favg:
     if 1: # generate data
-      print 'generating global data cache'
+      print('generating global data cache')
       correlate_data = []
       for idx in 'default vZ vX vE02 vB01 vA01 vA04 vA08 vC04 vC07 vY vY2'.split():
         files = allfiles[idx]
-        print 'obtaining data for global correlation from %s' % os.path.commonprefix([f.filename for f in files])
+        print('obtaining data for global correlation from %s' % os.path.commonprefix([f.filename for f in files]))
         tmp = collections.defaultdict(list)
         for f in files:
           p = dataman('peclet_number', f, 500.)
           tmp['peclet'].append(np.average(p))
-        for k,v in tmp.iteritems():
+        for k,v in tmp.items():
           tmp[k] = np.asarray((np.average(v), np.std(v)))
         global_iff_data = dataman('iff_global_average', files)
-        for k,(avg, std) in global_iff_data.iteritems():
+        for k,(avg, std) in global_iff_data.items():
           tmp[k] = np.asarray((avg, std))
         for name in ['auc_in', 'c_max_in']:
           ma, ms, wa, ws = dataman('drug_delivery_avg', files, mask_tumorcenter_factory(dataman), name)
@@ -1653,11 +1654,11 @@ def plot_comparison(path):
       correlate_data = myutils.zipListOfDicts(correlate_data)
       # write
       g = favg.recreate_group('global_comparison')
-      for k, v in correlate_data.iteritems():
+      for k, v in correlate_data.items():
         g.create_dataset(k, data = v)
     else:
       correlate_data = {}
-      for k, v in favg['global_comparison'].iteritems():
+      for k, v in favg['global_comparison'].items():
         correlate_data[k] = np.asarray(v)
 
   #pprint.pprint(correlate_data)
@@ -1699,7 +1700,7 @@ def plot_comparison(path):
     q_c_max_in_std = LF.math(LF.stdOver(LF.dqualimax, r'\xi')),
   )
 
-  print 'plotting ...'
+  print('plotting ...')
 
   def plot(ax, idx, idy):
     x, xerr = correlate_data[idx][indices_to_plot,...].transpose()
@@ -1755,7 +1756,7 @@ def plot_comparison(path):
 #    fig, axes = pyplot.subplots(2, 2, figsize = (a4size[0], a4size[0]))
 #    axes = axes.ravel()
 
-    print 'correlation with flow ...'
+    print('correlation with flow ...')
 
     for srcterm in ['tumor_src_plus_per_vol', 'tumor_out_per_vol']:
       for region in ['','b_', 'c_']:
@@ -1768,7 +1769,7 @@ def plot_comparison(path):
           ax.text(0.95, 0.9, fig_numbering[i], transform = ax.transAxes, ha = 'right')
         pdfpages.savefig(fig)
 
-    print 'barcharts ...'
+    print('barcharts ...')
 
     if 1:
       fig, axes = pyplot.subplots(2, 2, figsize = (mastersize[0]*0.8, mastersize[0]*0.7))
@@ -1784,7 +1785,7 @@ def plot_comparison(path):
         ax.text(0.00, 1.02, fig_numbering[i], transform = ax.transAxes, ha = 'left')
       pdfpages.savefig(fig)
 
-    print 'histograms ...'
+    print('histograms ...')
 
     if 1:
       order = 'default vX vY vY2 vB01 vE02 vA01 vA04 vA08 vC04 vC07 vZ'.split()
@@ -1803,7 +1804,7 @@ def plot_comparison(path):
           ax.set(visible = True)
           gieve_histogram(ax, files, dataman, mask, quantity, labels, pdfpages)
           ax.text(0.95, 0.8, readablename[name], transform = axes[confignum].transAxes, ha = 'right')
-          if confignum <> len(items)-1:
+          if confignum != len(items)-1:
             ax.set(xticklabels = [], yticklabels = [], xlabel = '', ylabel = '')
         #fig.subplots_adjust(bottom = 0.1, left = 0.15, right = 0.9, wspace = 0.25, hspace = 0.3)
         pdfpages.savefig(fig)
@@ -1831,7 +1832,7 @@ if __name__ == "__main__":
     for fn in filenames:
       if not os.path.isfile(fn):
         raise AssertionError('The file %s is not present!'%fn)
-  except Exception, e:
-    print e.message
+  except Exception as e:
+    print(e.message)
     sys.exit(-1)
   measure_and_plot(filenames)

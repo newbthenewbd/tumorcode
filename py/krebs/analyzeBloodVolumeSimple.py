@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -19,7 +19,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 if __name__ == '__main__':
   import os.path, sys
@@ -50,8 +50,8 @@ if (identifycluster.getname()=='snowden' or identifycluster.getname()=='durga'):
 import myutils
 
 #from plotBulkTissue2d import DataTumorTissueSingle
-from analyzeBloodFlow import DataTumorBloodFlow, obtain_averaged_blood_flow
-from analyzeGeneral import RemoveArteriovenousFlagsFromCapillaries,totalLdVolume
+from .analyzeBloodFlow import DataTumorBloodFlow, obtain_averaged_blood_flow
+from .analyzeGeneral import RemoveArteriovenousFlagsFromCapillaries,totalLdVolume
 
 
 ## ---------------- ------- ----------------------------------------
@@ -114,7 +114,7 @@ def surface2Volume(vesselgroup):
     mystd = np.std(s2v)
     myavg = np.average(s2v)
     myrel = mystd/myavg
-    print("spread: %f" % myrel)
+    print(("spread: %f" % myrel))
     return np.average(surface/vol)
   return compute(0), compute(krebsutils.ARTERY), compute(krebsutils.VEIN), compute(krebsutils.CAPILLARY)
 
@@ -146,14 +146,14 @@ def printBloodFlowSimple(filenames, group):
   def printit(id, label, unit):
     s = r'%s = %s +/- %s [%s]' % (
       label, myutils.f2s(bv[id][0]*60.), myutils.f2s(bv[id][1]*60.), unit)
-    print s
+    print(s)
   if 'tumor_flow' in bv:
     printit('tumor_flow', 'BF_{tumor}', 'um^3 Blood / min'),
     printit('tumor_flow_p_volume', 'rBF_{tumor}', 'ml Blood / (ml Tissue min)'),
-    print 'tumor_volume %e' % bv['tumor_volume'][0]
+    print('tumor_volume %e' % bv['tumor_volume'][0])
   printit('total_flow', 'BF_{total}', 'um^3 Blood / min'),
   printit('total_flow_p_volume', 'rBF_{total}', 'ml Blood / (ml Tissue min)')
-  print 'total_volume %e' % bv['total_volume'][0]
+  print('total_volume %e' % bv['total_volume'][0])
 
 def boxplotFromData_rBV(data, pp, data2=None):
   print('do box')
@@ -225,7 +225,7 @@ def getDataFromFiles(filenames, groupname):
   dat = []
   for fn in filenames:
     with h5py.File(fn, 'r') as f:
-      print('open file: %s at %s' %(fn,groupname))
+      print(('open file: %s at %s' %(fn,groupname)))
       rv, rv_a, rv_v, rv_c = cylinderCollectionVolumeDensity(f[groupname])
       mvd, mvd_a, mvd_v, mvd_c = cylinderCollectionLineDensity(f[groupname])
       s2v, s2v_a, s2v_v, s2v_c = surface2Volume(f[groupname])
@@ -249,7 +249,7 @@ if __name__ == '__main__':
   goodArguments, otherArguments = parser.parse_known_args()
   
   n_files = len(goodArguments.vesselFileNames1)
-  print('found %i files' % n_files)
+  print(('found %i files' % n_files))
   
   if not goodArguments.grp_pattern2 is None:
     #this means we have 2 file per simulation 
@@ -267,8 +267,8 @@ if __name__ == '__main__':
           raise AssertionError('pattern "%s" not found in "%s"!' % (goodArguments.grp_pattern1, fn))
         else:
           dirs = set.union(dirs,d)
-  except Exception, e:
-    print e.message
+  except Exception as e:
+    print(e.message)
     sys.exit(-1)
   filenames1=[]
   for fn in goodArguments.vesselFileNames1[0:n_files]:
@@ -287,8 +287,8 @@ if __name__ == '__main__':
             raise AssertionError('pattern "%s" not found in "%s"!' % (goodArguments.grp_pattern2, fn))
           else:
             dirs = set.union(dirs,d)
-    except Exception, e:
-      print e.message
+    except Exception as e:
+      print(e.message)
       sys.exit(-1)
     filenames2=[]
     for fn in goodArguments.vesselFileNames1[n_files:]:
@@ -319,7 +319,7 @@ if __name__ == '__main__':
     
   
   def printstuff(name, a, mult):
-    print '%s = %f +/- %f' % (name, np.average(a)*mult, np.std(a)*mult)
+    print('%s = %f +/- %f' % (name, np.average(a)*mult, np.std(a)*mult))
   rbv, a, v, c = dat[:4]
   printstuff('rBV'  , rbv, 1.)
   printstuff('rBV_a', a, 1.)

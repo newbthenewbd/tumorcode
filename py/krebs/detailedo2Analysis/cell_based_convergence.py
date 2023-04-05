@@ -9,9 +9,9 @@ def plot_min_max_o2(goodArguments, pp):
   mins = []
   maxs = []
   
-  print("filename: %s" % str(goodArguments.vbl_simulation_output_filename))
+  print(("filename: %s" % str(goodArguments.vbl_simulation_output_filename)))
   with h5py.File(str(goodArguments.vbl_simulation_output_filename), 'r') as f:
-    goodKeys = [str(x) for x in f.keys() if 'out' in x]
+    goodKeys = [str(x) for x in list(f.keys()) if 'out' in x]
     for key in goodKeys:
       po2Field = np.asarray(f[key+"/po2/po2field"])
       mins.append(np.min(po2Field))

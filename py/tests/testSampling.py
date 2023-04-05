@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -32,9 +32,9 @@ import math
 import collections
 
 
-import matplotlib
-import matplotlib.cm
-import matplotlib.pyplot as pyplot
+from . import matplotlib
+from . import matplotlib.cm
+from . import matplotlib.pyplot as pyplot
 import mpl_utils
 
 

@@ -11,7 +11,7 @@ def read():
 		bla=f['aTestSet']
 		print(bla)
 		bla_as_numpy = np.asarray(bla)
-		print(bla.shape)
+		print((bla.shape))
 
 if __name__ == '__main__':
 	safe()

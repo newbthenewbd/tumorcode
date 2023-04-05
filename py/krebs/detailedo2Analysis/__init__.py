@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -77,7 +77,7 @@ class DataDetailedPO2(object):
     if dataname == 'detailedPO2':
       po2group, = args
       a  = np.asarray(po2group['po2vessels'])
-      if a.shape[0] <> 2: a = np.transpose(a)
+      if a.shape[0] != 2: a = np.transpose(a)
       po2field  = po2group['po2field']
       #ld = krebsutils.read_lattice_data_from_hdf(po2group['field_ld'])
       ld=krebsutils.read_lattice_data_from_hdf_by_filename(str(po2group.file.filename),str(po2group.name)+'/field_ld')
@@ -115,8 +115,8 @@ class DataDetailedPO2(object):
             ds = ds[...] if every is None else ds[::every]
             return ds
         else:
-          keys = filter(lambda k: k.startswith('flux_'), gmeasure.keys())
-          fluxes = dict(map(lambda k: (k[5:], gmeasure[k][()]), keys))
+          keys = [k for k in list(gmeasure.keys()) if k.startswith('flux_')]
+          fluxes = dict([(k[5:], gmeasure[k][()]) for k in keys])
           fluxes['e1'] = abs(100.*(fluxes['Jin_root']-fluxes['Jout_root']-fluxes['Jout_tv'])/fluxes['Jin_root'])
           fluxes['e2'] = abs(100.*(fluxes['Jin_root']-fluxes['Jout_root']-fluxes['Jout_cons']-fluxes.get('tv_cons',0.))/fluxes['Jin_root'])
           fluxes['e3'] = abs(100.*(fluxes['Jout_tv']-fluxes['Jout_cons']-fluxes.get('tv_cons',0.))/fluxes['Jout_tv'])
@@ -135,9 +135,9 @@ class DataDetailedPO2(object):
         del po2vessels, po2field, ld
 
         gmeasure = gmeasure.create_group(name)
-        for k, v in smpl.iteritems():
+        for k, v in smpl.items():
           gmeasure.create_dataset('smpl_'+k, data = v, compression = 9, dtype = np.float32)
-        for k, v in fluxes.iteritems():
+        for k, v in fluxes.items():
           gmeasure.create_dataset('flux_'+k, data = v) # scalar dataset
 
       version_id = myutils.checksum(sample_length, 3, getuuid_(po2group))
@@ -229,8 +229,8 @@ class DataDetailedPO2(object):
       # we assume that there is a tumor. without this measurement makes little sense
 
       def read(gmeasure, name):
-        d = dict(gmeasure[name].items())
-        d = dict((k, myutils.MeanValueArray.read(v)) for k,v in d.items())
+        d = dict(list(gmeasure[name].items()))
+        d = dict((k, myutils.MeanValueArray.read(v)) for k,v in list(d.items()))
         hbo = d['vfhb_oxy']
         hbd = d['vfhb_deoxy']
         hb  = myutils.MeanValueArray(hbo.cnt, hbo.sum+hbd.sum, hbo.sqr+hbd.sqr)
@@ -395,7 +395,7 @@ class DataDetailedO2Peff(object):
 
 def ObtainOxygenExtractionFraction(dataman, po2group, cachelocation):
     def read(gmeasure, groupname):
-      return dict((k, float(v[...])) for (k,v) in gmeasure[groupname].iteritems())
+      return dict((k, float(v[...])) for (k,v) in gmeasure[groupname].items())
 
     def write(gmeasure, groupname):
       gvessels, gtumor = detailedo2.OpenVesselAndTumorGroups(po2group)
@@ -476,7 +476,7 @@ def ObtainOxygenExtractionFraction(dataman, po2group, cachelocation):
       #print 'computed oef: '
       #pprint.pprint(res)
       g = gmeasure.create_group(groupname)
-      for k,v in res.iteritems():
+      for k,v in res.items():
         g.create_dataset(k, data = v)
     ret = myutils.hdf_data_caching(read, write, cachelocation[0], ('global', cachelocation[1], 'oxygen_extraction'), (None, None, 8,))
     return ret

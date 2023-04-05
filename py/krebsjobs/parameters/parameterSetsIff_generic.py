@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -518,4 +518,4 @@ myutils.UpdateHierarchical(iff_irinotecan1_quick, dict(
   )
 )
 if __name__=='__main__':
-  print(myutils.namestr(irinotecan_factor,globals()))
+  print((myutils.namestr(irinotecan_factor,globals())))

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -38,7 +38,7 @@ import matplotlib.pyplot as plt
 from collections import defaultdict
 from pprint import pprint
 
-from analyzeGeneral import DataVesselLength, DataVesselTumor
+from .analyzeGeneral import DataVesselLength, DataVesselTumor
 
 import mpl_utils
 
@@ -48,18 +48,18 @@ import myutils
 def create_mean_plot_length():
     my_res_file = h5files.open('analyzeVesselTumor.h5','r')
     count_hists = 0
-    the_keys= my_res_file['/global'].keys()
-    print(the_keys[0])
+    the_keys= list(my_res_file['/global'].keys())
+    print((the_keys[0]))
     the_density_in = np.zeros_like(my_res_file['/global/%s/length_dist/inside_density' %the_keys[0]])
     the_density_out = np.zeros_like(my_res_file['/global/%s/length_dist/outside_density' %the_keys[0]])
     a_bin_in = my_res_file['/global/%s/length_dist/inside_bins' %the_keys[0]]    
     a_bin_out = my_res_file['/global/%s/length_dist/outside_bins' %the_keys[0]]    
-    for key in my_res_file['/global'].keys():
-        print('working with %s' % key)
+    for key in list(my_res_file['/global'].keys()):
+        print(('working with %s' % key))
         count_hists=count_hists+1
         the_density_in = the_density_in+my_res_file['/global/%s/length_dist/inside_density' %key]
         the_density_out = the_density_out+my_res_file['/global/%s/length_dist/outside_density' %key]
-    print('we have %i histograms' % count_hists)
+    print(('we have %i histograms' % count_hists))
     the_density_in = np.divide(the_density_in,count_hists)
     the_density_out = np.divide(the_density_out,count_hists)
     mu1 = np.sum(the_density_in*np.diff(a_bin_in)*(0.5*(a_bin_in[1:]+a_bin_in[:-1])))
@@ -88,13 +88,13 @@ def create_mean_plot_length():
 def create_mean_plot_radii():
     my_res_file = h5files.open('analyzeVesselTumor.h5','r')
     count_hists = 0
-    the_keys= my_res_file['/global'].keys()
-    print(the_keys[0])
+    the_keys= list(my_res_file['/global'].keys())
+    print((the_keys[0]))
     no_bins=55
     the_density_in = np.zeros(no_bins)
     the_density_out = np.zeros(no_bins)
-    for key in my_res_file['/global'].keys():
-        print('working with %s' % key)
+    for key in list(my_res_file['/global'].keys()):
+        print(('working with %s' % key))
         count_hists=count_hists+1
         count_in = my_res_file['/global/%s/radii_within_tumor/radii_inside' %key]
         count_out = my_res_file['/global/%s/radii_within_tumor/radii_outside' %key]
@@ -102,7 +102,7 @@ def create_mean_plot_radii():
         density_out, bin_out_array = np.histogram(count_out,no_bins, density=True)
         the_density_in = the_density_in+density_in
         the_density_out = the_density_out+density_out
-    print('we have %i histograms' % count_hists)
+    print(('we have %i histograms' % count_hists))
     the_density_in = np.divide(the_density_in,count_hists)
     the_density_out = np.divide(the_density_out,count_hists)
     mu1 = np.sum(the_density_in*np.diff(bin_in_array)*(0.5*(bin_in_array[1:]+bin_in_array[:-1])))
@@ -131,13 +131,13 @@ def create_mean_plot_radii():
 def create_mean_plot_flows():
     my_res_file = h5files.open('analyzeVesselTumor.h5','r')
     count_hists = 0
-    the_keys= my_res_file['/global'].keys()
-    print(the_keys[0])
+    the_keys= list(my_res_file['/global'].keys())
+    print((the_keys[0]))
     no_bins=55
     the_density_in = np.zeros(no_bins-1)
     the_density_out = np.zeros(no_bins-1)
-    for key in my_res_file['/global'].keys():
-        print('working with %s' % key)
+    for key in list(my_res_file['/global'].keys()):
+        print(('working with %s' % key))
         count_hists=count_hists+1
         count_in = my_res_file['/global/%s/flows_within_tumor/flows_inside' %key]
         count_out = my_res_file['/global/%s/flows_within_tumor/flows_outside' %key]
@@ -147,7 +147,7 @@ def create_mean_plot_flows():
         density_out, bin_out_array = np.histogram(count_out,np.logspace(1.,6,no_bins),density=True)
         the_density_in = the_density_in+density_in
         the_density_out = the_density_out+density_out
-    print('we have %i histograms' % count_hists)
+    print(('we have %i histograms' % count_hists))
     the_density_in = np.divide(the_density_in,count_hists)
     the_density_out = np.divide(the_density_out,count_hists)
     mu1 = np.sum(the_density_in*np.diff(bin_in_array)*(0.5*(bin_in_array[1:]+bin_in_array[:-1])))
@@ -178,13 +178,13 @@ def create_mean_plot_flows():
 def create_mean_plot_velocities():
     my_res_file = h5files.open('analyzeVesselTumor.h5','r')
     count_hists = 0
-    the_keys= my_res_file['/global'].keys()
-    print(the_keys[0])
+    the_keys= list(my_res_file['/global'].keys())
+    print((the_keys[0]))
     no_bins=55
     the_density_in = np.zeros(no_bins-1)
     the_density_out = np.zeros(no_bins-1)
-    for key in my_res_file['/global'].keys():
-        print('working with %s' % key)
+    for key in list(my_res_file['/global'].keys()):
+        print(('working with %s' % key))
         count_hists=count_hists+1
         count_in = my_res_file['/global/%s/flows_within_tumor/flows_inside' %key]
         count_out = my_res_file['/global/%s/flows_within_tumor/flows_outside' %key]
@@ -196,7 +196,7 @@ def create_mean_plot_velocities():
         density_out, bin_out_array = np.histogram(count_out,np.logspace(1,4,no_bins),density=True)
         the_density_in = the_density_in+density_in
         the_density_out = the_density_out+density_out
-    print('we have %i histograms' % count_hists)
+    print(('we have %i histograms' % count_hists))
     the_density_in = np.divide(the_density_in,count_hists)
     the_density_out = np.divide(the_density_out,count_hists)
     mu1 = np.sum(the_density_in*np.diff(bin_in_array)*(0.5*(bin_in_array[1:]+bin_in_array[:-1])))
@@ -227,13 +227,13 @@ def create_mean_plot_velocities():
 def create_mean_plot_pressures():
     my_res_file = h5files.open('analyzeVesselTumor.h5','r')
     count_hists = 0
-    the_keys= my_res_file['/global'].keys()
-    print(the_keys[0])
+    the_keys= list(my_res_file['/global'].keys())
+    print((the_keys[0]))
     no_bins=55
     the_density_in = np.zeros(no_bins)
     the_density_out = np.zeros(no_bins)
-    for key in my_res_file['/global'].keys():
-        print('working with %s' % key)
+    for key in list(my_res_file['/global'].keys()):
+        print(('working with %s' % key))
         count_hists=count_hists+1
         count_in = my_res_file['/global/%s/pressures_within_tumor/pressures_inside' %key]
         count_out = my_res_file['/global/%s/pressures_within_tumor/pressures_outside' %key]
@@ -241,7 +241,7 @@ def create_mean_plot_pressures():
         density_out, bin_out_array = np.histogram(count_out,no_bins, density=True)
         the_density_in = the_density_in+density_in
         the_density_out = the_density_out+density_out
-    print('we have %i histograms' % count_hists)
+    print(('we have %i histograms' % count_hists))
     the_density_in = np.divide(the_density_in,count_hists)
     the_density_out = np.divide(the_density_out,count_hists)
     mu1 = np.sum(the_density_in*np.diff(bin_in_array)*(0.5*(bin_in_array[1:]+bin_in_array[:-1])))
@@ -270,15 +270,15 @@ def create_mean_plot_pressures():
 def create_mean_plot_pressures_av():
     my_res_file = h5files.open('analyzeVesselTumor.h5','r')
     count_hists = 0
-    the_keys= my_res_file['/global'].keys()
-    print(the_keys[0])
+    the_keys= list(my_res_file['/global'].keys())
+    print((the_keys[0]))
     no_bins=55
     the_density_in_a = np.zeros(no_bins)
     the_density_in_v = np.zeros(no_bins)
     the_density_out_a = np.zeros(no_bins)
     the_density_out_v = np.zeros(no_bins)
-    for key in my_res_file['/global'].keys():
-        print('working with %s' % key)
+    for key in list(my_res_file['/global'].keys()):
+        print(('working with %s' % key))
         count_hists=count_hists+1
         count_in_a = my_res_file['/global/%s/pressures_within_tumor/pressures_inside_a' %key]
         count_in_v = my_res_file['/global/%s/pressures_within_tumor/pressures_inside_v' %key]        
@@ -292,7 +292,7 @@ def create_mean_plot_pressures_av():
         the_density_in_v = the_density_in_v+density_in_v
         the_density_out_a = the_density_out_a+density_out_a
         the_density_out_v = the_density_out_v+density_out_v
-    print('we have %i histograms' % count_hists)
+    print(('we have %i histograms' % count_hists))
     the_density_in_a = np.divide(the_density_in_a,count_hists)
     the_density_in_v = np.divide(the_density_in_v,count_hists)
     the_density_out_a = np.divide(the_density_out_a,count_hists)
@@ -359,14 +359,14 @@ def create_nice_file_containing_all_the_data():
 
   allgroups = defaultdict(list)
   for f in files:
-    keys = filter(lambda k: k.startswith('out'), f.keys())
+    keys = [k for k in list(f.keys()) if k.startswith('out')]
     for k in keys:
       allgroups[k].append(f[k])
   allgroups = [ (k, allgroups[k]) for k in sorted(allgroups.keys()) ]
   groupslist = [allgroups[-1]]
   outfn = 'Length-%s.pdf' % splitext(basename(filenames[0]))[0]
   pprint(groupslist)
-  print '-> %s' % (outfn)
+  print('-> %s' % (outfn))
   
   for key,groups in groupslist:
     for group in groups:

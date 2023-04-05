@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -139,7 +139,7 @@ if __name__ == '__main__':
   if not 'mostBasic_world' in f:
     createMostBasic_world(f)
   else:
-    input_var = raw_input('you want to redo mostBasic_wold: ')
+    input_var = input('you want to redo mostBasic_wold: ')
     #print(str(input_var))
     #imput_var = sys.stdin.readline()
     if str(input_var) == 'y':

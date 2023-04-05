@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -141,8 +141,8 @@ class Hist2d_data(object):
       this_out_grp_name =args[1]
       no_of_bins = args[2]
       def read(hdf_cache_grp, data_name):
-        print('read data at: %s' %hdf_cache_grp.name)
-        print('data_name: %s ' % data_name)
+        print(('read data at: %s' %hdf_cache_grp.name))
+        print(('data_name: %s ' % data_name))
         h = np.asarray(hdf_cache_grp[data_name + '/' + 'h'])
         xedges = np.asarray(hdf_cache_grp[data_name + '/' + 'xedges'])
         yedges = np.asarray(hdf_cache_grp[data_name + '/' + 'yedges'])
@@ -155,7 +155,7 @@ class Hist2d_data(object):
         this_out_grp.create_dataset('h', data=h)
         this_out_grp.create_dataset('xedges', data=xedges)
         this_out_grp.create_dataset('yedges', data=yedges)
-        print('created data at: %s' % this_out_grp.name)
+        print(('created data at: %s' % this_out_grp.name))
 #        print(hdf_cache_grp)
 #        print(data_name)
 #        print('before create')
@@ -223,11 +223,11 @@ class Boxplot_data(object):
       endity = args[1]
       no_of_bins = args[2]
       def read(hdf_cache_grp, data_name):
-        print('read data at: %s' %hdf_cache_grp.name)
-        print('data_name: %s ' % data_name)
+        print(('read data at: %s' %hdf_cache_grp.name))
+        print(('data_name: %s ' % data_name))
         big_data=list()
         x_labels = list()
-        for the_key in hdf_cache_grp[data_name].keys():
+        for the_key in list(hdf_cache_grp[data_name].keys()):
           big_data.append(np.asarray(hdf_cache_grp[data_name][the_key]))
           x_labels.append(str(the_key))
         return (big_data,x_labels)
@@ -240,7 +240,7 @@ class Boxplot_data(object):
           proper_string = '%03i' % (int)(center_pos)
           print(proper_string)
           this_out_grp.create_dataset(proper_string, data=data_around)
-        print('created data at: %s' % this_out_grp.name)
+        print(('created data at: %s' % this_out_grp.name))
 
       possible_hdf_group_name = '%s/box_plot_data_bins_%s/' % (this_out_grp_name,no_of_bins)
       possible_hdf_group_name = possible_hdf_group_name+'/' + endity
@@ -255,14 +255,14 @@ class Boxplot_data(object):
       endity = args[1]
       no_of_bins = args[2]
       def read(hdf_cache_grp, data_name):
-        print('read data at: %s' %hdf_cache_grp.name)
-        print('data_name: %s ' % data_name)
+        print(('read data at: %s' %hdf_cache_grp.name))
+        print(('data_name: %s ' % data_name))
         big_big_data=dict()
         
         for aOutGroup in multiple_out_grp_names:
           big_big_data[aOutGroup] = list()
           x_labels = list()
-          for the_key in hdf_cache_grp[data_name+'/'+aOutGroup].keys():
+          for the_key in list(hdf_cache_grp[data_name+'/'+aOutGroup].keys()):
             big_big_data[aOutGroup].append(np.asarray(hdf_cache_grp[data_name+'/'+aOutGroup][the_key]))
             x_labels.append(str(the_key))
         return (big_big_data,x_labels)
@@ -276,7 +276,7 @@ class Boxplot_data(object):
             proper_string = '%03i' % (int)(center_pos)
             #print(proper_string)
             this_out_grp.create_dataset(proper_string, data=data_around)
-        print('created data at: %s' % this_out_grp.name)
+        print(('created data at: %s' % this_out_grp.name))
 
       possible_hdf_group_name = 'box_plot_data_bins_%s_multiple/' % (no_of_bins)
       possible_hdf_group_name = possible_hdf_group_name+'/' + endity
@@ -293,7 +293,7 @@ def create_box_plot(this_out_grp_name, endity, no_of_bins):
     distances_to_nearest_vessel = distances_to_nearest_vessel[:,0]
     min_distance_to_nearest_vessel = np.min(distances_to_nearest_vessel)
     max_distance_to_nearest_vessel = np.max(distances_to_nearest_vessel)
-    print('min: %f, max: %f' %(min_distance_to_nearest_vessel,max_distance_to_nearest_vessel))
+    print(('min: %f, max: %f' %(min_distance_to_nearest_vessel,max_distance_to_nearest_vessel)))
     
     if 'max_distance_to_vessel' in globals():
       min_distance_to_nearest_vessel= 0.
@@ -321,7 +321,7 @@ def create_box_plot(this_out_grp_name, endity, no_of_bins):
   ''' this will plot with distance '''
   
   diff = (max_distance_to_nearest_vessel - min_distance_to_nearest_vessel)/no_of_bins
-  print('diff: %f' % diff)
+  print(('diff: %f' % diff))
   for i in range(no_of_bins):
     bins.append(min_distance_to_nearest_vessel+i*diff)
   print('bins:')
@@ -329,13 +329,13 @@ def create_box_plot(this_out_grp_name, endity, no_of_bins):
   
   for (i, a_lower_bound) in enumerate(bins):
     upper_bound = a_lower_bound+diff
-    print('lower: %f, upper: %f' %(a_lower_bound, upper_bound))
+    print(('lower: %f, upper: %f' %(a_lower_bound, upper_bound)))
     good_indexes = np.where(np.logical_and(distances_to_nearest_vessel<upper_bound, distances_to_nearest_vessel > a_lower_bound))
 #    good_indexes = np.where(endity_value_of_cells>=min_distance_to_nearest_vessel)    
-    print('found %i indeces for %f' % (len(good_indexes[0]), a_lower_bound))
+    print(('found %i indeces for %f' % (len(good_indexes[0]), a_lower_bound)))
     data_on_this = endity_value_of_cells[good_indexes]
     if(len(data_on_this)>0):
-      print('min: %f, max: %f' % (np.min(data_on_this),np.max(data_on_this)))
+      print(('min: %f, max: %f' % (np.min(data_on_this),np.max(data_on_this))))
     big_data.append(endity_value_of_cells[good_indexes])
     my_x_labels.append('%1.0f' % float(a_lower_bound+0.5*diff))
   return (big_data, my_x_labels)
@@ -452,8 +452,8 @@ class Dev_from_sphere_data(object):
       rangeMin = args[2]
       rangeMax = args[3]
       def read(hdf_cache_grp, data_name):
-        print('read data at: %s' %hdf_cache_grp.name)
-        print('data_name: %s ' % data_name)
+        print(('read data at: %s' %hdf_cache_grp.name))
+        print(('data_name: %s ' % data_name))
         hist_data = np.asarray(hdf_cache_grp[data_name + '/hist_data'])
         hist_edges= np.asarray(hdf_cache_grp[data_name + '/hist_edges'])
         return (hist_data,hist_edges)
@@ -469,7 +469,7 @@ class Dev_from_sphere_data(object):
         this_out_grp = hdf_cache_grp.create_group(data_name)
         this_out_grp.create_dataset('hist_data', data=hist)
         this_out_grp.create_dataset('hist_edges', data=bin_edges)
-        print('created data at: %s' % this_out_grp.name)
+        print(('created data at: %s' % this_out_grp.name))
 
       possible_hdf_group_name = '%s/dev_from_sphere_%s/' % (this_out_grp_name,no_of_bins)
       #possible_hdf_group_name = possible_hdf_group_name+'/' + endity
@@ -652,7 +652,7 @@ def plot_cell_phases(s_by_intervall,g_by_intervall,g2_by_intervall,dead_by_inter
     if i < len(intervalls[:-1]):
       labels.append('%i - %i' %(inter, intervalls[i+1]))
   ax1.set_xticklabels(labels,rotation=75)
-  print(len(s_by_intervall.transpose()))
+  print((len(s_by_intervall.transpose())))
   s_patch = matplotlib.patches.Patch(color=s_phase_color,       label=r's- phase # $%i \pm %i$' % (np.mean(np.sum(s_by_intervall,0)),np.std(np.sum(s_by_intervall,0))))
   g_patch = matplotlib.patches.Patch(color=g_phase_color,       label='g- phase # $%i \pm %i$' % (np.mean(np.sum(g_by_intervall,0)),np.std(np.sum(g_by_intervall,0))))
   dead_patch = matplotlib.patches.Patch(color=dead_phase_color, label='dead       # $%i \pm %i$' % (np.mean(np.sum(dead_by_intervall,0)),np.std(np.sum(dead_by_intervall,0))))
@@ -1055,7 +1055,7 @@ if __name__ == '__main__':
   #print('doing for upper bount %s' % aIntervall)
   ''' begin of code '''
   '''register a clases at data manager'''
-  print(os.path.basename(goodArguments.vbl_simulation_output_filename))
+  print((os.path.basename(goodArguments.vbl_simulation_output_filename)))
   
   s_by_intervall, g_by_intervall, g2_by_intervall, dead_by_intervall, intervalls = create_matrix_nearest_vessels(list_of_filenames)
   

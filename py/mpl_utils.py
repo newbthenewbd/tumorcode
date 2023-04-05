@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -115,7 +115,7 @@ class PageWriter(object):
         return PdfWriter(filename, absorbExtension_ = False)
       else:
         return SinglePageWriter(filename, fmt, postfixformat, absorbExtension_ = False)
-    self.writers = map(WriterFactory, fileformats)
+    self.writers = list(map(WriterFactory, fileformats))
   
   def savefig(self, *args, **kwargs):
     for w in self.writers:
@@ -313,10 +313,11 @@ def subplots_adjust(fig, **kw):
     fig.subplots_adjust(**kw)
 
 
-def add_crosshair(ax, (x, y), **kwargs):
+def add_crosshair(ax, xxx_todo_changeme, **kwargs):
   '''Adds a crosshair through the coordinate point (x,y). kwargs are
      passed to ax.plot. Attempts to keep the axes ranges, and plots
      only as far as the coordinate axes go.'''
+  (x, y) = xxx_todo_changeme
   x0, x1 = ax.get_xlim()
   y0, y1 = ax.get_ylim()
   ll = []
@@ -384,7 +385,7 @@ def SetSensibleAxLimits(ax, xbounds, ybounds):
     ax.set(**arg)
 
 
-def add_sizebar(ax, size = 200, text = ur"200 \u03BCm", color = 'white', loc = 4, myfontsize='smaller', size_vertical=1.0):
+def add_sizebar(ax, size = 200, text = r"200 \u03BCm", color = 'white', loc = 4, myfontsize='smaller', size_vertical=1.0):
   '''adds a size bar into an image plot'''
   a = matplotlib.font_manager.FontProperties(size=myfontsize)
   #a = matplotlib.font_manager.FontProperties()
@@ -467,7 +468,7 @@ def testVtkRenderPixelExact_():
 
   back_im, = vtkcommon.vtkImageDataToNumpy(ds)
 
-  print 'numpy -> vtk -> numpy is identity operation:', np.all(im == back_im)
+  print('numpy -> vtk -> numpy is identity operation:', np.all(im == back_im))
 
   writer = vtk.vtkDataSetWriter()
   writer.SetInput(ds)
@@ -526,7 +527,7 @@ def testSVGGreek_():
 
   fig = pyplot.figure(figsize = (4, 4))
 
-  fig.text(0.1, 0.5, ur'Normal \u03BC $\mu$ \u0040', size = 20)
+  fig.text(0.1, 0.5, r'Normal \u03BC $\mu$ \u0040', size = 20)
 
   fig.savefig('textmu.svg')
 

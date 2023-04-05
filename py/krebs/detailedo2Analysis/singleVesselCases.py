@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -58,7 +58,7 @@ from krebs.detailedo2Analysis import plotsForPaper
 sample_length = 2.
 
 def niceColors(n):
-  return map(matplotlib.cm.jet, np.linspace(0., 1., n))
+  return list(map(matplotlib.cm.jet, np.linspace(0., 1., n)))
 
 def niceMarker(i, color = 'k'):
   return mpl_utils.styleMarker('x+^dso><*'[i], color = color, linewidth = 0.5)
@@ -67,7 +67,7 @@ def niceMarker(i, color = 'k'):
 def CenterLattice(g):
   '''needs h5 goup g, which is deleted and rewritten where the new lattice is centered
   '''
-  print '------',g.name+'--------'
+  print('------',g.name+'--------')
   ld = krebsutils.read_lattice_data_from_hdf(g)
   #meanwhile worldBox is 3D
   thisBox=ld.worldBox
@@ -88,7 +88,8 @@ def CenterLattice(g):
   return offset
 
 
-def GenerateSingleCapillaryWPo2(dataman, f, config_name, config_version, (bfparams, po2params, params)):
+def GenerateSingleCapillaryWPo2(dataman, f, config_name, config_version, xxx_todo_changeme):
+  (bfparams, po2params, params) = xxx_todo_changeme
   version = myutils.checksum(1,config_version, params, bfparams, po2params)
 
   def write(gmeasure, name):
@@ -107,10 +108,10 @@ def GenerateSingleCapillaryWPo2(dataman, f, config_name, config_version, (bfpara
     po2group['SOURCE']            = h5py.SoftLink(vesselgroup)
     # ---- write all parameters ---
     pgroup = gmeasure['parameters']
-    for k,v in params.iteritems():
+    for k,v in params.items():
       pgroup.attrs[k] = v
     pgroup2 = pgroup.create_group('calcflow')
-    for k,v in bfparams.iteritems():
+    for k,v in bfparams.items():
       pgroup2.attrs[k] = v
     # ----
     detailedo2.computePO2_(po2group, vesselgroup, None, po2params)
@@ -142,8 +143,8 @@ def GenerateSingleCapillarySamples(dataman, po2group, cachelocation, properties 
   x0 = 0
   dv = (pos[-1] - x0)
   dv /= np.linalg.norm(dv)
-  x = np.asarray(map(lambda x_: np.dot(dv, x_-x0), pos))
-  for k, v in smpl.items():
+  x = np.asarray([np.dot(dv, x_-x0) for x_ in pos])
+  for k, v in list(smpl.items()):
     smpl[k] = v[ordering]
   smpl['x'] = x
   return smpl
@@ -154,9 +155,9 @@ def GenerateGlobalMeasurementOutputStrings(dataman, po2group, cachelocation):
   prop_list = ['gtv', 'jtv','mro2', 'po2_tissue', 'oef', 'e1', 'e3', 'Jin_root', 'Jout_root', 'Jout_tv', 'Jout_cons']
 
   Get = lambda prop: dataman.obtain_data('detailedPO2_global', prop, po2group, sample_length, cachelocation)
-  data = map(Get, prop_list)
-  Fmt = lambda (name, val): r'$%s = %s$ %s' % (Prettyfier.get_sym(name), f2l(val), Prettyfier.get_munit_legacy(name))
-  result_string = map(Fmt, zip(prop_list, data))
+  data = list(map(Get, prop_list))
+  Fmt = lambda name_val: r'$%s = %s$ %s' % (Prettyfier.get_sym(name_val[0]), f2l(name_val[1]), Prettyfier.get_munit_legacy(name_val[0]))
+  result_string = list(map(Fmt, list(zip(prop_list, data))))
   return result_string
 
 def mm_(s):
@@ -198,7 +199,7 @@ def GenerateParameterOutputStrings(dataman, group, cachelocation):
     ('Oxygen PO2 @ Inlet', '', inletPo2, 'mmHg'),
   ]
   text += ['------------------------']
-  text += map(lambda x: fmt(*x), parameterlist)
+  text += [fmt(*x) for x in parameterlist]
   return text
 
 
@@ -543,7 +544,7 @@ if __name__ == '__main__':
   plot_single_capillary(dataman, f['nair_release'], useInsets = True)
 
   grouplist = []
-  for name in [ 'moschandreou_case%02i' % i for i in xrange(6) ]:
+  for name in [ 'moschandreou_case%02i' % i for i in range(6) ]:
     params = getattr(singleVesselParameterSets, name)
     r = params.paramsTube['r']
     label = 'r = %s' % f2l(r)

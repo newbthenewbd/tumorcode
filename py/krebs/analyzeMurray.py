@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -269,7 +269,7 @@ def DoSymetryMurrayForSingleFileNorm(fn,pattern, pdfpages):
   ax2.bar(centers_v,hist_v/float(len(result_v[0,:])), align='center', width=width_v, color='blue')
 #  
   ax2.legend(['arterial branch', 'venous branch'])
-  print('check norm: %f' % np.sum(hist_a/float(len(result_a[0,:]))))
+  print(('check norm: %f' % np.sum(hist_a/float(len(result_a[0,:])))))
   #print('check norm: %f' % np.sum(hist_v/float(len(result_v[0,:]))))
   #fig1.tight_layout()
 #  pdfpages.savefig(fig1) 
@@ -295,7 +295,7 @@ def DoGetMurray(filenames, pdfpages):
     filenames = adaption.get_files_with_successful_adaption(filenames)
     files = [h5files.open(fn, 'r') for fn in filenames]
     for afile in files:
-      print("consider file: %s " % afile.filename)
+      print(("consider file: %s " % afile.filename))
       if('adaption/recomputed' in afile ):
         vesselgrp_before = afile['adaption/recomputed']
       if('vessels/recomputed_flow' in afile ):
@@ -391,11 +391,11 @@ if __name__ == "__main__":
           raise AssertionError('pattern "%s" not found in "%s"!' % (grp_pattern, fn))
         else:
           dirs = set.union(dirs,d)
-  except Exception, e:
-    print e.message
+  except Exception as e:
+    print(e.message)
     sys.exit(-1)
   
-  print('Resolved groups: %s' % ','.join(dirs))
+  print(('Resolved groups: %s' % ','.join(dirs)))
   #create filename due to former standards
   filenames=[]
   for fn in goodArguments.vesselFileNames:
@@ -403,15 +403,15 @@ if __name__ == "__main__":
 #either specify group, like in tumor simuations or take all from the ensemble
   if 0:    
     for afilename in filenames:
-        print("got file: %s" % afilename)
+        print(("got file: %s" % afilename))
     if not filenames:
-        print("python2 got no filenames")    
+        print("python3 got no filenames")    
     with mpl_utils.PdfWriter('murray' + '.pdf') as pdfpages:
       DoGetMurray(filenames,pdfpages)
   else:
     pattern =  goodArguments.grp_pattern
     print(pattern)
-    print(filenames[0])
+    print((filenames[0]))
 #    outfilename='murray_both_for_file_%s' % basename(filenames[0])
 #    with mpl_utils.PdfWriter(outfilename + '.pdf') as pdfpages:
 #      DoGetMurrayForSingleFileGENERAL(filenames[0],pattern, pdfpages)

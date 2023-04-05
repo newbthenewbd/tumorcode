@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -45,7 +45,7 @@ else:
   adaption_cpp = __import__('libadaption_', globals(), locals())
 
 def worker_on_client(fn, grp_pattern, adaptionParams, num_threads=1):
-  print('Adaption on %s / %s / param: %s' % (fn, grp_pattern, adaptionParams['name']))
+  print(('Adaption on %s / %s / param: %s' % (fn, grp_pattern, adaptionParams['name'])))
   #h5files.search_paths = [dirname(fn)] # so the plotting and measurement scripts can find the original tumor files using the stored basename alone
   #_ku.set_num_threads(num_threads)
   
@@ -69,7 +69,7 @@ def doit_optimize(vesselFileName,adaptParams,BfParams):
   returns = adaption_cpp.doAdaptionOptimization(vesselFileName,adaptParams,BfParams)
   print("should be optimized vaules:")  
   print(returns)
-  print('from file: %s' %vesselFileName)
+  print(('from file: %s' %vesselFileName))
   f_results = h5files.open("optimize_results.h5", 'a')
   a_uuid = str(uuid.uuid4())
   g = f_results.create_group(vesselFileName + '_' + a_uuid)
@@ -196,7 +196,7 @@ def doit_optimize_deap(individual):
   if sys.flags.debug:
     print("individual in doit_optimize_deap")
     print(individual)
-    print(individual.adaptionParameters['adaption'])
+    print((individual.adaptionParameters['adaption']))
   
     print('starting doit in python')
   ''' update parameters '''
@@ -207,17 +207,17 @@ def doit_optimize_deap(individual):
       )
   returnState, mean, varOfMean, total_surface = adaption_cpp.computeAdaption(individual.adaptionParameters['adaption'],individual.adaptionParameters['calcflow'], False)
   if 0: #hardcore debugging  
-    print('mean: %f' % mean)
-    print('param: %f' % individual.adaptionParameters['optimization']['desired_cap_flow'])
-    print((mean-individual.adaptionParameters['optimization']['desired_cap_flow'])**2,)
+    print(('mean: %f' % mean))
+    print(('param: %f' % individual.adaptionParameters['optimization']['desired_cap_flow']))
+    print(((mean-individual.adaptionParameters['optimization']['desired_cap_flow'])**2,))
   if returnState == 0:
     if sys.flags.debug:
-      print("adaption succesful with mean: %f" % mean)
+      print(("adaption succesful with mean: %f" % mean))
 #  if not returnState == 0:
 #    warnings.warn("adation broken", RuntimeWarning)
   
   if sys.flags.debug:
-    print('mean: %f' % mean)
+    print(('mean: %f' % mean))
     
 #  return (mean-individual.adaptionParameters['optimization']['desired_cap_flow'])**2,
   
@@ -251,7 +251,7 @@ def doit(parameters):
     #ref = adaption_cpp.computeAdaption(f, group_path, parameters['adaption'],parameters['calcflow'], cachelocation)
   returnState, mean, varOfMean, total_surface = adaption_cpp.computeAdaption(parameters['adaption'],parameters['calcflow'], True)
   if returnState == 0:
-    print("adaption succesful! mean: %f,  var: %f" % (mean,varOfMean))
+    print(("adaption succesful! mean: %f,  var: %f" % (mean,varOfMean)))
   if not returnState == 0:
     warnings.warn("adation broken", RuntimeWarning)
 #    print 'computed Adaption stored in:', ref
@@ -266,7 +266,7 @@ def get_files_with_successful_adaption(filenames):
   for fn in filenames:
     with h5py.File(fn, 'r') as f:
       e = 'vessels_after_adaption' in f
-      print e, 'in %s' % f.filename
+      print(e, 'in %s' % f.filename)
       if e:
         good_files.append(fn)
   return good_files
@@ -277,10 +277,10 @@ def AddAverageConductivity(vesselgroup, parameters):
   def DoBC():
       conductivities, avgVenousPressure, avgArterialPressure, totalFlow = ComputeVascularTreeBloodFlowResistances(vessels)
       avgConductivity = (totalFlow/(avgArterialPressure-avgVenousPressure))
-      print 'avgVenousPressure', avgVenousPressure
-      print 'avgArterialPressure', avgArterialPressure
-      print 'totalFlow', totalFlow
-      print 'avgConductivity', avgConductivity
+      print('avgVenousPressure', avgVenousPressure)
+      print('avgArterialPressure', avgArterialPressure)
+      print('totalFlow', totalFlow)
+      print('avgConductivity', avgConductivity)
       return avgConductivity
   avgConductivity = DoBC()
   parameters['adaption']['avgRootNodeConductivity'] = avgConductivity
@@ -290,7 +290,7 @@ def getVesselTypes(vessel_groups):
   veins = []
   arteries = []
   capillaries = []
-  if ('edges' in vessel_groups.keys()):# in fact it is only one group!
+  if ('edges' in list(vessel_groups.keys())):# in fact it is only one group!
     g = vessel_groups    
     flags = np.array(_ku.read_vessels_from_hdf(g,['flags'])[1])
     circulated = np.bitwise_and(flags,_ku.CIRCULATED)

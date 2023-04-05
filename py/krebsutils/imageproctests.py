@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -61,11 +61,11 @@ def testdistancemap():
   c = np.asarray((25, 25, 25))
   a = make_test_array(c)
   x = krebs.distancemap(a)
-  print "range: %f %f" % (x.min(), x.max())
+  print("range: %f %f" % (x.min(), x.max()))
 
   grad = krebs.field_gradient(x, spacing=1.)
   for i, g in enumerate(grad):
-    print "grad range %i: %f %f" % (i, g.min(), g.max())
+    print("grad range %i: %f %f" % (i, g.min(), g.max()))
   gnorm = np.sum(g*g for g in grad)
   
   for i in [c[2]]: #xrange(x.shape[2]):
@@ -103,8 +103,8 @@ def testfieldsampling():
 
   smpl = krebs.sample_field(pos, a, ld, linear_interpolation=True)
 
-  print 'arange = %f %f' % (a.min(), a.max())
-  print 'smpl range = %f %f' % (smpl.min(), smpl.max())
+  print('arange = %f %f' % (a.min(), a.max()))
+  print('smpl range = %f %f' % (smpl.min(), smpl.max()))
 
   img = a[:,::-1,1]
   img = img.transpose()
@@ -162,5 +162,5 @@ def run():
   #testcorrelation()
   
 if __name__ == '__main__':
-  print("using PIL version: %s" % PIL.VERSION)
+  print(("using PIL version: %s" % PIL.VERSION))
   run()

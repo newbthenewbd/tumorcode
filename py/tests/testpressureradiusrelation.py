@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -35,8 +35,8 @@ import myutils
 import math
 import quantities
 
-import matplotlib
-import matplotlib.pyplot as pyplot
+from . import matplotlib
+from . import matplotlib.pyplot as pyplot
 
 #from Marieb Human Anatomy & Physiology,
 #blood pressure [mmHg]
@@ -99,10 +99,10 @@ if 0:
   fig, ax = pyplot.subplots(1,1)
   
   x = np.linspace(-6000., 6000., 6000)
-  y = map(lambda x: PressureRadiusRelationHuman(x), x)
+  y = [PressureRadiusRelationHuman(x) for x in x]
   ax.plot(varmap(x), y, color = 'r')
   
-  y = map(lambda x: PressureRadiusRelation(x), x)
+  y = [PressureRadiusRelation(x) for x in x]
   ax.plot(varmap(x), y, color = 'g')
   
   #y = map(krebsutils.GetHealthyVesselWallThickness, x)
@@ -150,7 +150,7 @@ if 1:
 
   fig, ax = pyplot.subplots(1,1)  
   for h in hlist:
-    eta_rel = map(lambda r: krebsutils.CalcRelativeViscosity(r, h, New), rlist)
+    eta_rel = [krebsutils.CalcRelativeViscosity(r, h, New) for r in rlist]
     ax.plot(rlist, eta_rel)
   pyplot.show()
   

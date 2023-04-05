@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -71,7 +71,7 @@ class Filedata1d:
     self.groupnames = getSortedTimeGroupNames(f)
     self.xcoords = (np.arange(ld['SIZE'][0]) * ld['SCALE'] + ld['WORLD_OFFSET'][0])*0.001
     self.xfacecoords = ((np.arange(ld['SIZE'][0]+1)-0.5) * ld['SCALE'] + ld['WORLD_OFFSET'][0])*0.001
-    self.datanames = f[self.groupnames[-1]].keys()
+    self.datanames = list(f[self.groupnames[-1]].keys())
     self.bounds_cache = {}
 
   def findBoundsOverTime(self, name):
@@ -151,7 +151,7 @@ def plotForPresent(fd, writer, data):
   #rc('lines', linewidth=2.)
 
   for groupname in fd.groupnames:
-    print 'plt', groupname
+    print('plt', groupname)
     group = fd.f[groupname]
 
     fig = matplotlib.figure.Figure()
@@ -193,7 +193,8 @@ class Subplotter(object):
     self.groupname = groupname
     self.fig = plt.figure()
 
-  def subplot(self, (x, y), twinplots=False, **kwargs):
+  def subplot(self, xxx_todo_changeme, twinplots=False, **kwargs):
+    (x, y) = xxx_todo_changeme
     lx, ly = self.layout
 
     ax1 = self.fig.add_subplot(ly, lx, x+lx*y+1, **kwargs)
@@ -263,7 +264,7 @@ def simplePlot(fd, groupname, title):
         p5 = subplotter.plt(ax1, 'totalconc', 'k-', label=r'not water')
         pp.append(p5)
       pp.append(p2)
-      ax1.legend(*zip(*[(p, p.get_label()) for p in pp]), loc = 1)
+      ax1.legend(*list(zip(*[(p, p.get_label()) for p in pp])), loc = 1)
 
     elif name == 'vel_0':
       ax3 = ax1.twinx()
@@ -303,7 +304,7 @@ def plotit(fn):
       func = lambda p, x, y: (x*p[0]+p[1]-y)
       p, success = leastsq(func, (1, 0), args=(data[0], data[1]))
       estv = p[0]
-      print 'estimated velocity: %f, max vel.: %f'  % (estv, maxv)
+      print('estimated velocity: %f, max vel.: %f'  % (estv, maxv))
     else:
       estv, maxv = 0, 0
 
@@ -332,7 +333,7 @@ def plotit(fn):
 
   with mpl_utils.PdfWriter(out_fn) as pdf:
     for g in fd.groupnames:
-      print fn, g
+      print(fn, g)
       #title = r'%s ($v_e = %s, v_{max} = %s$)' % (splitext(basename(fn))[0], myutils.f2s(estv), myutils.f2s(maxv))
       title = ''
       fig = simplePlot(fd, g, title)

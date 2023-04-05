@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -70,8 +70,8 @@ def read_data(filename):
   noOfCells=[]
   with h5py.File(filename, 'r') as f:
     initialTime = f['out0000'].attrs.get('secondsSinceEpoch')
-    print("Found inital time: %i\n" % initialTime)
-    for key in f.keys():
+    print(("Found inital time: %i\n" % initialTime))
+    for key in list(f.keys()):
       if 'out' in key:
         ex = key+'/cells/cell_radii' in f
         timePoints.append(f[key].attrs.get('secondsSinceEpoch'))
@@ -124,7 +124,7 @@ def plot_runtime_from_h5(goodArguments, pp):
     myDictOfData[key] = []
     
   no_of_threads = 42
-  print("filename: %s" % str(goodArguments.vbl_simulation_output_filename))
+  print(("filename: %s" % str(goodArguments.vbl_simulation_output_filename)))
   with h5py.File(str(goodArguments.vbl_simulation_output_filename), 'r') as f:
     #initialTime = f['out0001/timing'].attrs.get('secondsSinceEpoch')
     #no_of_threads=f.attrs.get('detectedNumberOfThreads')
@@ -132,7 +132,7 @@ def plot_runtime_from_h5(goodArguments, pp):
 #    def isKeyGood(key):
 #      if 'out' in key:
 #        return str(key)
-    goodKeys = [str(x) for x in f.keys() if 'out' in x]
+    goodKeys = [str(x) for x in list(f.keys()) if 'out' in x]
     for mykey in myH5Keys:
       for (i,key) in enumerate(goodKeys):
         if mykey == 'total_time':
@@ -161,7 +161,7 @@ def plot_runtime_from_h5(goodArguments, pp):
   plotVsCells = False;
   fig, ax = plt.subplots()
   for mykey in myH5Keys:
-    print("mykey: %s" % mykey)
+    print(("mykey: %s" % mykey))
     if not mykey == 'number_of_cells':
       if plotVsCells:
           ax.plot(myDictOfData['number_of_cells'],myDictOfData[mykey][0:],label=mykey)
@@ -218,7 +218,7 @@ def plot_memory_from_h5(goodArguments, pp):
     myDictOfDataForMemory[key] =[]
     
   no_of_threads=0
-  print("filename: %s" % str(goodArguments.vbl_simulation_output_filename))
+  print(("filename: %s" % str(goodArguments.vbl_simulation_output_filename)))
   with h5py.File(str(goodArguments.vbl_simulation_output_filename), 'r') as f:
     #initialTime = f['out0000/timing'].attrs.get('secondsSinceEpoch')
     no_of_threads=f.attrs.get('detectedNumberOfThreads')
@@ -226,7 +226,7 @@ def plot_memory_from_h5(goodArguments, pp):
 #    def isKeyGood(key):
 #      if 'out' in key:
 #        return str(key)
-    goodKeys = [str(x) for x in f.keys() if 'out' in x]
+    goodKeys = [str(x) for x in list(f.keys()) if 'out' in x]
     for mykey in myH5Keys:
       for (i,key) in enumerate(goodKeys):
         if mykey == 'total_time':
@@ -267,7 +267,7 @@ def plot_memory_from_h5(goodArguments, pp):
   plotVsCells = False;
   fig, ax = plt.subplots()
   for mykey in myDictOfDataForMemory:
-    print("mykey: %s" % mykey)
+    print(("mykey: %s" % mykey))
     if not mykey == 'number_of_cells':
       if plotVsCells:
           ax.plot(myDictOfData['number_of_cells'],myDictOfDataForMemory[mykey][0:],label=mykey)

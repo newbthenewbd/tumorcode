@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -57,7 +57,7 @@ def createParamFileFromSlurm(label):
                 best_k_s = list_of_words[7]
                 best_l = list_of_words[8][:-1]
                 #best_q = list_of_words_next_line[0][:-1]
-                print best_k_m,best_k_c,best_k_s,best_l, #best_q
+                print(best_k_m,best_k_c,best_k_s,best_l, end=' ') #best_q
                 #for word in line.split():
                 #  print word
   #          f_opt_data = h5files.open(pso_file, 'r', search = False)
@@ -93,7 +93,7 @@ def createParamFile(files, label):
           f.write('  cond_length = %f,\n' % xopt[3])
           f.write('  Q_refdot = %f,\n' % xopt[4])
           f.write(')\n')
-  print("Created file: %s"%writepath)
+  print(("Created file: %s"%writepath))
   
 #p3d_mini_typeG_vary1= deepcopy(appReal21b)
 #  p3d_mini_typeG_vary1['adaption'].update(

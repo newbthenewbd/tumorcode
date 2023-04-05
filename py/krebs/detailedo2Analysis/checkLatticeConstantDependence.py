@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -56,7 +56,7 @@ krebsutils.set_num_threads(2)
 
 
 def runDetailedO2(fn, pattern, o2params):
-  print 'detailedo2 on %s / %s' % (fn, pattern)
+  print('detailedo2 on %s / %s' % (fn, pattern))
   o2_refs = detailedo2.doit(fn, pattern, (o2params, o2params['name']))
   h5files.closeall() # just to be sure
   return o2_refs[0]
@@ -107,10 +107,10 @@ def powerfit(x, y, pinit, q):
   return resultcoeff, lambda x: powerfunc(x, resultcoeff, q)
 
 po2vesselsCoeff, po2VesselFunc = powerfit(latticeConstants, vesselpo2list, (1., 2.), (latticeConstants[0],))
-print po2vesselsCoeff
+print(po2vesselsCoeff)
 
 po2tissueCoeff, po2TissueFunc = powerfit(latticeConstants, tissuepo2list, (1.,2.), (latticeConstants[0],))
-print po2tissueCoeff
+print(po2tissueCoeff)
 
 x = np.linspace(0., 50., 100)
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -97,7 +97,7 @@ def PlotRadialCurves(pdfwriter, bins_spec, snapshotlist, measurementinfo):
 
   def plot(ax, name, scalefactor = 1., label = None, colors = default_colors, errorbars = True, zero_ylim = True):
     for i, (time, tumor_radius, curves) in enumerate(snapshotlist):
-      curve = myutils.MeanValueArray.fromSummation(map(lambda x: x.avg, curves[name]))
+      curve = myutils.MeanValueArray.fromSummation([x.avg for x in curves[name]])
       label = FmtTime(time)
       mask = ~curve.avg.mask #>0
       #print name, curve.avg[mask]
@@ -212,9 +212,10 @@ def FitExpFunction(x_in, y_in, initial_params):
 
 
 
-def PlotLocalScatterData(pdfwriter, smpl, (items, path, label)):
+def PlotLocalScatterData(pdfwriter, smpl, xxx_todo_changeme):
+  (items, path, label) = xxx_todo_changeme
   mask = myutils.bbitwise_and(smpl['flags'], krebsutils.CIRCULATED)
-  for k, v in smpl.items():
+  for k, v in list(smpl.items()):
     smpl[k] = v[mask]
 
   mask_arterial = myutils.bbitwise_and(smpl['flags'], krebsutils.ARTERY)
@@ -325,10 +326,10 @@ def FormatParameters_(parameters):
   #mbr = lambda s: Prettyfier.mm(Prettyfier.br(s))
   usingMM = parameters.get('michaelis_menten_uptake', False)
   if usingMM:
-    parameters = filter(lambda (k,v): not k.startswith('rd_'), parameters.iteritems())
+    parameters = [k_v3 for k_v3 in iter(parameters.items()) if not k_v3[0].startswith('rd_')]
   else:
-    parameters = filter(lambda (k,v): not k.startswith('mmcons_'), parameters.iteritems())
-  parameters = sorted(parameters, key = lambda (k, v): k)
+    parameters = [k_v4 for k_v4 in iter(parameters.items()) if not k_v4[0].startswith('mmcons_')]
+  parameters = sorted(parameters, key = lambda k_v5: k_v5[0])
   #result = ['++++ Oxygen Parameters ++++']
   result = []
   for k, v in parameters:
@@ -364,7 +365,7 @@ def PlotGlobalData(pdfwriter, items0, t0, data0glob, items1, t1, data1glob, data
   def FormatStuff(data):
     #mbr = lambda s: Prettyfier.mm(Prettyfier.br(s))
     result_string = []
-    sorted_data = sorted(data.items(), key = lambda (k,v): k)
+    sorted_data = sorted(list(data.items()), key = lambda k_v2: k_v2[0])
     for name, values in sorted_data:
       #if name in 'Jout_tv Jin_root Jout_root Jout_cons': continue
       values, unit = Prettyfier.get_value_unit(name, values, mathMode = True, brackets = True)
@@ -434,7 +435,7 @@ class PlotCompareInitialNetworksScatter(object):
 
 
     def data(self, origin, name):
-      if origin <> 'd':
+      if origin != 'd':
         return self.data_[origin][name]
       else:
         return self.data_['t'][name] - self.data_['n'][name]
@@ -533,9 +534,9 @@ def ExportGlobalDataAsText(filenamebase, snapshotlist, measurementinfo): #, ense
   for ensembleitems, globaldata, normaldata, tumordata, time in snapshotlist:
     out('t='+FmtTime(time))
     out('\n')
-    data = globaldata.values() + normaldata.values() + tumordata.values()
-    data = zip(*data)
-    labels = map(lambda s: 'global_'+s, globaldata.keys()) + map(lambda s: 'normal_'+s, normaldata.keys()) + map(lambda s: 'tumor_'+s, tumordata.keys())
+    data = list(globaldata.values()) + list(normaldata.values()) + list(tumordata.values())
+    data = list(zip(*data))
+    labels = ['global_'+s for s in list(globaldata.keys())] + ['normal_'+s for s in list(normaldata.keys())] + ['tumor_'+s for s in list(tumordata.keys())]
     out(' '.join(labels))
     out('\n')
     for l in data:
@@ -545,8 +546,8 @@ def ExportGlobalDataAsText(filenamebase, snapshotlist, measurementinfo): #, ense
   with open(filenamebase+'_data.txt', 'w') as f:
     f.writelines(s)
   del s[:]
-  labels = set(globaldata.keys() + normaldata.keys() + tumordata.keys())
-  unitlabels = map(lambda s: 'unit "%s"="%s"\n' % (s, Prettyfier.get_unit(s)), labels)
+  labels = set(list(globaldata.keys()) + list(normaldata.keys()) + list(tumordata.keys()))
+  unitlabels = ['unit "%s"="%s"\n' % (s, Prettyfier.get_unit(s)) for s in labels]
   for x in unitlabels:
     out(x)
   with open(filenamebase+'_unit.txt', 'w') as f:
@@ -563,10 +564,10 @@ def ExportGlobalDataAsH5(filenamebase, snapshotlist, measurementinfo): #, ensemb
       gbase = f.create_group(['initial', 'final'][i])
       for name, data in zip(['global', 'tumor'], [globaldata, tumordata]):
         g = gbase.create_group(name)
-        for k, v in data.iteritems():
+        for k, v in data.items():
           g.create_dataset(k, data = v)
         
-    filenames = map(lambda item: item.po2group.file.filename.encode('ascii'), ensembleitems)
+    filenames = [item.po2group.file.filename.encode('ascii') for item in ensembleitems]
     f.create_dataset('filenames', data = filenames)
       
 
@@ -670,7 +671,7 @@ sample_length = 30.
 # note: use insertVesselConfigInO2File.py script (in scripts repository) to copy vesselfile message over. It is the type name in it.
 def GetVesselTypeLabel(po2group):
   import re
-  if ('VESSELFILE_MESSAGE' in po2group.file.attrs.keys()):
+  if ('VESSELFILE_MESSAGE' in list(po2group.file.attrs.keys())):
     msg = po2group.file.attrs['VESSELFILE_MESSAGE']
     m = re.search('type(\w)', msg)
   else:
@@ -689,7 +690,7 @@ class EnsembleItem(object):
     self.gtumor = None
     self.vessel_system_length = 0.
     self.initialVesselType = ''
-    for k, v in kwargs.iteritems():
+    for k, v in kwargs.items():
       setattr(self, k, v)
 
 class EnsembleFiles(object):
@@ -705,7 +706,7 @@ class EnsembleFiles(object):
         e = EnsembleItem(path = path, po2group = f[path], gvessels = gvessels, gtumor = gtumor)
         if 'SOURCE' in po2group:
           #print("attention thierry hack!!!")
-          if( 'time' in po2group['SOURCE'].attrs.keys()):
+          if( 'time' in list(po2group['SOURCE'].attrs.keys())):
             source = h5files.openLink(po2group, 'SOURCE')
             t = source.attrs['time']
             e.time = t
@@ -717,8 +718,8 @@ class EnsembleFiles(object):
       d = collections.defaultdict(list) # path -> list of EnsembleItem
       for e in items:
         d[e.path].append(e)
-      tumor_snapshot_times = dict((k,np.average(map(lambda e: e.time, v))) for k,v in d.items())
-      tumor_snapshot_order = sorted(tumor_snapshot_times.keys(), key = (lambda path: tumor_snapshot_times[path]))
+      tumor_snapshot_times = dict((k,np.average([e.time for e in v])) for k,v in list(d.items()))
+      tumor_snapshot_order = sorted(list(tumor_snapshot_times.keys()), key = (lambda path: tumor_snapshot_times[path]))
       tumor_snapshots      = [(d[path], path, tumor_snapshot_times[path]) for path in tumor_snapshot_order]
     self.files = files
     self.items = items
@@ -737,7 +738,7 @@ class MeasurementInfo(object):
     self.sample_length = 30.
     self.cachelocation_callback = None
     self.distancemap_spec = 'radial'
-    for k,v in kwargs.iteritems():
+    for k,v in kwargs.items():
       setattr(self, k, v)
 
 #
@@ -759,8 +760,7 @@ class MeasurementInfo(object):
 
 
 def GetAverageApproximateTumorRadius(dataman, ensembleitems):
-  l = map(lambda item: dataman.obtain_data('approximate_tumor_radius', item.gtumor),
-          ensembleitems)
+  l = [dataman.obtain_data('approximate_tumor_radius', item.gtumor) for item in ensembleitems]
   return np.average(l)
 
 
@@ -769,23 +769,23 @@ def CollectAllRadialData(dataman, ensembleitems, measurementinfo):
   curves = collections.defaultdict(list)
   for item in ensembleitems:
     # get o2 data first
-    print 'generating radial curves for',item.po2group.file.filename,':',item.po2group.name
+    print('generating radial curves for',item.po2group.file.filename,':',item.po2group.name)
     data = dataman.obtain_data('detailedPO2_radial', item.po2group, measurementinfo.sample_length, bin_spec, measurementinfo.distancemap_spec, measurementinfo.cachelocation_callback(item.po2group))
     try:
       del data['extpo2'] # delete if present, else ignore
     except KeyError:
       pass
-    for k,v in data.iteritems():
+    for k,v in data.items():
       curves[k].append(v)
     for name in ['mvd','velocity','phi_vessels', 'shearforce', 'radius']:
       data = dataman.obtain_data('basic_vessel_radial', name, item.gvessels, item.gtumor, measurementinfo.sample_length, bin_spec, measurementinfo.distancemap_spec, None, measurementinfo.cachelocation_callback(item.po2group))
       curves[name].append(data)
-  print ' ... finished getting radial curves'
+  print(' ... finished getting radial curves')
   return bin_spec, curves
 
 
 def ConvertDictValuesToNumpyArrays_(x):
-  for k, v in x.iteritems():
+  for k, v in x.items():
     x[k] = np.asarray(v)
   return x
 
@@ -796,7 +796,7 @@ def CollectAllGlobalData(dataman, ensembleitems, measurementinfo):
   curves_total = collections.defaultdict(list)
   # go and collect all data
   for item in ensembleitems:
-    print 'generating global data for',item.po2group.file.filename,':',item.po2group.name
+    print('generating global data for',item.po2group.file.filename,':',item.po2group.name)
     # first real global data
     for prop in ['e1','e2','e3','Jin_root', 'Jout_root', 'Jout_tv', 'tv_cons', 'Jout_cons']:  #'po2','sat','gtv', 'jtv','mro2', 'po2_tissue', 'oef', 'chb', 'chb_oxy', 'chb_deoxy', 'sat_via_hb_ratio'
       data = dataman.obtain_data('detailedPO2_global', prop, item.po2group, measurementinfo.sample_length, measurementinfo.cachelocation_callback(item.po2group))
@@ -812,7 +812,7 @@ def CollectAllGlobalData(dataman, ensembleitems, measurementinfo):
     # get the data and put it in the right list
     for curves, bin_spec in zip([curves_total, curves_tumor], [bin_spec_total, bin_spec_tum]):
       datadict = dataman.obtain_data('detailedPO2_radial', item.po2group, measurementinfo.sample_length, bin_spec, measurementinfo.distancemap_spec, measurementinfo.cachelocation_callback(item.po2group))
-      for name, data in datadict.iteritems():
+      for name, data in datadict.items():
         curves[name].append(data.avg[0])
       for name in ['mvd','velocity','phi_vessels', 'shearforce', 'radius', 'S_rho', 'hematocrit']:
         data = dataman.obtain_data('basic_vessel_radial', name, item.gvessels, item.gtumor, measurementinfo.sample_length, bin_spec, measurementinfo.distancemap_spec, None, measurementinfo.cachelocation_callback(item.po2group))
@@ -849,7 +849,7 @@ def CollectAllGlobalData(dataman, ensembleitems, measurementinfo):
     c['kExpFun'] = c['Sin']*(1.0 - np.exp(-c['PeffSrhoMTT']))/c['PeffSrhoMTT']
     c['Y_plus_oef'] = c['sat_via_hb_ratio'] + c['oef']
   
-  print ' ... finished getting global data'
+  print(' ... finished getting global data')
   return curves_total, curves_tumor
 
 
@@ -897,7 +897,7 @@ def CollectInterdependentDependentData(dataman, items0, items1, curves_tumor, me
 
 class ComputesRegionalHistograms(object):
   def __init__(self, dataman, vesselgroup, tumorgroup, sample_length, ld):
-    print 'ComputesRegionalHistograms for %s' % (str(vesselgroup))
+    print('ComputesRegionalHistograms for %s' % (str(vesselgroup)))
     self.vesselgroup = vesselgroup
     self.tumorgroup  = tumorgroup
     vesselDistanceSamples, distanceMap, vesselOutsideMask, ld = \
@@ -909,7 +909,7 @@ class ComputesRegionalHistograms(object):
     #self.maskCirculated = analyzeGeneral.GetMaskUncirculated(dataman, vesselgroup)
     flags = dataman.obtain_data('basic_vessel_samples', 'flags', vesselgroup, sample_length)
     self.maskCirculated = myutils.bbitwise_and(flags, krebsutils.CIRCULATED)
-    print 'cnt in tum %s of total %s', (np.count_nonzero(self.maskInTumorVesselSamples), len(self.maskInTumorVesselSamples))
+    print('cnt in tum %s of total %s', (np.count_nonzero(self.maskInTumorVesselSamples), len(self.maskInTumorVesselSamples)))
   
   def MakeHistogramsForVessels(self, dataSamples, bins):
     mc         = self.maskCirculated
@@ -965,7 +965,7 @@ def ComputeRegionalHistogramsOfPo2Group(dataman, name, region, po2group, binspec
     return myutils.MeanValueArray.read(gmeasure[groupname], region)  
   
   def write(gmeasure, groupname):
-    print 'computing histogram %s of %s' % (name, str(po2group))
+    print('computing histogram %s of %s' % (name, str(po2group)))
     computesRegionalHistograms = GetComputesRegionalHistograms(dataman, po2group)
     bins = np.linspace(*binspec)
     smpl = GetDataSamplesForHistograms(dataman, name, po2group, measurementinfo)
@@ -993,7 +993,7 @@ def ComputeHistogramsOfPo2Items(dataman, items, measurementinfo, outputGroup):
       'velocity' : (0., 1000., 20),
     }
     combinedHistograms = collections.defaultdict(lambda: myutils.MeanValueArray.empty())
-    names = rangesAndBinCount.keys()
+    names = list(rangesAndBinCount.keys())
     combinedHistogramsByNetworkType = collections.defaultdict(lambda: myutils.MeanValueArray.empty())
     for item in items:
       for name in names:
@@ -1001,7 +1001,7 @@ def ComputeHistogramsOfPo2Items(dataman, items, measurementinfo, outputGroup):
           h = ComputeRegionalHistogramsOfPo2Group(dataman, name, region, item.po2group, rangesAndBinCount[name], measurementinfo)
           combinedHistograms[name, region] += h
           combinedHistogramsByNetworkType[name, region, item.initialVesselType] += h
-    allInitialVesselTypes = set(t for (_,_,t) in combinedHistogramsByNetworkType.iterkeys())
+    allInitialVesselTypes = set(t for (_,_,t) in combinedHistogramsByNetworkType.keys())
 
     try:
       del outputGroup['ensemble']
@@ -1030,20 +1030,21 @@ def ComputeHistogramsOfPo2Items(dataman, items, measurementinfo, outputGroup):
 def GetConvergenceData(po2group):
   if not 'iterations' in po2group: return None
   def read(gmeasure, name):
-    return dict(map(lambda (k,v): (k,np.asarray(v)), gmeasure[name].iteritems()))
+    return dict([(k_v1[0],np.asarray(k_v1[1])) for k_v1 in iter(gmeasure[name].items())])
   def write(gmeasure, name):
     def read_iter_snapshot(g):
-      return dict(map(lambda (k,v): (k, float(v[()])), g.iteritems()))
-    data = map(read_iter_snapshot, po2group['iterations'].itervalues())
+      return dict([(k_v[0], float(k_v[1][()])) for k_v in iter(g.items())])
+    data = list(map(read_iter_snapshot, iter(po2group['iterations'].values())))
     data = sorted(data, key = lambda d: d['iteration'])
     data = myutils.zipListOfDicts(data, numpy_output=True)
     gmeasure = gmeasure.create_group(name)
-    for k, v in data.iteritems():
+    for k, v in data.items():
       gmeasure.create_dataset(k, data = v, compression = 9)
   return myutils.hdf_data_caching(read, write, po2group, ('iterationsTranspose',), (1,))
 
 
-def PlotConvergenceData(pdfwriter, dataman, (items, path, time)):
+def PlotConvergenceData(pdfwriter, dataman, xxx_todo_changeme6):
+  (items, path, time) = xxx_todo_changeme6
   fig = pyplot.figure(figsize = mpl_utils.a4size*np.asarray((0.5,0.25)))
   ax  = fig.add_axes([0.2, 0.2, 0.7, 0.6])
   for item in items:
@@ -1056,12 +1057,12 @@ def PlotConvergenceData(pdfwriter, dataman, (items, path, time)):
 
 
 def doit(filenames, pattern, normalTissueEnsembleInput = None):
-  dataman = myutils.DataManager(50, map(lambda x: x(), detailedo2Analysis.O2DataHandlers) + [ analyzeGeneral.DataTumorTissueSingle(), analyzeGeneral.DataDistanceFromCenter(), analyzeGeneral.DataBasicVessel(), analyzeGeneral.DataVesselSamples(), analyzeGeneral.DataVesselRadial(), analyzeGeneral.DataVesselGlobal(), analyzeBloodFlow.DataTumorBloodFlow()])
+  dataman = myutils.DataManager(50, [x() for x in detailedo2Analysis.O2DataHandlers] + [ analyzeGeneral.DataTumorTissueSingle(), analyzeGeneral.DataDistanceFromCenter(), analyzeGeneral.DataBasicVessel(), analyzeGeneral.DataVesselSamples(), analyzeGeneral.DataVesselRadial(), analyzeGeneral.DataVesselGlobal(), analyzeBloodFlow.DataTumorBloodFlow()])
   ensemble = EnsembleFiles(dataman, filenames, pattern)
   
   if ensemble.has_tumor:
     if len(ensemble.tumor_snapshots) == 1:
-      print 'paths: ', map(lambda (_t0, path, _t1): path, ensemble.tumor_snapshots)
+      print('paths: ', [_t0_path__t1[1] for _t0_path__t1 in ensemble.tumor_snapshots])
       items0, _, t0 = None, None, None
       items1, _, t1 = ensemble.tumor_snapshots[0] 
     else:
@@ -1074,7 +1075,7 @@ def doit(filenames, pattern, normalTissueEnsembleInput = None):
     normalTissueEnsemble = EnsembleFiles(dataman, filenamesNormal, patternNormal)
     items0, _, t0 = normalTissueEnsemble.tumor_snapshots[0]
 
-  out_prefix, out_suffix = myutils.splitcommonpresuffix(map(lambda s: basename(s), filenames))
+  out_prefix, out_suffix = myutils.splitcommonpresuffix([basename(s) for s in filenames])
   output_base_filename = splitext(out_prefix+out_suffix)[0]
   if ensemble.o2ConfigName:
     fn_measure = 'detailedo2_%s_common.h5' % ensemble.o2ConfigName
@@ -1101,7 +1102,7 @@ def doit(filenames, pattern, normalTissueEnsembleInput = None):
 #      PlotOxygenVsVessels(pdfwriter, data, binspec_vessels)
 
     if 0:
-        print 'getting radial curves'
+        print('getting radial curves')
         bins_spec, curves0 = CollectAllRadialData(dataman, items0, measurementinfo)
         bins_spec, curves1 = CollectAllRadialData(dataman, items1, measurementinfo)
         tumor_radius0 = GetAverageApproximateTumorRadius(dataman, items0)
@@ -1110,15 +1111,15 @@ def doit(filenames, pattern, normalTissueEnsembleInput = None):
 
     if 0:
       every = int(np.sum(item.vessel_system_length for item in ensemble.tumor_snapshots[-1][0])/(30.*20000.))
-      print 'getting samples, every = %i' % every
+      print('getting samples, every = %i' % every)
       smpl = CollectLocalScatterData(dataman, ensemble.tumor_snapshots[-1][0], measurementinfo, every)
-      print 'making scatterplots'
+      print('making scatterplots')
       PlotLocalScatterData(pdfwriter, smpl, ensemble.tumor_snapshots[-1])
       del smpl
 
 
     if 1:
-      print 'getting global data'
+      print('getting global data')
       if items0:
         data0glob, data0tumor = CollectAllGlobalData(dataman, items0, measurementinfo)
       else:
@@ -1204,7 +1205,7 @@ def doit(filenames, pattern, normalTissueEnsembleInput = None):
             curves[mangled_name].append(item.po2group['parameters'][param_name][()])
           curves['o2p_rmax'].append(float(item.gtumor.file['parameters/vessels'].attrs['radMax']))
           curves['o2p_vesselCompressionFactor'].append(float(item.gtumor.file['parameters/vessels'].attrs['vesselCompressionFactor']))
-        for k, v in curves.items():
+        for k, v in list(curves.items()):
           curves[k] = np.asarray(v)
         data1tumor.update(curves)
         
@@ -1222,7 +1223,7 @@ def doit(filenames, pattern, normalTissueEnsembleInput = None):
           PlotCompareInitialNetworksScatter(t0, data0glob, t1, data1glob, data1tumor, items0, items1, 'o2p_rmax', 'mvd').addPlot('t','t').write(pdfwriter)
 
       if items0:
-        print 'exporting ascii'
+        print('exporting ascii')
         snapshotlist = [
           (items0, data0glob, data0tumor, t0),
           (items1, data1glob, data1tumor, t1),
@@ -1243,7 +1244,7 @@ def doit(filenames, pattern, normalTissueEnsembleInput = None):
       PlotHistograms(pdfwriter, histogramGroupInitial, 'all', 'Initial')
         
     if 1:
-      print 'making convergence data plot'
+      print('making convergence data plot')
       for items in ensemble.tumor_snapshots:
         PlotConvergenceData(pdfwriter, dataman, items)
 

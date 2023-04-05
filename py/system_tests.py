@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -29,10 +29,10 @@ Exception KeyError: KeyError(140317151476224,) in 'h5py._objects.ObjectID.__deal
 Process PoolWorker-1:
 Exception KeyError: Process PoolWorker-2:
 KeyError(140317151476224,) in 'Traceback (most recent call last):
-h5py._objects.ObjectID.__deall  File "/usr/lib64/python2.7/multiprocessing/process.py", line 258, in _bootstrap
+h5py._objects.ObjectID.__deall  File "/usr/lib64/python3.7/multiprocessing/process.py", line 258, in _bootstrap
 ocTraceback (most recent call last):
 __' ignored
-  File "/usr/lib64/python2.7/multiprocessing/process.py", line 258, in _bootstrap
+  File "/usr/lib64/python3.7/multiprocessing/process.py", line 258, in _bootstrap
 
 in pso.py  
   ''''

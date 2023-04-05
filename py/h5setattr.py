@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -41,7 +41,7 @@ if __name__ == '__main__':
       items = myutils.walkh5(f, pattern)
       items = [f[i] for i in items]
       for item in items:
-        print '%s:%s.attrs["%s"] = %s' % (fn, item.name, attrname, str(data))
+        print('%s:%s.attrs["%s"] = %s' % (fn, item.name, attrname, str(data)))
         a = item.attrs
         try:
           del a[attrname]

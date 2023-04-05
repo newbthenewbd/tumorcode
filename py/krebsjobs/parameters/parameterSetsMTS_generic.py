@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -296,4 +296,4 @@ vbl_const_o2['useConstO2'] = True
 if __name__ == '__main__':
   #print(milotti_mts_13)
   aDict = milotti_mts_7c['vessels']
-  print(milotti_mts_3['out_intervall'])
+  print((milotti_mts_3['out_intervall']))

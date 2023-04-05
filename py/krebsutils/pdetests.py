@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -63,7 +63,7 @@ except ImportError:
 def make_x(ld):
   box = ld.box(ravel = True)
   x = np.empty((box[1]-box[0]+1,))
-  for i in xrange(box[0], box[1]+1):
+  for i in range(box[0], box[1]+1):
     x[i] = ld.LatticeToWorld((i,0,0))[0]
   return x
 
@@ -134,14 +134,14 @@ def runStepperConvergenceTests():
 #  model_lambda = f.attrs['lambda']
   bytime = collections.defaultdict(list)
   bymethod = collections.defaultdict(list)
-  for g in f['/'].itervalues():
+  for g in f['/'].values():
     if g.name == '/exact':
       exact = g
     else:
       bytime[g.attrs['dt']].append(g)
       bymethod[g.attrs['method']].append(g)
 
-  for dt, groups in sorted(bytime.iteritems(), key = lambda (k, v): k):
+  for dt, groups in sorted(iter(bytime.items()), key = lambda k_v1: k_v1[0]):
     if dt < exact['x'][-1]*0.01:
       continue
     fig = pyplot.figure(figsize=(11.7, 8.3))
@@ -157,14 +157,14 @@ def runStepperConvergenceTests():
     pdf.savefig(fig)
 
   err = collections.defaultdict(collections.defaultdict)
-  for g in f['/'].itervalues():
+  for g in f['/'].values():
       if g.name == '/exact': continue
       val = abs(g['y'][-1] - exact['y'][-1])
       m, t = g.attrs['method'], g.attrs['dt']
       err[m][t] = val
-      print m, t, val
-  for k, d in err.iteritems():
-    err[k] = np.asarray(sorted(d.iteritems(), key = lambda (k, v): k)).transpose()
+      print(m, t, val)
+  for k, d in err.items():
+    err[k] = np.asarray(sorted(iter(d.items()), key = lambda k_v: k_v[0])).transpose()
 
   fig = pyplot.figure(figsize=(11.7, 8.3))
   plot = fig.add_subplot(1,1,1)
@@ -172,7 +172,7 @@ def runStepperConvergenceTests():
   plot.set_xscale("log")
   plot.set_xlabel('dt')
   plot.set_ylabel('e')
-  for marker, (method, (t, y)) in zip(markers, err.iteritems()):
+  for marker, (method, (t, y)) in zip(markers, iter(err.items())):
     plot.plot(t, y, label = method, marker=marker)
   plot.legend(loc = 'lower right')
   pdf.savefig(fig)
@@ -237,7 +237,7 @@ def runMethodsComparison1d(conc_func, vel_func, analytic_res, params):
   pyplot.plot(x, u0, '-k')
   pyplot.plot(x, u1, '-k')
 
-  styles = zip(['r', 'g', 'b', 'y' ], ['*','x','+','<'])
+  styles = list(zip(['r', 'g', 'b', 'y' ], ['*','x','+','<']))
   for i, method in enumerate([ 'eno2', 'weno3', 'eno3', 'weno5' ]):
     params['advection_method'] = method
     compute1dAdvectionModel('convtest_'+method, params, conc_func, vel_func)
@@ -247,7 +247,7 @@ def runMethodsComparison1d(conc_func, vel_func, analytic_res, params):
 
   mass0 = np.sum(results[0]['conc'])
   mass1 = np.sum(results[-1]['conc'])
-  print 'mass start->end: %f -> %f' % (mass0, mass1)
+  print('mass start->end: %f -> %f' % (mass0, mass1))
 
   pyplot.legend()
   pyplot.show()
@@ -444,7 +444,7 @@ def runAdvectionDiffusionReactionAnalysis():
   for i, g in enumerate(results):
     a = np.asarray(g['conc'])
     mm = min(mm[0], a.min()), max(mm[1], a.max())
-  print mm
+  print(mm)
 
   for i, g in enumerate(results):
     a = g['conc'][:,:,0]
@@ -459,7 +459,7 @@ def testCurvature():
   ld = krebsutils.LatticeDataQuad3d((-10, 10, -10, 10, -10, 10), 1./20)
   ld.SetCellCentering((True, True, True))
   shape = ld.box
-  print shape
+  print(shape)
   X, Y, Z = ld.scale*np.mgrid[shape[0,0]:shape[0,1]+1, shape[1,0]:shape[1,1]+1, shape[2,0]:shape[2,1]+1]
   radius = 0.25
   phi = np.sqrt(Y*Y+Z*Z+X*X) - radius
@@ -551,7 +551,7 @@ def runSTFTest():
         pyplot.imshow(np.asarray(a[...,0]).transpose(), extent = ext, origin='bottom', interpolation='nearest')
       def contour():
         return pyplot.contour(np.asarray(group['ls'][...,0]).transpose(), levels=[0.], extent = extent, origin='lower')
-      print "plotting %i" % idx
+      print("plotting %i" % idx)
       if 1:
         pyplot.figure(figsize = (1200./dpi,1000./dpi))
 
@@ -621,7 +621,7 @@ def runSTFStabilityTest():
         kstf = kstf,
         levelset_reinit = False,
       )
-      print 'running with', dt, dt_max_diff
+      print('running with', dt, dt_max_diff)
       assert dt < dt_max_diff
       # initial condition is a spherical region.
       pprint.pprint(params)
@@ -652,7 +652,7 @@ def runSTFStabilityTest():
           pyplot.imshow(np.asarray(a[...,size[2]/2]).transpose(), extent = ext, origin='bottom', interpolation='nearest')
         def contour():
           return pyplot.contour(np.asarray(group['ls'][...,size[2]/2]).transpose(), levels=[0.], extent = extent, origin='lower')
-        print "plotting %i" % idx
+        print("plotting %i" % idx)
         if 1:
           pyplot.figure(figsize = (1200./dpi,1000./dpi))
 
@@ -685,7 +685,7 @@ def runSTFStabilityTest():
         total_mass = 1.e6
       else:
         total_mass = np.sum(np.abs(np.asarray(results[-1]['rho'])))
-      print 'analyze result:', total_mass
+      print('analyze result:', total_mass)
       return total_mass
 
 
@@ -699,7 +699,7 @@ def runSTFStabilityTest():
           run(deltax, dtscaling, filename)
           #plot(filename)
         data.append((deltax, dtscaling, determine_final_total_mass(filename)))
-    print data
+    print(data)
     data = np.asarray(data)
 
     # scatter plot of total mass vs. parameters
@@ -743,8 +743,8 @@ def check_surface_metrics():
     line_estimate = np.sum(delta)*deltax**3
     actual_circumference = (radius**2)*math.pi*4
 
-    print 'estimate: ', line_estimate
-    print 'actual: ', actual_circumference
+    print('estimate: ', line_estimate)
+    print('actual: ', actual_circumference)
 
 
 def runTestEllipticSolver():
@@ -768,18 +768,18 @@ def runTestEllipticSolver():
       num_repeat = 5
       for num_threads in [1,2,3,4]:
         krebsutils.set_num_threads(num_threads)
-        print 'np %i' % num_threads,
+        print('np %i' % num_threads, end=' ')
         for i in range(num_repeat):
-          print '.',
+          print('.', end=' ')
           time, mem = EST_testOperatorSolve(size, False)
           times[num_threads].append(time)
-        print ''
-      for k, v in times.iteritems():
+        print('')
+      for k, v in times.items():
         times[k] = np.average(v)
       base = times[1]
       for k in sorted(times.keys()):
         v = times[k]
-        print 'np = %i, time: %f, speedup: %f' % (k, v, base/v)
+        print('np = %i, time: %f, speedup: %f' % (k, v, base/v))
 
 
 

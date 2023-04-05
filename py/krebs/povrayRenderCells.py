@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -25,9 +25,9 @@ submitPovrayRender ../../fakeTumMTS-default-typeI-sample00-vbl_3486978.h5 out0* 
 pH_ex 5.8 7.5
 
 @artery
-python2 /localdisk/thierry/tc_install/py/krebsjobs/submitPovrayRender.py fakeTumMTS-default-typeI-sample00-vbl_3484331.h5 out0540 --clip_box 240 400 -310 800 800 800 --cam_distance_multiplier=0.8 -f --cells --tumor_clip 240 400 -310
+python3 /localdisk/thierry/tc_install/py/krebsjobs/submitPovrayRender.py fakeTumMTS-default-typeI-sample00-vbl_3484331.h5 out0540 --clip_box 240 400 -310 800 800 800 --cam_distance_multiplier=0.8 -f --cells --tumor_clip 240 400 -310
 pwd: /localdisk/thierry/output/choose_position_2/artery/finished
-python2 /localdisk/thierry/tc_install/py/krebsjobs/submitPovrayRender.py fakeTumMTS-default-typeI-sample00-vbl_3484331.h5 out0340 --clip_ball 240 400 -310 300 --cam_distance_multiplier=1.0 -f --cells --tumor_clip 240 400 -310
+python3 /localdisk/thierry/tc_install/py/krebsjobs/submitPovrayRender.py fakeTumMTS-default-typeI-sample00-vbl_3484331.h5 out0340 --clip_ball 240 400 -310 300 --cam_distance_multiplier=1.0 -f --cells --tumor_clip 240 400 -310
 NOTE: something with the cam_distance_multiplier is still going wrong.
 ffmpeg -r 20 -f image2 -s 1920x1080 -i "fakeTum-gero_3d_8mm-typeI-sample00-gero_3month_to_5mmd-out0%03d.png_slice.png" -vcodec libx264 -crf 25 -pix_fmt yuv420p growth.mp4
 '''
@@ -42,9 +42,9 @@ from os.path import basename, splitext
 
 import krebsutils
 import numpy as np
-import povrayRenderVessels
+from . import povrayRenderVessels
 #from povrayRenderVessels import *
-import povrayEasy
+from . import povrayEasy
 import myutils
 import math
 import copy
@@ -106,8 +106,8 @@ def convert_to_mmHg(o2_in_pg, cell_radii):
 #        return self.cmap(yi/self.levmax, alpha)
       
 def addVBLCells(epv, quantity , cell_hdf_group, options):
-    print('path to vbl group is: %s' % cell_hdf_group.name)
-    print('adding quantity: %s' % quantity)
+    print(('path to vbl group is: %s' % cell_hdf_group.name))
+    print(('adding quantity: %s' % quantity))
     
     position_of_cells= np.asarray(cell_hdf_group['cell_center_pos'])
     radii_of_cells= np.asarray(cell_hdf_group['cell_radii'])
@@ -175,13 +175,13 @@ def addVBLCells(epv, quantity , cell_hdf_group, options):
       
     else:
       print('cells_cm.get_clim()')
-      print(cells_cm.get_clim())
+      print((cells_cm.get_clim()))
       print('data_color.shape')
-      print(data_color.shape)
+      print((data_color.shape))
       data_color = cells_cm.to_rgba(data_color)
-      print(data_color.shape)
+      print((data_color.shape))
       data_color=data_color[:,:3]
-      print(data_color.shape)
+      print((data_color.shape))
       rgb_colors_of_cells=data_color
     
       wbbox = options.wbbox

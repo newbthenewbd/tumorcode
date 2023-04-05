@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -19,7 +19,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 if __name__ == '__main__':
   import os.path, sys
@@ -43,7 +43,7 @@ import mpl_utils
 
 import myutils
 
-from analyzeGeneral import DataTumorTissueSingle, BinsSpecArray, DataVesselRadial, DataVesselSamples, DataBasicVessel, DataDistanceFromCenter
+from .analyzeGeneral import DataTumorTissueSingle, BinsSpecArray, DataVesselRadial, DataVesselSamples, DataBasicVessel, DataDistanceFromCenter
 
 
 
@@ -138,7 +138,7 @@ def plot_data(ax, bins, data, std, color, label):
   data = np.ma.filled(data, 0.)
   std  = np.ma.filled(std, 0.)
   xy, clist = [], []
-  for i in xrange(len(data)):
+  for i in range(len(data)):
     clist.append(0.5*(bins[i]+bins[i+1]))
     xy.append((bins[i], data[i]))
     xy.append((bins[i+1], data[i]))
@@ -186,7 +186,7 @@ def plot_mvd_in_large_bins1(pdfpages, groupslist):
 def plot_mvd_in_large_bins2(pdfpages, groupslist):
   tumorradi = {}
   for key, groups in groupslist:
-    rlist = map(lambda g: dataman.obtain_data('approximate_tumor_radius', g['tumor']), groups)
+    rlist = [dataman.obtain_data('approximate_tumor_radius', g['tumor']) for g in groups]
     tumorradi[key] = np.average(rlist)
   distancemap_spec = 'radial'
 
@@ -241,7 +241,7 @@ if __name__ == '__main__':
   #allgroups = sorted(filter(lambda k: k.startswith('out'), files[0].keys()))
   allgroups = defaultdict(list)
   for f in files:
-    keys = filter(lambda k: k.startswith('out'), f.keys())
+    keys = [k for k in list(f.keys()) if k.startswith('out')]
     for k in keys:
       allgroups[k].append(f[k])
   #allgroups.append('vessels')
@@ -249,7 +249,7 @@ if __name__ == '__main__':
   groupslist = [allgroups[-1], allgroups[len(allgroups)/2]]
   outfn = 'bloodVolume-%s.pdf' % splitext(basename(filenames[0]))[0]
   pprint(groupslist)
-  print '-> %s' % (outfn)
+  print('-> %s' % (outfn))
   with mpl_utils.PdfWriter(outfn) as pdfpages:
     if 0:
       plot_mvd_in_large_bins1(pdfpages, groupslist)

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -51,7 +51,7 @@ if __name__ == '__main__':
     graph = graph.get_filtered(myutils.bbitwise_and(graph['flags'], krebsutils.CIRCULATED))
     
   fieldld = krebsutils.SetupFieldLattice(wbbox, 3, 50., 0.)
-  print fieldld
+  print(fieldld)
   
   edgevalues = graph['pressure']
   edgevalues = edgevalues[graph.edgelist]

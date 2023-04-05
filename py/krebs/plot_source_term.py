@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -51,7 +51,7 @@ if __name__ == '__main__':
   maxp = max(p0_tum, p0_norm) - kdeath/pw
   kpm = 0.5*(kprol - kdeath)*0.2
   ppm = 0.5*(maxp-minp)*0.2
-  o2range = range(5, len(ds_o2), 5)
+  o2range = list(range(5, len(ds_o2), 5))
   
   pdfpages = PdfPages("sources.pdf")
   

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -46,7 +46,7 @@ from krebsjobs.parameters import parameterSetsAdaption
 from krebsutils import typelist 
 
 def worker_on_client(fn, grp_pattern, adaptionParams, num_threads):
-  print('Adaption on %s / %s / param: %s' % (fn, grp_pattern, adaptionParams['name']))
+  print(('Adaption on %s / %s / param: %s' % (fn, grp_pattern, adaptionParams['name'])))
   qsub.printClientInfo()  
   #h5files.search_paths = [dirname(fn)] # so the plotting and measurement scripts can find the original tumor files using the stored basename alone
   #krebsutils.set_num_threads(num_threads)
@@ -66,7 +66,7 @@ def worker_on_client(fn, grp_pattern, adaptionParams, num_threads):
     cluster!
 '''
 def worker_on_client_optimize(fn, grp_pattern, adaptionParams, num_threads, timing):
-  print('Adaption on %s / %s / param: %s' % (fn, grp_pattern, adaptionParams['name']))
+  print(('Adaption on %s / %s / param: %s' % (fn, grp_pattern, adaptionParams['name'])))
   #h5files.search_paths = [dirname(fn)] # so the plotting and measurement scripts can find the original tumor files using the stored basename alone
   #krebsutils.set_num_threads(num_threads)
   
@@ -89,7 +89,7 @@ def worker_on_client_optimize(fn, grp_pattern, adaptionParams, num_threads, timi
 
     
 def run2(parameter_set, filenames, grp_pattern):
-  print 'submitting ...', parameter_set['name']
+  print('submitting ...', parameter_set['name'])
  
 
   num_threads = 1
@@ -105,7 +105,7 @@ def run2(parameter_set, filenames, grp_pattern):
                   change_cwd = True)
 
 def run_optimize(parameter_set, filenames, grp_pattern, timing):
-  print 'submitting ...', parameter_set['name']
+  print('submitting ...', parameter_set['name'])
  
 
   num_threads = 1
@@ -154,18 +154,18 @@ if not qsub.is_client and __name__=='__main__':
           raise AssertionError('pattern "%s" not found in "%s"!' % (goodArguments.grp_pattern, fn))
         else:
           dirs = set.union(dirs,d)
-  except Exception, e:
-    print e.message
+  except Exception as e:
+    print(e.message)
     sys.exit(-1)
   
-  print('Resolved groups: %s' % ','.join(dirs))
+  print(('Resolved groups: %s' % ','.join(dirs)))
   
   #create filename due to former standards
   filenames=[]
   for fn in goodArguments.vesselFileNames:
     filenames.append(fn.name)
   
-  print('getting parameter set with name: %s' %goodArguments.AdaptionParamSetName )
+  print(('getting parameter set with name: %s' %goodArguments.AdaptionParamSetName ))
   factory = getattr(parameterSetsAdaption, goodArguments.AdaptionParamSetName)
   
   if factory.__class__ == list:
@@ -183,13 +183,13 @@ if not qsub.is_client and __name__=='__main__':
         
     #run_optimize(factory, filenames, goodArguments.grp_pattern, goodArguments.time)
     if goodArguments.kc is not None:
-      print("setting kc = %f" % float(goodArguments.kc))
+      print(("setting kc = %f" % float(goodArguments.kc)))
       factory['adaption']['k_c'] = float(goodArguments.kc)
     if goodArguments.ks is not None:
-      print("setting ks = %f" % float(goodArguments.ks))
+      print(("setting ks = %f" % float(goodArguments.ks)))
       factory['adaption']['k_s'] = float(goodArguments.ks)
     if goodArguments.km is not None:
-      print("setting km = %f" % float(goodArguments.km))
+      print(("setting km = %f" % float(goodArguments.km)))
       factory['adaption']['k_m'] = float(goodArguments.km)
   else:
     print("WARNING: factory is not a dict")

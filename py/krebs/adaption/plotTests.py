@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -55,7 +55,7 @@ def plot_asymetric(fn,pp):
     
     pressure_at_vessel=[]
         
-    for NodeA, NodeB in itertools.izip(node_a_index,node_b_index):
+    for NodeA, NodeB in zip(node_a_index,node_b_index):
         pressure_at_vessel.append((pressure_at_nodes[NodeA]+pressure_at_nodes[NodeB])/2 * 7.5)
     pressure_at_vessel = np.array(pressure_at_vessel)
     fig = plt.figure()
@@ -110,7 +110,7 @@ def plot_symetricB(fn,pp):
     
     pressure_at_vessel=[]
         
-    for NodeA, NodeB in itertools.izip(node_a_index,node_b_index):
+    for NodeA, NodeB in zip(node_a_index,node_b_index):
         pressure_at_vessel.append((pressure_at_nodes[NodeA]+pressure_at_nodes[NodeB])/2 * 7.5)
     pressure_at_vessel = np.array(pressure_at_vessel)
     fig = plt.figure()
@@ -165,7 +165,7 @@ def plot_symetricA(fn):
     
     pressure_at_vessel=[]
         
-    for NodeA, NodeB in itertools.izip(node_a_index,node_b_index):
+    for NodeA, NodeB in zip(node_a_index,node_b_index):
         pressure_at_vessel.append((pressure_at_nodes[NodeA]+pressure_at_nodes[NodeB])/2 * 7.5)
     pressure_at_vessel = np.array(pressure_at_vessel)
     fig = plt.figure()
@@ -222,7 +222,7 @@ def plot_symetricIrregular(fn,pp):
     
     pressure_at_vessel=[]
         
-    for NodeA, NodeB in itertools.izip(node_a_index,node_b_index):
+    for NodeA, NodeB in zip(node_a_index,node_b_index):
         pressure_at_vessel.append((pressure_at_nodes[NodeA]+pressure_at_nodes[NodeB])/2 * 7.5)
     pressure_at_vessel = np.array(pressure_at_vessel)
     fig = plt.figure()

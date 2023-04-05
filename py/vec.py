@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -321,7 +321,7 @@ class Vec2(object):
                 ovec = tuple(other)                
         return cmp(self.__vec2__, ovec)
 
-    def __nonzero__(self):
+    def __bool__(self):
         vx, vy = self.__vec2__
         return bool(vx or vy)
 
@@ -587,7 +587,7 @@ class Vec3(object):
                 ovec = tuple(other)                
         return cmp(self.__vec3__, ovec)
 
-    def __nonzero__(self):
+    def __bool__(self):
         vx, vy, vz = self.__vec3__
         return bool(vx or vy or vz)
 

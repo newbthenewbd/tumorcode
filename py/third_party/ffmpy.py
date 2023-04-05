@@ -184,7 +184,7 @@ def _merge_args_opts(args_opts_dict, **kwargs):
     if not args_opts_dict:
         return merged
 
-    for arg, opt in args_opts_dict.items():
+    for arg, opt in list(args_opts_dict.items()):
         if not _is_sequence(opt):
             opt = shlex.split(opt or '')
         merged += opt

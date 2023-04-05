@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -138,7 +138,7 @@ def logmap(arr, Nmin = -2, Nmax = 2):
   def f(x):
     if x < bb[0]:
       return x/bb[0]/N
-    for i in xrange(N-1):
+    for i in range(N-1):
       b1 = bb[i+1]
       if x > b1: continue
       b0 = bb[i]
@@ -162,4 +162,4 @@ def getSortedTimeGroupNames(f):
   gg = myutils.getTimeSortedGroups(f['.'], "out")
   return [ g.name for g in gg ]
 
-from quantities import Prettyfier
+from .quantities import Prettyfier

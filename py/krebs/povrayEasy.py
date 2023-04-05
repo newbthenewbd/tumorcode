@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -134,10 +134,11 @@ def calc_centering_normalization_trafo(bbox_xxyyzz):
     return Transform(center, w)
 ##############################################################################
 
-def ComputeCameraDistanceFactor(cam_fov, (W,H), wbbox):
+def ComputeCameraDistanceFactor(cam_fov, xxx_todo_changeme, wbbox):
     ''' how much distance to keep from an object to get it on screen completely.
         wbbox is only need for the size ratio along x and y axes.
         Camera is supposed to look along the z direction.'''
+    (W,H) = xxx_todo_changeme
     cam_distance_factor = 1.02/math.tan(cam_fov*0.5*math.pi/180.)*0.5
     (object_w, object_h) = (wbbox[1]-wbbox[0], wbbox[3]-wbbox[2])
     ratio = float(W)/float(H)
@@ -161,7 +162,7 @@ class VolumeData(object):
     to povray.
   '''
   def __init__(self, epv, data, worldbox):
-    print 'VolumeData w. worldbox', worldbox
+    print('VolumeData w. worldbox', worldbox)
     self.data = np.asarray(data)  # in case we get a h5 dataset we want to con
     self.worldbox = worldbox
     self.spacing = (worldbox[0,1]-worldbox[0,0])/data.shape[0]
@@ -268,7 +269,7 @@ class EasyPovRayRender(object):
     res = '+W%i +H%i' % res
     imgfn = imgfn.replace('=',r'-') # povray does not like = in filenames
     cmd = povray % ('%s +FN8 %s %s -D %s +O"%s" "%s"' % (res,alpha,num_threads,aa,imgfn, scenefilename))
-    print cmd
+    print(cmd)
     os.system(cmd)
     self.clear()
     return imgfn
@@ -351,13 +352,13 @@ class EasyPovRayRender(object):
       if options.clip_box is None and options.clip_ball is None:
         if options.vessel_clip is not None:
           print("options.vessel_clip:")
-          print(options.vessel_clip)
+          print((options.vessel_clip))
           clip = clipFactory(options.vessel_clip)
         else:
           clip = clipFactory(None)
       else:
         print("apply vessel_clip")
-        print(options.vessel_clip)
+        print((options.vessel_clip))
         clip = clipFactory(options.vessel_clip)
 #        if not options.clip_box is None:
 #          #relativeWorld = [trafo.transform_scalar(x) for x in options.clip_box]
@@ -491,8 +492,8 @@ class EasyPovRayRender(object):
       position, radius, colors_in_rgb, style_object, clip_style_object, clip_object, tempfile.filename)
       self.pvfile.write("#include \"%s\"" % tempfile.filename)
     print("print")
-    print(options.tumor_clip)
-    print(options.clip_ball)
+    print((options.tumor_clip))
+    print((options.clip_ball))
     if options.clip_box is not None:
       if options.tumor_clip is not None:
         #print(options.tumor_clip)
@@ -505,7 +506,7 @@ class EasyPovRayRender(object):
     else:
       if options.tumor_clip is not None:
         print('found tumor_clip at')
-        print(options.tumor_clip)
+        print((options.tumor_clip))
         clip = clipFactory(options.tumor_clip)
       else:
         clip = clipFactory(None)
@@ -563,7 +564,7 @@ class EasyPovRayRender(object):
     difference = vb[1]-vb[0]
     if __debug__:    
       print('Adding Isosuface! See if threshold is reasonable:') 
-      print('vb[1]-vb[0]: %f ' % difference)
+      print(('vb[1]-vb[0]: %f ' % difference))
     threshold = -(level-vb[0])/difference
     if np.isnan(threshold) or np.isinf(threshold):
       threshold = -1.
@@ -678,7 +679,7 @@ def clipFactory(args):
     radius = args[2]
     clip = ClipBall(center, radius)
   else:
-    print('no fiiting clip found to %s' % args)
+    print(('no fiiting clip found to %s' % args))
   return clip
 
 
@@ -761,8 +762,8 @@ def OverwriteImageWithColorbar(options,image_fn, cm, label, output_filename, col
   if not colormap_cells==None:
     if options.cellsColorLimits is not None:
       print('setting colors limits')
-      print(options.cellsColorLimits[0])
-      print(options.cellsColorLimits[1])
+      print((options.cellsColorLimits[0]))
+      print((options.cellsColorLimits[1]))
       colormap_cells.set_clim(vmin=options.cellsColorLimits[0], vmax=options.cellsColorLimits[1])
     ax3 = fig.add_axes([0.65, 0.05, 0.26, 0.018]) # left bottom width height
     c2 = np.linspace(0, 1, 256).reshape(1,-1)
@@ -818,7 +819,7 @@ def OverwriteImageWithColorbar(options,image_fn, cm, label, output_filename, col
 #  bbox0 = Bbox.from_extents([0.1,0.1,2.9,2.9])
   if not options.timepoint==None:
     #ax = fig.add_axes([0.05, 0.05, 0.26, 0.018]) # left bottom width height
-    print("options.timepoint: %i" % options.timepoint)
+    print(("options.timepoint: %i" % options.timepoint))
     days_float = float(options.timepoint)/(24.) # timepoint comes in hours
     ax.text(0.75,-0.025,r"time: %.1f days" % days_float,
              horizontalalignment='left',
@@ -866,17 +867,17 @@ def CreateScene2(vesselgroup, epv, graph, options):
             
         if options.vessel_clip is not None:
           if options.slice_pos is None:
-            print(trafo.w)
+            print((trafo.w))
             options.vessel_clip=(options.vessel_clip[0], (0+options.vessel_clip[1])*trafo.w, (0+options.vessel_clip[2])*trafo.w)
             #options.tumor_clip=('zslice', -100*trafo.w, 100*trafo.w)
         if options.vessel_clip is None:
           if options.slice_pos is not None:
-            print(trafo.w)
+            print((trafo.w))
             options.vessel_clip=('zslice', (options.slice_pos-100)*trafo.w, (options.slice_pos+100)*trafo.w)
             #options.tumor_clip=('zslice', -100*trafo.w, 100*trafo.w)
         if options.vessel_clip is None:
           if options.slice_pos is None:
-            print(trafo.w)
+            print((trafo.w))
             options.vessel_clip=('zslice', (0-100)*trafo.w, (0+100)*trafo.w)
             #options.tumor_clip=('zslice', -100*trafo.w, 100*trafo.w)
             

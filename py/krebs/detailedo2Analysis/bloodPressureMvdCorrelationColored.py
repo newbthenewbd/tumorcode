@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -60,16 +60,16 @@ if __name__ == '__main__':
   filenames = args[:-2]
   pattern_before = args[-2]
   pattern_after  = args[-1]  
-  print '-----------  looking for files  ----------'
+  print('-----------  looking for files  ----------')
   thegroups = []
   thefiles   = {}
   for filename in filenames:
     f = h5files.open(filename)
     thefiles[filename] = f
-    print 'opened -- ', filename,'/',
+    print('opened -- ', filename,'/', end=' ')
     paths_before = myutils.walkh5(f['.'], pattern_before)
     paths_after  = myutils.walkh5(f['.'], pattern_after)
-    print paths_before, paths_after
+    print(paths_before, paths_after)
     for path_before, path_after in zip(paths_before, paths_after):
       vesselgroup_before = f[path_before]
       vesselgroup_after  = f[path_after]
@@ -77,7 +77,7 @@ if __name__ == '__main__':
       assert tumorgroup
       thegroups.append([vesselgroup_before, vesselgroup_after, tumorgroup])  
   
-  prefix, suffix = myutils.splitcommonpresuffix(map(lambda s: basename(s), filenames))
+  prefix, suffix = myutils.splitcommonpresuffix([basename(s) for s in filenames])
   outputbasename, _ = splitext(prefix+suffix)  
   
   fn_measure = join(dirname(outputbasename), 'common-mvd-grad-map-cache.h5')
@@ -88,7 +88,7 @@ if __name__ == '__main__':
     return (f_measure, path)
 
   def cachelocationEnsemble(dataname, groups):
-    groupchecksum = myutils.checksum(*map(lambda g: str(g.file.filename+'/'+g.name), sum(groups, [])))
+    groupchecksum = myutils.checksum(*[str(g.file.filename+'/'+g.name) for g in sum(groups, [])])
     path = ('%s_%s' % (dataname, groupchecksum),)
     return (f_measure, path)
   
@@ -98,10 +98,10 @@ if __name__ == '__main__':
                                       analyzeGeneral.DataVesselSamples(),
                                       DataPressureMvdCorrelation(200., 5, 30., cachelocation, cachelocationEnsemble)])
 
-  print '-----------computing sammples------------'
+  print('-----------computing sammples------------')
   localSamples = dataman.obtain_data('intervascular_map_correlations', thegroups)
   globalSamples = dataman.obtain_data('intervascular_global_correlations', thegroups)
-  print '--------------plotting ---------------'
+  print('--------------plotting ---------------')
 
   with mpl_utils.PageWriter(outputbasename+'_mvd-grad.pdf', fileformats=['svg']) as pdfwriter:
     fig, axes = pyplot.subplots(1,2, figsize = mpl_utils.a4size*np.asarray((0.8,0.2)))
@@ -137,7 +137,7 @@ if __name__ == '__main__':
     tumorCorrelation, tumorP = scipy.stats.pearsonr(samples['mvd'][mask], samples['grad'][mask])
 
     stylestuff = dict(markerfacecolor='none', linewidth=0, ms = 3.)
-    for number, label in numberToLabel.items():
+    for number, label in list(numberToLabel.items()):
 #      combimask = np.logical_and(sampleNumbers == number, maski)
 #      ax.plot(samples['mvd'][combimask], samples['grad'][combimask], color = 'k', markeredgecolor = 'k', marker = vesselTypeMarkers[number], zorder = 2, **stylestuff)
       combimask = np.logical_and(sampleNumbers == number, mask)
@@ -164,7 +164,7 @@ if __name__ == '__main__':
     tumorCorrelation, tumorP = scipy.stats.pearsonr(samples['mvd'][mask], samples['grad'][mask])
     
     stylestuff['ms'] = 5.
-    for number, label in numberToLabel.items():
+    for number, label in list(numberToLabel.items()):
 #      combimask = np.logical_and(sampleNumbers == number, maski)
 #      ax.plot(samples['mvd'][combimask], samples['grad'][combimask], color = 'k', markeredgecolor = 'k', marker = vesselTypeMarkers[number], zorder = 2, **stylestuff)
       combimask = np.logical_and(sampleNumbers == number, mask)

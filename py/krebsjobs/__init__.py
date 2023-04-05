@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -50,10 +50,10 @@ def PrepareConfigurationForSubmission(vessel_fn, name, prepend, config_):
     c = deepcopy(config_)
     vessel_fn_part = MakeVesselFilenamePart(vessel_fn)
     out_fn = join(dstdir, '%s-%s-%s.h5' % (prepend,vessel_fn_part, name))
-    print 'generating tumor run with'
-    print '  vessel:', vessel_fn
-    print '  output:', out_fn
-    print ' paramset:', name
+    print('generating tumor run with')
+    print('  vessel:', vessel_fn)
+    print('  output:', out_fn)
+    print(' paramset:', name)
     c['fn_out'] = out_fn
     c['fn_vessel'] = vessel_fn
     c['paramset_name'] = name
@@ -63,9 +63,9 @@ def PrepareConfigurationForSubmission(vessel_fn, name, prepend, config_):
     c = deepcopy(config_)
     #vessel_fn_part = MakeVesselFilenamePart(vessel_fn)
     out_fn = join(dstdir, '%s-%s.h5' % (prepend,name))
-    print 'generating tumor run no vessels'
-    print '  output:', out_fn
-    print ' paramset:', name
+    print('generating tumor run no vessels')
+    print('  output:', out_fn)
+    print(' paramset:', name)
     c['fn_out'] = out_fn
     c['paramset_name'] = name
     name = splitext(basename(out_fn))[0]

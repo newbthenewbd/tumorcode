@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -31,7 +31,7 @@ Meant for stuff i did with the deal.ii lib!
 import sys, os
 import numpy as np
 from vtk import *
-from vtkcommon import *
+from .vtkcommon import *
 from hdfvessels2vtk import removeUncirculatedVessels
 import math
 
@@ -96,12 +96,12 @@ def radialMeasureCellData(dataset, center, bounds, bin_size):
   celldata = dataset.GetCellData()
   num_data = celldata.GetNumberOfArrays()
 
-  print 'Bins, center=%s, bins=%i, radius=%f, num cells=%i, bin size=%f' % (center, num_bins, max_radius, num_cells, bin_size)
+  print('Bins, center=%s, bins=%i, radius=%f, num cells=%i, bin size=%f' % (center, num_bins, max_radius, num_cells, bin_size))
   # precompute weights and bins for each cell
   rad_weights = np.zeros(num_bins) # normalization constants, one for each bin
   cell_weights = np.zeros(num_cells) # integration weight attached to each cell
   cell_bin     = -np.ones(num_cells, dtype=np.int) # the bin each cell falls into
-  for i in xrange(num_cells):
+  for i in range(num_cells):
     c = dataset.GetCell(i)
     r, w = computeCellBinAndWeight(c, center, bin_size)
     if r >= num_bins:
@@ -120,18 +120,18 @@ def radialMeasureCellData(dataset, center, bounds, bin_size):
     # check if it makes sense to do the measurement
     nc = a.GetNumberOfComponents()
     if nc > 1:
-      print "skipping data '%s' because number of components %i > 1" % (a.GetName(), nc)
+      print("skipping data '%s' because number of components %i > 1" % (a.GetName(), nc))
       continue
     if a.GetDataTypeAsString() not in ('float', 'double'):
-      print "skipping data '%s' because datatype is '%s'" % (a.GetName(), a.GetDataTypeAsString())
+      print("skipping data '%s' because datatype is '%s'" % (a.GetName(), a.GetDataTypeAsString()))
       continue
     res_names.append(a.GetName())
-    print "measuring", a.GetName()
+    print("measuring", a.GetName())
     # allocate result array
     loc_res = np.zeros((2, num_bins))
     getfunc = getattr(a, "GetValue")
     # iterate over all cells, get the data and insert it into the bins
-    for cellnum in xrange(num_cells):
+    for cellnum in range(num_cells):
       bin = cell_bin[cellnum]
       if bin < 0:
         continue
@@ -180,15 +180,15 @@ def vtkFileToRadialHdf(in_filename, h5_group, shell_width = 100.):
   bounds = vtkGetDataSetBounds(dataset)
 
   if 'vessel' in os.path.basename(fn):
-    print 'vessel data detected -> filtering uncirculated'
+    print('vessel data detected -> filtering uncirculated')
     dataset = removeUncirculatedVessels(dataset)
 
   xarr, dens, names, data = radialMeasureCellData(dataset, center, bounds, shell_width)
 
-  print "computing bin volumes"
+  print("computing bin volumes")
   binvol = computeBinVolumes(center, bounds, shell_width, len(xarr))
 
-  for i in xrange(len(dens)):
+  for i in range(len(dens)):
     vol = binvol[i]
     #print vol, dens[i], dens[i]/vol
     dens[i] /= vol
@@ -222,7 +222,7 @@ if __name__ == '__main__':
   import getopt
   
   def exitmsg(msg):
-      print msg
+      print(msg)
       sys.exit(0)
   usage = """
   %s [-o | -a filename] [-g groupname] input
@@ -230,7 +230,7 @@ if __name__ == '__main__':
   
   try:
     opt, args = getopt.getopt(sys.argv[1:],'o:a:g:',['help'])
-  except getopt.GetoptError, e:
+  except getopt.GetoptError as e:
     exitmsg(usage)
 
   help = False

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -41,7 +41,7 @@ qsub.parse_args(sys.argv)
 def mkdir(outfn):
   p = dirname(outfn)
   if p and not os.path.isdir(p):
-    print 'creating', p
+    print('creating', p)
     os.makedirs(p)
 
 
@@ -74,7 +74,7 @@ def plot(name, dim=1):
     t = str(os.path.getmtime(fn+'.h5'))
   except OSError:
     return
-  if not fn in checks or t <> checks[fn] or not os.path.isfile(fn+'.pdf'):
+  if not fn in checks or t != checks[fn] or not os.path.isfile(fn+'.pdf'):
     if dim == 1:
       krebs.plotBulkTissue1d.plotit(fn+'.h5')
     elif dim == 2:
@@ -127,7 +127,7 @@ def sp(c, params=dict(), tumorparams=dict()):
 
 def multi_sp(runs, postfix, params=dict(), tumorparams=dict(), return_copy=True):
   d = dict()
-  for k, c in runs.iteritems():
+  for k, c in runs.items():
     c = deepcopy(c)
     c['name'] = c['name']+postfix
     sp(c, params, tumorparams)
@@ -234,7 +234,7 @@ runs_nonecroregions = multi_sp(runs, '_noregions', tumorparams=dict(use_necrotic
 runs.update(runs_imex)
 runs.update(runs_nonecroregions)
 
-for r in runs.itervalues():
+for r in runs.values():
   run(r)
   plot(r['name'])
 
@@ -247,7 +247,7 @@ runs_2d = dict((r['name'], r) for r in runs_2d)
 runs_2d = multi_sp(runs_2d, '_2d', params=dict(lattice_size=Vec((200, 200, 1)), num_threads=4),tumorparams=dict(mixture_stepper='vsimexbdf2', timestep_factor=0.5))
 
 
-for r in runs_2d.itervalues():
+for r in runs_2d.values():
   run(r)
   plot(r['name'], dim=2)
 
@@ -338,7 +338,7 @@ def run_numerical_tests():
     
     if 0: #  plot individuals
       for fn in ['prez1d-%s.h5' % n for n in stepper_methods]:
-        print 'plotting', fn
+        print('plotting', fn)
         pdf = mpl_utils.PdfWriter(splitext(fn)[0] + ".pdf")
         fd = Filedata1d(fn)
         for g in fd.groupnames:
@@ -350,7 +350,7 @@ def run_numerical_tests():
       fdnames = ['euler', 'vsimexbdf2', 'rk3']
       fds = [ Filedata1d('prez1d-%s.h5' % n) for n in fdnames ]
       for g in fds[0].groupnames[-1:]:
-        print 'plotting', g
+        print('plotting', g)
         comparePlot(pdf, fds, fdnames, g, ['ptc', 'ls', 'vel_0', 'press'], 'Methods')
       pdf.close()    
   
@@ -365,7 +365,7 @@ def run_numerical_tests():
         fds, fdtitles = [], []
         for s, h, m in configs:
           fn ="%s-conv-s%02i-h%0.3f-%s.h5" % (name, s,h,m)
-          print 'plotting', fn
+          print('plotting', fn)
           fds.append(Filedata1d(fn))
           fdtitles.append(title_format % (s,h,m))
         iwidth = float(fds[0].f['parameters']['tumor'].attrs.get('interface_width',-1))
@@ -419,11 +419,11 @@ def run_numerical_tests():
       pdf = mpl_utils.PdfWriter("performance1.pdf")
       data = []
       for fn in  glob.glob('prez3d-*.h5'):
-        print fn
+        print(fn)
         fd = Filedata1d(fn)
         g = fd.f[fd.groupnames[-1]]
         s = Struct(dict(
-          (k, g.attrs[k]) for k in ['mem_vsize', 'mem_rss', 'real_time', 'time'],
+          (k, g.attrs[k]) for k in ['mem_vsize', 'mem_rss', 'real_time', 'time']
         ))
         s['stepper'] = fd.f.attrs['stepper']
         s['size'] = fd.f['field_ld'].attrs['SIZEX']
@@ -431,7 +431,7 @@ def run_numerical_tests():
       data2 = collections.defaultdict(list)
       for d in data:
         data2[(d['stepper'])].append(d)
-      for k, l in data2.iteritems():
+      for k, l in data2.items():
         l.sort(key = lambda d: d.size)
         l = myutils.zipListOfDicts(l, numpy_output=True)
         l['mem_rss'] /= (1024.**2)
@@ -443,7 +443,7 @@ def run_numerical_tests():
       fig = plt.figure()
       plt.xlabel('lateral size')
       plt.ylabel('mem [Mb]')
-      for stepper, l in data2.iteritems():
+      for stepper, l in data2.items():
         plt.plot(l['size'], l['mem_vsize'], label='%s, rss' % (stepper))
         plt.plot(l['size'], l['mem_rss'], label='%s, vsize' % (stepper))
       plt.legend()
@@ -452,7 +452,7 @@ def run_numerical_tests():
       fig = plt.figure()
       plt.xlabel('lateral size')
       plt.ylabel('mem / sites [bytes]')
-      for stepper, l in data2.iteritems():
+      for stepper, l in data2.items():
         plt.plot(l['size'], l['mem_vsize']*(1024**2)/l['dofs'], label='%s, rss' % (stepper))
         plt.plot(l['size'], l['mem_rss']*(1024**2)/l['dofs'], label='%s, vsize' % (stepper))
       plt.legend()
@@ -461,7 +461,7 @@ def run_numerical_tests():
       fig = plt.figure()
       plt.xlabel('lateral size')
       plt.ylabel('run time / sim time [s]')
-      for stepper, l in data2.iteritems():
+      for stepper, l in data2.items():
         plt.plot(l['size'], l['real_time']/l['time'], label='%s' % (stepper))
       plt.legend()
       pdf.savefig(fig)
@@ -469,7 +469,7 @@ def run_numerical_tests():
       fig = plt.figure()
       plt.xlabel('lateral size')
       plt.ylabel('run time / (sim time $\cdot$ sites) [$\mu$s]')
-      for stepper, l in data2.iteritems():
+      for stepper, l in data2.items():
         plt.plot(l['size'], l['real_time']*(1000**2)/l['dofs']/l['time'], label='%s' % (stepper))
       plt.legend()
       pdf.savefig(fig)

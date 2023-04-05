@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -19,7 +19,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import os,sys
 from os.path import basename, dirname, join, splitext, commonprefix
@@ -155,7 +155,9 @@ def InsertGraphColors(vesselgraph, ifffield, data_name, automatic_scale=False, m
   return cm
 
 
-def renderSliceWithDistribution((vessel_ld, vessel_graph, data_name), (volume_ld, volumedata), imagefn, label, options, max_conc=None):
+def renderSliceWithDistribution(xxx_todo_changeme, xxx_todo_changeme1, imagefn, label, options, max_conc=None):
+  (vessel_ld, vessel_graph, data_name) = xxx_todo_changeme
+  (volume_ld, volumedata) = xxx_todo_changeme1
   wbbox = volume_ld.worldBox
   options.wbbox=wbbox
   trafo = calc_centering_normalization_trafo(wbbox)
@@ -191,7 +193,9 @@ def renderSliceWithDistribution((vessel_ld, vessel_graph, data_name), (volume_ld
   DoTheRendering('slice_at_%0.1f_percent'%planeZCoord+imagefn, options)
     
 
-def renderSlice((vessel_ld, vessel_graph, data_name), (volume_ld, volumedata), imagefn, label, kwargs):
+def renderSlice(xxx_todo_changeme2, xxx_todo_changeme3, imagefn, label, kwargs):
+  (vessel_ld, vessel_graph, data_name) = xxx_todo_changeme2
+  (volume_ld, volumedata) = xxx_todo_changeme3
   kwargs = deepcopy(kwargs)
 
   wbbox = vessel_ld.worldBox
@@ -213,7 +217,8 @@ def renderSlice((vessel_ld, vessel_graph, data_name), (volume_ld, volumedata), i
     CallPovrayAndOptionallyMakeMPLPlot(epv, imagefn, cm, label, **kwargs)
 
 
-def renderVasculatureWTumor((vessel_ld, vessel_graph, data_name), gtumor, imagefn, label, kwargs):
+def renderVasculatureWTumor(xxx_todo_changeme4, gtumor, imagefn, label, kwargs):
+  (vessel_ld, vessel_graph, data_name) = xxx_todo_changeme4
   kwargs = deepcopy(kwargs)
 
   wbbox = vessel_ld.worldBox
@@ -295,8 +300,8 @@ def renderScene(drug_grp, imagefn, options):
   #po2vessels, po2field_ld, po2field, parameters = dataman('detailedPO2', po2group)
   #po2vessels = np.average(po2vessels, axis=0)
   #print 'po2vessels:', po2vessels.min(), po2vessels.max()
-  print 'ifpfield:', np.amin(iff_pressure_field), np.amax(iff_pressure_field)
-  print 'drug_conc_field:', np.amin(drug_conc_field), np.amax(drug_conc_field)
+  print('ifpfield:', np.amin(iff_pressure_field), np.amax(iff_pressure_field))
+  print('drug_conc_field:', np.amin(drug_conc_field), np.amax(drug_conc_field))
 
   #vessel_ld = krebsutils.read_lattice_data_from_hdf(gvessels['lattice'])
   vessel_ld = krebsutils.read_lattice_data_from_hdf_by_filename(str(gvessels.file.filename),str(gvessels.name)+'/lattice')
@@ -333,7 +338,7 @@ def renderScene(drug_grp, imagefn, options):
 
 
 def getMaxConcentration(f):
-  if 'max_conc' not in f.attrs.keys():
+  if 'max_conc' not in list(f.attrs.keys()):
     max_conc=0.0
     paths = myutils.walkh5(f['.'], 'out*')
     for path in paths:
@@ -341,7 +346,7 @@ def getMaxConcentration(f):
         current_max = np.amax(f[path+'/conc'])
         if current_max > max_conc:
           max_conc=current_max
-    print('found max conc over time: %f'%max_conc)
+    print(('found max conc over time: %f'%max_conc))
     #f.attrs.create('max_conc',max_conc)
   return max_conc
     

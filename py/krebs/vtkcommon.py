@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -19,7 +19,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import numpy as np
 import math
@@ -96,12 +96,12 @@ def fromVtkArray(a):
 #  return r
   if nc > 1:
     r = np.zeros((n, nc), dtype=dtype)
-    for i in xrange(n):
-      for j in xrange(nc):
+    for i in range(n):
+      for j in range(nc):
         r[i,j] = a.GetComponent(i, j)
   else:
     r = np.zeros(n, dtype=dtype)
-    for i in xrange(n):
+    for i in range(n):
       r[i] = a.GetValue(i)
   return r
 
@@ -169,7 +169,7 @@ def asVtkIdList(data):
 def fromVtkIdList(idl):
   n = idl.GetNumberOfIds()
   a = np.empty(n, dtype=np.int)
-  for i in xrange(n):
+  for i in range(n):
     a[i] = idl.GetId(i)
   return a
 
@@ -220,7 +220,7 @@ def vtkImageDataToNumpy(dataset, datanames = None):
   for q in vtkIterArrays(celldata):
     arrs[q.GetName()] = (q, celldata)
   if not datanames:
-    datanames = arrs.keys()
+    datanames = list(arrs.keys())
   for dataname in datanames:
     a, d = arrs[dataname]
     arr = fromVtkArray(a)
@@ -326,13 +326,13 @@ def vtkIntegrateData(dataset):
   class ValueHandler:
     def __init__(self, fd):
       self.fd = fd
-      self.fd_arrays = [ fd.GetArray(i) for i in xrange(fd.GetNumberOfArrays()) ]
+      self.fd_arrays = [ fd.GetArray(i) for i in range(fd.GetNumberOfArrays()) ]
       self.value = np.zeros(sum(a.GetNumberOfComponents() for a in self.fd_arrays), dtype = np.double)
     def addinto(self, i, weight):
       v = self.value
       k = 0
       for a in self.fd_arrays:
-	for c in xrange(a.GetNumberOfComponents()):
+	for c in range(a.GetNumberOfComponents()):
 	  v[k] += weight * a.GetComponent(i, c)
 	  k += 1
     def get_values(self):
@@ -345,7 +345,7 @@ def vtkIntegrateData(dataset):
 	  k += 1
 	else:
 	  r = np.empty(nc, dtype = self.value.dtype)
-	  for i in xrange(nc):
+	  for i in range(nc):
 	    r[i] = self.value[k]
 	    k += 1
 	  values.append(r)
@@ -356,7 +356,7 @@ def vtkIntegrateData(dataset):
   
   #integrator = vtk.vtkCellIntegrator()  
   
-  for cell_index in xrange(dataset.GetNumberOfCells()):
+  for cell_index in range(dataset.GetNumberOfCells()):
     c = dataset.GetCell(cell_index)
     #weight = integrator.integrate(dataset, cell_index)
     ok = c.Triangulate(0, id_buffer, pts_buffer)  
@@ -393,11 +393,11 @@ def fromVtkTriangleMesh(vtkds):
   assert isinstance(vtkds, vtk.vtkPolyData)
   triangles = []
   for cell in vtkIterCells(vtkds):
-    if cell.GetCellType() <> vtk.VTK_TRIANGLE:
+    if cell.GetCellType() != vtk.VTK_TRIANGLE:
       raise RuntimeError("non triangle cell encountered")
     t = [ i for i in vtkIterCellPointIds(cell) ]
     triangles.append(t)
-  points = [ vtkds.GetPoint(i) for i in xrange(vtkds.GetNumberOfPoints()) ]
+  points = [ vtkds.GetPoint(i) for i in range(vtkds.GetNumberOfPoints()) ]
   triangles = np.asarray(triangles)
   points = np.asarray(points)
   return points, triangles
@@ -411,8 +411,8 @@ def vtkGetLineComponents(surf):
   num_points = surf.GetNumberOfPoints()
   mask = np.zeros(num_points, dtype=np.int)
   component_num = 0
-  for main_p in xrange(num_points):
-    if mask[main_p] <> 0: continue
+  for main_p in range(num_points):
+    if mask[main_p] != 0: continue
     l = []
     last_p = -1
     p = main_p
@@ -420,7 +420,7 @@ def vtkGetLineComponents(surf):
     #while mask[p] == 0:
     while True:
       l.append(p)
-      if mask[p]<>0:
+      if mask[p]!=0:
         break
       mask[p] = component_num
       pts = []
@@ -444,7 +444,7 @@ def vtkGetLineComponents(surf):
       components.append(l)
   #print mask
   #pprint.pprint(components)
-  points = np.asarray([surf.GetPoint(j)[:2] for j in xrange(num_points)])
+  points = np.asarray([surf.GetPoint(j)[:2] for j in range(num_points)])
   components = [ np.asarray(c, dtype=np.int) for c in components ]
   return components, points
 
@@ -517,7 +517,7 @@ def ZippedRead(Reader, fn):
     org_fn = os.path.splitext(fn)[0]
     f = gzip.open(fn, 'r')
     fd, fn2 = tempfile.mkstemp(suffix='.vtu', dir=os.path.dirname(fn), text=True)
-    print 'unzipping to %s' % fn2
+    print('unzipping to %s' % fn2)
     os.fdopen(fd, 'w').writelines(f)
     fn = fn2
     delete_fn = True
@@ -526,7 +526,7 @@ def ZippedRead(Reader, fn):
     r = Reader()
     r.SetFileName(fn)
     r.Update()
-    if r.GetErrorCode() <> 0:
+    if r.GetErrorCode() != 0:
       raise RuntimeError("%s failed" % str(Reader))
   finally:
     if delete_fn:
@@ -639,7 +639,7 @@ def matplotCmToLt(cm):
   N = cm.N
   c = vtk.vtkLookupTable()
   c.Allocate(N, N)
-  for i in xrange(N):
+  for i in range(N):
     c.SetTableValue(i, *cm(i))
   return c
 

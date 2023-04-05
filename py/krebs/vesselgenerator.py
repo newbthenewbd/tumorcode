@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -19,20 +19,21 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
-#! /usr/bin/env python2
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 import os, sys
 from os.path import join, basename, dirname, splitext
+from functools import reduce
 sys.path.append(join(dirname(__file__),'..'))
 
 import math
 import random
 import numpy as np
-import cStringIO
+import io
 from mystruct import Struct
 # for checksum generation
 import zlib
-import cPickle
+import pickle
 # for tower sampling
 import bisect
 # to run vesselgen
@@ -65,7 +66,7 @@ class VD(Struct):
                       calcflow = None,
                       num_threads = 1,
                       changeRateThreshold = 1.e-3,  # this may be too low for 2d configurations!!!
-                      ).iteritems():
+                      ).items():
       self[k] = kwargs.pop(k, v)
     assert not kwargs
     self.__setattr__ = VD.checked_setattr
@@ -88,7 +89,7 @@ class VD(Struct):
         write a config as boost .info file,
         to be read by the boost::property_tree library
       '''
-      sio = cStringIO.StringIO()
+      sio = io.StringIO()
       def a(s, *args):
         sio.write(s % args)
         sio.write('\n')
@@ -220,7 +221,7 @@ def weighted_choice(items, weights):
 
 def checksum(obj):
   ''' python object to checksum, used to generate random seeds from some configuration '''
-  return zlib.crc32(cPickle.dumps(obj)) & 0xffffffff
+  return zlib.crc32(pickle.dumps(obj)) & 0xffffffff
 
 
 def getAbsolutePosition(pos, shape):
@@ -463,7 +464,7 @@ if __name__ == '__main__':
     vd.outfilename = vd.name
     #vd.full_debug_output = True
     configstring = vd.generate_info_string()
-    print 'running: ', configstring
+    print('running: ', configstring)
     krebsutils.run_vesselgen(configstring)
   if 0:
     size = (10, 10, 10)

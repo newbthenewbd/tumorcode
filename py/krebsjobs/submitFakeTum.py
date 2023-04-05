@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -162,8 +162,8 @@ if __name__ == '__main__':
         for fn in filenames:
             if not os.path.isfile(fn):
                 raise AssertionError('The file %s is not present!'%fn)
-      except Exception, e:
-        print e.message
+      except Exception as e:
+        print(e.message)
         sys.exit(-1)
     
     #  if not 'auto' in tumorParameterName:
@@ -177,7 +177,7 @@ if __name__ == '__main__':
           #run(fn, tumorParameterName, factory, '4GB', 2.)
           run(fn, tumorParameterName, factory, '2GB', 5.)
   else:
-    print('starting rerun with file: %s' % goodArguments.vesselFileNames[0].name)
+    print(('starting rerun with file: %s' % goodArguments.vesselFileNames[0].name))
     if not os.path.isfile(goodArguments.vesselFileNames[0].name):
       raise AssertionError('The file %s is not present!'%goodArguments.vesselFileNames[0].name)
     string_to_provide = str(goodArguments.vesselFileNames[0].name)

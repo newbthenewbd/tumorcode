@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -56,7 +56,7 @@ def whiskers_plot_parameters(f,pdf):
   average_k_c = np.median(all_bests[:,0])
   average_k_m = np.median(all_bests[:,1])
   average_k_s = np.median(all_bests[:,2])
-  print("averge kc: %f, average k_m: %f, average k_s %f" % (average_k_c, average_k_m,average_k_s))
+  print(("averge kc: %f, average k_m: %f, average k_s %f" % (average_k_c, average_k_m,average_k_s)))
   #f['/'].attrs['average_kc'] = average_k_c
   #f['/'].attrs['average_km'] = average_k_m
   #f['/'].attrs['average_ks'] = average_k_s
@@ -70,7 +70,7 @@ def whiskers_plot_parameters(f,pdf):
   ax.text(1.,average_k_c, "%0.2f" % average_k_c,horizontalalignment='center',verticalalignment='bottom',fontsize=tickfontsize)
   ax.text(2.,average_k_m, "%0.2f" % average_k_m,horizontalalignment='center',verticalalignment='bottom',fontsize=tickfontsize)
   ax.text(3.,average_k_s, "%0.2f" % average_k_s,horizontalalignment='center',verticalalignment='bottom',fontsize=tickfontsize)
-  total_groups = len(f.keys())
+  total_groups = len(list(f.keys()))
   ax.text(1.3,3.8,'%i convergent boundary conditions of\n%i tested' % (len(all_bests), total_groups),fontsize=12)
   #ax.xaxis.set_ticks_([r'$k_c$', r'$k_m$', r'$S_5$'])
   #box1 = plt.boxplot(all_bests)
@@ -104,12 +104,12 @@ def convergenz_phase_diagram(f,pdf):
   no_of_flow = len(flows)
   no_of_pressures = len(pressures)
   Z = np.zeros([no_of_flow,no_of_pressures])
-  for group in f.keys():
+  for group in list(f.keys()):
     print(group)
     group_labels.append(group)
-    print( f[group + '/best'] )
+    print(( f[group + '/best'] ))
     group_bests.append(np.asarray(f[group + '/best']))
-    print( f[group + '/fitness values'] )
+    print(( f[group + '/fitness values'] ))
     fitness_value = np.asarray(f[group + '/fitness values'])[0]
     if fitness_value<0:
       group_fitnesses.append(-1*fitness_value)
@@ -171,19 +171,19 @@ def convergenz_plot(f,pdf):
   param_id_label = []
   param_id = []
   doLogPlot = True
-  for group in f.keys():
+  for group in list(f.keys()):
     print(group)
     group_labels.append(group)
-    print( f[group + '/best'] )
+    print(( f[group + '/best'] ))
     group_bests.append(f[group + '/best'])
-    print( f[group + '/fitness values'] )
+    print(( f[group + '/fitness values'] ))
     fitness_value = np.asarray(f[group + '/fitness values'])[0]
     if fitness_value<0:
       group_fitnesses.append(-1*fitness_value)
       doLogPlot = False
     else:
       group_fitnesses.append(fitness_value)
-    print(f[group].attrs.get('paramListIndex'))
+    print((f[group].attrs.get('paramListIndex')))
     param_id.append(int(f[group].attrs.get('paramListIndex')))
     param_id_label.append('%i %s' % (f[group].attrs.get('paramListIndex') , group[0:5]) )
   group_fitnesses_mapped = np.zeros(len(group_fitnesses))
@@ -205,7 +205,7 @@ def convergenz_plot(f,pdf):
 def find_convergent_groups(f):
   convergent_groups=[]
   variance_stuff = False
-  for group in f.keys():
+  for group in list(f.keys()):
     if variance_stuff:
       convergent_groups.append(group)
     else:
@@ -218,17 +218,17 @@ def redo_adaption_for_convergent_sets(f):
   print("starting redo...")
   convergent_groups = find_convergent_groups(f)
   for group in convergent_groups:
-    print("Found group: %s" % group)
+    print(("Found group: %s" % group))
     inputFileName = f[group].attrs.get('vfile')
     vessel_grp = f[group].attrs.get('vessel_grp')
     setName = f[group].attrs.get('params')
     paramSetIndex = f[group].attrs.get('paramListIndex')
     print("redo:")
-    print("file: %s,\t group: %s,\t set: %s,\t index: %i\n"% (inputFileName,vessel_grp,setName,paramSetIndex))
+    print(("file: %s,\t group: %s,\t set: %s,\t index: %i\n"% (inputFileName,vessel_grp,setName,paramSetIndex)))
     factory = getattr(parameterSetsAdaption, setName)
     factory = factory[paramSetIndex]
     bests = np.asarray(f[group + '/best'])
-    print("bests found: %s " % bests)
+    print(("bests found: %s " % bests))
     factory['adaption'].update(
         k_c = bests[0],
         k_m = bests[1],

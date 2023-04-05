@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -59,7 +59,7 @@ class DataHematocritSolver(object):
           force = grp['edges/h_force'],
           press = grp['nodes/h_press'],
         )
-        for k, v in d.iteritems():
+        for k, v in d.items():
           d[k] = np.asarray(v)
         return d
 

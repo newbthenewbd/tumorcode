@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -98,7 +98,7 @@ class MeasurementInfo(object):
     self.sample_length = 30.
     self.cachelocation_callback = None
     self.distancemap_spec = 'radial'
-    for k,v in kwargs.iteritems():
+    for k,v in kwargs.items():
       setattr(self, k, v)
 
 class EnsembleItem(object):
@@ -112,12 +112,12 @@ class EnsembleItem(object):
     self.gtumor = None
     self.vessel_system_length = 0.
     self.initialVesselType = ''
-    for k, v in kwargs.iteritems():
+    for k, v in kwargs.items():
       setattr(self, k, v)
       
 def GetVesselTypeLabel(po2group):
   import re
-  if 'VESSELFILE_MESSAGE' in po2group.file.attrs.keys():
+  if 'VESSELFILE_MESSAGE' in list(po2group.file.attrs.keys()):
     msg = po2group.file.attrs['VESSELFILE_MESSAGE']
   else:
     #generic try
@@ -153,8 +153,8 @@ class EnsembleFiles(object):
       d = collections.defaultdict(list) # path -> list of EnsembleItem
       for e in items:
         d[e.path].append(e)
-      tumor_snapshot_times = dict((k,np.average(map(lambda e: e.time, v))) for k,v in d.items())
-      tumor_snapshot_order = sorted(tumor_snapshot_times.keys(), key = (lambda path: tumor_snapshot_times[path]))
+      tumor_snapshot_times = dict((k,np.average([e.time for e in v])) for k,v in list(d.items()))
+      tumor_snapshot_order = sorted(list(tumor_snapshot_times.keys()), key = (lambda path: tumor_snapshot_times[path]))
       tumor_snapshots      = [(d[path], path, tumor_snapshot_times[path]) for path in tumor_snapshot_order]
     self.files = files
     self.items = items
@@ -198,9 +198,9 @@ def compare_vessel_saturation(dataman, ensemble, pdfwriter):
 
  
 def doit(filenames):
-  dataman = myutils.DataManager(50, map(lambda x: x(), detailedo2Analysis.O2DataHandlers) + [ analyzeGeneral.DataTumorTissueSingle(), analyzeGeneral.DataDistanceFromCenter(), analyzeGeneral.DataBasicVessel(), analyzeGeneral.DataVesselSamples(), analyzeGeneral.DataVesselRadial(), analyzeGeneral.DataVesselGlobal(), analyzeBloodFlow.DataTumorBloodFlow()])
+  dataman = myutils.DataManager(50, [x() for x in detailedo2Analysis.O2DataHandlers] + [ analyzeGeneral.DataTumorTissueSingle(), analyzeGeneral.DataDistanceFromCenter(), analyzeGeneral.DataBasicVessel(), analyzeGeneral.DataVesselSamples(), analyzeGeneral.DataVesselRadial(), analyzeGeneral.DataVesselGlobal(), analyzeBloodFlow.DataTumorBloodFlow()])
   ensemble = EnsembleFiles(dataman, filenames,'po2/adaption/' )
-  out_prefix, out_suffix = myutils.splitcommonpresuffix(map(lambda s: basename(s), filenames))
+  out_prefix, out_suffix = myutils.splitcommonpresuffix([basename(s) for s in filenames])
   output_base_filename = splitext(out_prefix+out_suffix)[0]
   if ensemble.o2ConfigName:
     fn_measure = 'detailedo2_%s_common.h5' % ensemble.o2ConfigName
@@ -249,7 +249,7 @@ if __name__ == '__main__':
     for fn in filenames:
       if not os.path.isfile(fn):
         raise AssertionError('The file %s is not present!'%fn)
-  except Exception, e:
-    print e.message
+  except Exception as e:
+    print(e.message)
     sys.exit(-1)
   doit(filenames)

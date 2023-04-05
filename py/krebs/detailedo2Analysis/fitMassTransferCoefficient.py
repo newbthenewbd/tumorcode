@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -50,8 +50,8 @@ import scipy.optimize
 
 iteration = 0
 
-fitCases = ['nair_uptake', 'nair_release'] + map(lambda i: 'moschandreou_case%02i' % i, range(6))
-fitCases = map(lambda s: (s, singleVesselParameterSets.literature_cases[s]), fitCases)
+fitCases = ['nair_uptake', 'nair_release'] + ['moschandreou_case%02i' % i for i in range(6)]
+fitCases = [(s, singleVesselParameterSets.literature_cases[s]) for s in fitCases]
 
 moschandreou_s_vs_r = np.asarray([
   (6.,  0.848),
@@ -105,7 +105,7 @@ def GetLastSatSample(group):
 
 def GetDataSeries(f):
   dat = []
-  for i in xrange(6):
+  for i in range(6):
     g = f['moschandreou_case%02i' % i]
     r, s = GetLastSatSample(g)
     dat.append((r,s))
@@ -120,7 +120,8 @@ def GetDataSeries(f):
 
 
 
-def PlotDat((dat, coeffs), c):
+def PlotDat(xxx_todo_changeme2, c):
+  (dat, coeffs) = xxx_todo_changeme2
   label = 'c1 = %f, c2 = %f, cg = %f' % (coeffs[0], coeffs[1], 0.)
   ax.plot(dat[0][0], dat[0][1], lw = 0, marker = '+', mew = 1, ms = 5, c = c)
   ax.plot(dat[1][0], dat[1][1], lw = 0, marker = 'x', mew = 1, ms = 5, c = c)
@@ -132,16 +133,18 @@ if 0:
 
   #pmap = np.exp
   #pmapInv = np.log
-  def pmap((p1, p2)):
+  def pmap(xxx_todo_changeme):
+    (p1, p2) = xxx_todo_changeme
     return math.exp(p1), math.exp(p2), nu_fit_coeffs[2]
   
-  def pmapInv((p1, p2, p3))  :
+  def pmapInv(xxx_todo_changeme1)  :
+    (p1, p2, p3) = xxx_todo_changeme1
     return math.log(p1), math.log(p2)
   
   def ObjectiveFunction(fitParameters):
     global iteration
-    print '----- iteration %i ------' % iteration
-    print 'ObjectiveFunction: mc=%s, c=%s' % (fitParameters, pmap(fitParameters))  
+    print('----- iteration %i ------' % iteration)
+    print('ObjectiveFunction: mc=%s, c=%s' % (fitParameters, pmap(fitParameters)))  
     fitParameters = pmap(fitParameters)  
     f = ProduceData(fitParameters, 'optimization_iteration%03i.h5' % iteration)
     d = GetDataSeries(f)
@@ -151,9 +154,9 @@ if 0:
     pyplot.draw()
     err = d_ - targetdata[1]
     #err[-2:] *= 20
-    print 'currentdata = ', d_
-    print 'currenterror = ', err
-    print 'error = ',np.sum(err**2, axis=0)
+    print('currentdata = ', d_)
+    print('currenterror = ', err)
+    print('error = ',np.sum(err**2, axis=0))
     iteration += 1
     return err
   
@@ -168,12 +171,12 @@ if 0:
   initial_coeff, kwargs,  = pmapInv(nu_fit_coeffs), dict(epsfcn = 0.2, factor=5.)
   result = scipy.optimize.leastsq(ObjectiveFunction, initial_coeff, full_output=True, **kwargs)
   
-  print result[3]
+  print(result[3])
   coeff = pmap(result[0])
   result_f = ProduceData(coeff, 'optimization_iteration%03i.h5' % iteration)
   result_dat = GetDataSeries(result_f)
   PlotDat((result_dat, coeff), 'r')
-  print 'RESULT = ',coeff
+  print('RESULT = ',coeff)
   pyplot.show()
 
 else:

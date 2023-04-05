@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -19,7 +19,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 if __name__ == '__main__':
   import os.path, sys
@@ -105,7 +105,7 @@ def ComputeSphereVesselDensity(dataman, vesselgroup, nodalLevel, ld, distancemap
 
 
 def ComputeIsosurfaceRadialCurve(dataman, vesselgroup, tumorgroup, bins_spec, distance_distribution_name, ld, cachelocation, WorkerFunction):
-    print 'compute', WorkerFunction.__name__, vesselgroup.name
+    print('compute', WorkerFunction.__name__, vesselgroup.name)
     vessels = dataman.obtain_data('vessel_graph', vesselgroup, ['position', 'flags'])
     pos = vessels['position']
     distancemap, ld = krebs.analyzeGeneral.obtain_distmap_(dataman, tumorgroup, distance_distribution_name, ld)
@@ -118,7 +118,7 @@ def ComputeIsosurfaceRadialCurve(dataman, vesselgroup, tumorgroup, bins_spec, di
         data = np.nan
       else:
         data = WorkerFunction(dataman, vesselgroup, dist, ld, distancemap, level)
-        print 'level %f, data %f' % (level, data)
+        print('level %f, data %f' % (level, data))
       results.append(data)
     return results, bins
 
@@ -142,10 +142,10 @@ def GetRootVesselData(vessels, data):
 def ComputeRootFlowInfo(dataman, vesselgroup, cachelocation):
     def write(gmeasure, groupname):
       vessels = dataman.obtain_data('vessel_graph', vesselgroup, ['flags', 'flow', 'radius'])
-      edgeData = zip(vessels['flow'], vessels['radius'])      
+      edgeData = list(zip(vessels['flow'], vessels['radius']))      
       arterialData, venousData = GetRootVesselData(vessels, edgeData)
-      arterialFlow, arterialRadius = zip(*arterialData)
-      venousFlow, venousRadius = zip(*venousData)
+      arterialFlow, arterialRadius = list(zip(*arterialData))
+      venousFlow, venousRadius = list(zip(*venousData))
       d = dict(
         totalFlow         = np.sum(arterialFlow),
         arterialCount     = len(arterialData),
@@ -154,11 +154,11 @@ def ComputeRootFlowInfo(dataman, vesselgroup, cachelocation):
         avgVenousRadius   = np.average(venousRadius),
       )
       g = gmeasure.create_group(groupname)
-      for k, v in d.iteritems():
+      for k, v in d.items():
         g.attrs[k] = v
     
     def read(gmeasure, groupname):
-      return dict(gmeasure[groupname].attrs.items())
+      return dict(list(gmeasure[groupname].attrs.items()))
     
     return myutils.hdf_data_caching(read, write, cachelocation[0], ('global', cachelocation[1], 'rootNodeFlowData'), (None, None, 1))
 
@@ -248,7 +248,8 @@ class DataTumorBloodFlow(object):
   ]
 
   @staticmethod
-  def FixUnit_((name, data)):
+  def FixUnit_(xxx_todo_changeme):
+    (name, data) = xxx_todo_changeme
     if 'rBF' in name: data = data*60. # 1/s -> 1/min
     if 'flow' in name: data = data*60.*1.e-12 # um/s -> ml/min
     if 'volume' in name: data = data*1.e-9
@@ -266,7 +267,7 @@ class DataTumorBloodFlow(object):
       has_tumor = tumorgroup is not None
       
       def read(gmeasure, groupname):
-        return dict((k, float(v[...])) for (k,v) in gmeasure[groupname].iteritems())
+        return dict((k, float(v[...])) for (k,v) in gmeasure[groupname].items())
 
       def write(gmeasure, groupname):
         #vessels = krebsutils.read_vesselgraph(vesselgroup, ['flow', 'pressure', 'position', 'flags'])
@@ -285,7 +286,7 @@ class DataTumorBloodFlow(object):
           res = DataTumorBloodFlow.ComputeTotalBloodFlow_(vessels)
 
         g = gmeasure.create_group(groupname)
-        for k,v in res.iteritems():
+        for k,v in res.items():
           g.create_dataset(k, data = v)
 
       #fm = myutils.MeasurementFile(f, h5files)
@@ -314,7 +315,7 @@ class DataTumorBloodFlow(object):
         #print 'estimated tumor volume:', tumor_volume
         #print 'tumor flow:', tumor_flow
         #print 'rBF:', tumor_flow_p_volume*60.
-      data = dict(map(DataTumorBloodFlow.FixUnit_, data.items()))
+      data = dict(list(map(DataTumorBloodFlow.FixUnit_, list(data.items()))))
       return data
     
     if dataname in ('cum_rbf_radial', 'avg_surf_vessel_rad_radial', 'sphere_vessel_density'):
@@ -352,11 +353,11 @@ def obtain_averaged_blood_flow(dataman, files, group, cachelocation):
     tumorgroup    = krebs.analyzeGeneral.try_find_tumor_group_from_vesselgroup(vesselgroup)
     rdata = dataman.obtain_data('blood_flow_rbf', vesselgroup, tumorgroup, cachelocation(f[group])).copy()
     data = dataman.obtain_data('blood_flow', vesselgroup, tumorgroup, cachelocation(f[group])).copy()
-    for k, v in data.iteritems():
+    for k, v in data.items():
       l[k].append(v)
-    for k, v in rdata.iteritems():
+    for k, v in rdata.items():
       l[k].append(v)
-  for k, v in l.iteritems():
+  for k, v in l.items():
     l[k] = np.average(v), np.std(v)
   return l
 
@@ -396,7 +397,7 @@ def GetVesselTypeLabel(group):
     return 'unkown'
   m = m.group(1)
   # specific naming scheme for paper
-  from detailedo2Analysis.plotsForPaper import RewriteVesselLabel
+  from .detailedo2Analysis.plotsForPaper import RewriteVesselLabel
   return RewriteVesselLabel(m)
 
 
@@ -418,7 +419,7 @@ if __name__ == '__main__':
   allgroups = list(itertools.chain.from_iterable((f[g] for g in groupnames) for f in files))
 
   # determination of storage file, copied from analyzeVesselsBulkTumor
-  prefix, suffix = myutils.splitcommonpresuffix(map(lambda s: basename(s), filenames))
+  prefix, suffix = myutils.splitcommonpresuffix([basename(s) for s in filenames])
   outputbasename, _ = splitext(prefix+suffix)
   fn_measure = 'common-radial-cache.h5'
   f_measure = h5files.open(fn_measure, 'a')
@@ -429,7 +430,7 @@ if __name__ == '__main__':
   with mpl_utils.PdfWriter('bloodFlow-%s.pdf' % outputbasename) as pdfpages:
     def bloodflow(group):
       bv = obtain_averaged_blood_flow(dataman, files, group, cachelocation)
-      print 'of ', group, 'bf = ', bv
+      print('of ', group, 'bf = ', bv)
       def printit(id, label, unit):
         s = r'$%s$ = $%s \pm %s$ [$%s$]' % (
           label, myutils.f2s(bv[id][0],latex=True), myutils.f2s(bv[id][1], latex=True), unit)
@@ -469,7 +470,7 @@ if __name__ == '__main__':
       for g in allgroups:
         groupsByTime[g.name].append(g)
       dataByTime = []
-      for groupname, groups in groupsByTime.iteritems():
+      for groupname, groups in groupsByTime.items():
         curves = obtain_radial_curves(dataman, groups, cachelocation)
         curves = np.average(curves, axis = 0)
         data, bins, fuck, density = curves
@@ -479,7 +480,7 @@ if __name__ == '__main__':
         axes[0].plot(bins, data, label = GetTimeLabel(groups[0]))
         axes[1].plot(bins, fuck)
         axes[2].plot(bins, density)
-      dataByTime = sorted(dataByTime, key = lambda (t, v): t)
+      dataByTime = sorted(dataByTime, key = lambda t_v: t_v[0])
       if len(dataByTime)>1:
         ax0twin = axes[0].twinx()
         ax0twin.plot(bins, dataByTime[1][1] / dataByTime[0][1], color = 'k', label = 'ratio')
@@ -496,7 +497,7 @@ if __name__ == '__main__':
       groupsByTime = collections.defaultdict(list)
       for g in allgroups:
         groupsByTime[g.name].append(g)
-      for groupname, groups in groupsByTime.iteritems():
+      for groupname, groups in groupsByTime.items():
         fig, ax = pyplot.subplots(1,1, figsize = mpl_utils.a4size*np.array([0.5, 0.2]))
         curves = obtain_radial_curves(dataman, groups, cachelocation)
         for data, bins, _, _ in curves:
@@ -515,9 +516,9 @@ if __name__ == '__main__':
         groupsByTimeAndType[g.name][GetVesselTypeLabel(g)].append(g)
         
     if 0:
-      for timeName, byType in sorted(groupsByTimeAndType.items(), key = lambda (a,b): a):
+      for timeName, byType in sorted(list(groupsByTimeAndType.items()), key = lambda a_b2: a_b2[0]):
         fig, ax = pyplot.subplots(1,1, figsize = mpl_utils.a4size*np.array([0.5, 0.2]))
-        for typeName, groups in sorted(byType.items(), key = lambda (a,b): a):
+        for typeName, groups in sorted(list(byType.items()), key = lambda a_b1: a_b1[0]):
           curves = obtain_radial_curves(dataman, groups, cachelocation)
           curves = np.average(curves, axis=0)
           data, bins, fuck, density = curves
@@ -528,12 +529,12 @@ if __name__ == '__main__':
         pdfpages.savefig(fig)
     
     if 1:
-      for timeName, byType in sorted(groupsByTimeAndType.items(), key = lambda (a,b): a):
+      for timeName, byType in sorted(list(groupsByTimeAndType.items()), key = lambda a_b3: a_b3[0]):
         fig, axes = pyplot.subplots(3, 1, figsize = mpl_utils.a4size*np.array([0.5, 0.6]))
-        for i, (typeName, groups) in enumerate(sorted(byType.items(), key = lambda (a,b): a)):
+        for i, (typeName, groups) in enumerate(sorted(list(byType.items()), key = lambda a_b: a_b[0])):
           flowInfos = [ ComputeRootFlowInfo(dataman, group, cachelocation(group)) for group in groups ]
           flowInfos = myutils.zipListOfDicts(flowInfos) # -> dicts of numpy arrays
-          print timeName, typeName#,'\n', flowInfos
+          print(timeName, typeName)#,'\n', flowInfos
           axes[0].plot(flowInfos['arterialCount'], flowInfos['totalFlow'], colors[i], lw = 0., marker = '>', markeredgecolor = colors[i], label = typeName)
           axes[1].plot(flowInfos['avgArterialRadius'], flowInfos['totalFlow'], colors[i], lw = 0., marker = '>', markeredgecolor = colors[i], label = typeName)
           axes[2].plot(flowInfos['arterialCount'], flowInfos['avgArterialRadius'], colors[i], lw = 0., marker = '>', markeredgecolor = colors[i], label = typeName)
@@ -548,7 +549,7 @@ if __name__ == '__main__':
     if 1:
       tommHg = krebs.quantities.kPa.asNumber(krebs.quantities.mmHg)
       x = np.linspace(-200., 200., 400)
-      y = map(lambda x: tommHg*krebsutils.PressureRadiusRelation(x, False), x)
+      y = [tommHg*krebsutils.PressureRadiusRelation(x, False) for x in x]
       fig, ax = pyplot.subplots(1, 1, figsize = mpl_utils.a4size*np.array([0.5, 0.3]))
       ax.plot(x, y)
       ax.set(xlabel = 'vessel radius $r$ [$\mu m$]', ylabel = 'pressure boundary condition $p^{(BC)}$ [$mmHg$]')

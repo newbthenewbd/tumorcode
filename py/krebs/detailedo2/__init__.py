@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -19,7 +19,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import os, sys
 from os.path import join, basename, dirname, splitext
@@ -39,7 +39,7 @@ from copy import deepcopy
 from krebsjobs.parameters import parameterSetsO2
 import krebsutils # import of this must come in front of import of detailedo2 libs because some required initialization stuff on the c++ side (see mainboost.cpp)
 if sys.flags.debug:
-  print 'detailedo2 DEBUG MODE'
+  print('detailedo2 DEBUG MODE')
   detailedo2current = __import__('libdetailedo2_d', globals(), locals())
   #detailedo2legacy = __import__('libdetailedo2legacy_d', globals(), locals())
 else:
@@ -70,7 +70,7 @@ def HandleNdimensions(*argsToRavel):
 @HandleNdimensions(0)
 def PO2ToSaturation(po2, parameters):
   '''call c++ also convert arrays to the expected format'''
-  print('shape of po2: %s' % po2.shape)
+  print(('shape of po2: %s' % po2.shape))
   sat = detailedo2current.computeSaturation_(po2, parameters)
   print('calculated saturation:')
   print(sat)
@@ -150,12 +150,12 @@ def copyVesselnetworkAndComputeFlow(gvdst, gv, bloodflowparams):
 
 
 def readParameters(po2group):
-  print('detailed o2 group found at %s' % po2group)
+  print(('detailed o2 group found at %s' % po2group))
   returnDict = dict()
-  if('simType' in po2group.parent.attrs.keys()):
+  if('simType' in list(po2group.parent.attrs.keys())):
     if(po2group.parent.attrs['simType'] == 'MTS'):
       print('assume o2 parameters at: /parameters/o2_sim')
-      for aKey in po2group.parent.parent.parent['parameters/o2_sim'].attrs.keys():
+      for aKey in list(po2group.parent.parent.parent['parameters/o2_sim'].attrs.keys()):
         temp = po2group.parent.parent.parent['parameters/o2_sim'].attrs[aKey]
         if (type(temp) == type(str())):
           returnDict[aKey] = temp
@@ -168,7 +168,7 @@ def readParameters(po2group):
 #    for aKey in po2group.parent.parent['parameters/o2'].attrs.keys():
 #      temp = po2group.parent.parent['parameters/o2'].attrs[aKey]
     ''' in old dataset, the parameters were stored as groups'''
-    for aKey in po2group.parent.parent['parameters/o2'].keys():
+    for aKey in list(po2group.parent.parent['parameters/o2'].keys()):
       temp = po2group.parent.parent['parameters/o2'][aKey]
       if (type(temp) == type(str())):
         returnDict[aKey] = temp
@@ -179,14 +179,14 @@ def readParameters(po2group):
         '''
         #p[aKey] = np.asscalar(temp)
         #p[aKey] = np.asscalar(np.asarray(temp))
-        print('key: %s' % aKey)
+        print(('key: %s' % aKey))
         returnDict[str(aKey)] = str(temp[()])
   return returnDict
   
 
 def sampleVessels(po2group, vesselgroup, tumorgroup, sample_length):
   po2vessels  = np.asarray(po2group['po2vessels'])
-  if po2vessels.shape[0] <> 2: po2vessels = np.transpose(po2vessels)
+  if po2vessels.shape[0] != 2: po2vessels = np.transpose(po2vessels)
   po2field  = np.asarray(po2group['po2field'])
   ld = krebsutils.read_lattice_data_from_hdf(po2group['field_ld'])
   parameters = readParameters(po2group)
@@ -218,8 +218,8 @@ def getSourceRefs_(po2group):
   return srcVessels, srcTissue
 
 def OpenVesselAndTumorGroups(po2group):
-  print('attempt to read from %s' % po2group)
-  if('simType' in po2group.parent.attrs.keys()):
+  print(('attempt to read from %s' % po2group))
+  if('simType' in list(po2group.parent.attrs.keys())):
     if(po2group.parent.attrs['simType']=='MTS'):
       print('found MTS simulation')
       gvessels = po2group.parent.parent['vessels']
@@ -274,13 +274,13 @@ def CopyInputFileInfo_(fdst, fsrc):
 
 
 def computePO2(parameters):
-  print("Computing o2 for file: %s" % parameters['input_file_name'])
-  print("at group: %s" % parameters['input_group_path'])
+  print(("Computing o2 for file: %s" % parameters['input_file_name']))
+  print(("at group: %s" % parameters['input_group_path']))
   parameters['vessel_group_path'] = "recomputed_flow"
   parameters['output_group_path'] = "po2/" + parameters['input_group_path']
   output_buffer_name = basename(parameters['output_file_name']).rsplit('.h5')[0]
   parameters['output_file_name'] = "%s-%s.h5" % (output_buffer_name, parameters['input_group_path'])  
-  print("storing in file: %s at %s" % (parameters['output_file_name'], parameters['output_group_path']))
+  print(("storing in file: %s at %s" % (parameters['output_file_name'], parameters['output_group_path'])))
   tumorgroup = None
   parameters['tumor_file_name'] = 'none'
   parameters['tumor_group_path'] = 'none'
@@ -344,8 +344,9 @@ def DiffRadiusToConsCoeff(rd, kd):
 chb_of_rbcs = 340./64458. # in mol/l, entspricht 34 g/dl
 
 
-def doit(fn, pattern, (parameters, parameters_name)):
+def doit(fn, pattern, xxx_todo_changeme):
   #fnpath = dirname(fn)
+  (parameters, parameters_name) = xxx_todo_changeme
   fnbase = basename(fn).rsplit('.h5')[0]
   #outfn_no_ext = join(fnpath, fnbase+'_detailedpo2')
 
@@ -363,7 +364,7 @@ def doit(fn, pattern, (parameters, parameters_name)):
     parameters['output_file_name']='o2_' + fnbase+'_'+parameters_name+'.h5'
     #cachelocation = ('o2_' + fnbase+'_'+parameters_name+'.h5', group_path)
     computePO2(parameters)
-    print('computed po2 stored in: %s' % parameters['output_file_name'])
+    print(('computed po2 stored in: %s' % parameters['output_file_name']))
     #output_links.append(ref)
   #return output_links
   

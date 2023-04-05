@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -79,7 +79,7 @@ class Measure(object):
     # this code is for recording integral and other metrics at short intervalls
     dt = t - self.lastt
     self.lastt = t
-    print("try to open: %s" % self.outfilename)
+    print(("try to open: %s" % self.outfilename))
     with h5py.File(self.outfilename, 'r+') as f:
       shape = conc[0].shape
       g = f.require_group('measurements').require_group('drug_local_integral')
@@ -102,7 +102,7 @@ class Measure(object):
         g = f.require_group('frames')
         idx = g.attrs.get('num_frames', 0)
         g.attrs.modify('num_frames', idx+1)
-        print 'write t = %f, idx = %i' % (t, idx)
+        print('write t = %f, idx = %i' % (t, idx))
         gt = g.create_group('%04i' % idx)
         gt.attrs['time'] = t
         gt.attrs['number'] = idx
@@ -150,7 +150,7 @@ def run(outdir, name, tumorfn, config, p=dict(), piff=dict(), pdrug=dict(), grp_
       d = myutils.walkh5(f, grp_pattern)
       assert len(d), ' pattern "%s" not found in "%s"!' % (grp_pattern, fn)
       dirs =set.union(dirs, d)
-  print 'and resolved groups therein: %s' % ','.join(dirs)  
+  print('and resolved groups therein: %s' % ','.join(dirs))  
   
   c = deepcopy(config)
   #c.update(p)
@@ -172,10 +172,10 @@ def run(outdir, name, tumorfn, config, p=dict(), piff=dict(), pdrug=dict(), grp_
   else:
     c['ift_measure']['moviefilename'] = join(outdir, name+'_'+moviename+'_'+stripped_name+'.h5')
 
-  print '----------------------------------------'
-  print 'submitting %s with params' % c['fn_out']
+  print('----------------------------------------')
+  print('submitting %s with params' % c['fn_out'])
   myutils.pprint(c)
-  print '----------------------------------------'
+  print('----------------------------------------')
 
   run_simple(c['fn_out'], c)
   print('---- run_simple returned ----')
@@ -307,7 +307,8 @@ if 0: # drug stuff
     longinfusion = dict(inject_t = 1000 * 3600, inject_max = 1, inject_mode = 'DF_INJECT_MODE_JUMP')
     decay = dict(inject_t = 1. * 3600, inject_max = 1, inject_mode = 'DF_INJECT_MODE_EXP')
 
-    def make_infusion((name, cc), is_long):
+    def make_infusion(xxx_todo_changeme, is_long):
+      (name, cc) = xxx_todo_changeme
       c_inf = deepcopy(cc)
       c_inf['ift'].update(longinfusion if is_long else infusion)
       f = c_inf['ift']['comprates_k12']/(c_inf['ift']['comprates_k21']+1.e-13)*c_inf['ift']['inject_max']
@@ -315,13 +316,15 @@ if 0: # drug stuff
       name = name+('-linf' if is_long else '-inf')
       return name, c_inf
 
-    def make_bolus((name, cc)):
+    def make_bolus(xxx_todo_changeme1):
+      (name, cc) = xxx_todo_changeme1
       c_inj = deepcopy(cc)
       c_inj['ift'].update(decay)
       name = name+'-inj'
       return name, c_inj
 
-    def make_movie((name, cc)):
+    def make_movie(xxx_todo_changeme2):
+      (name, cc) = xxx_todo_changeme2
       cc = deepcopy(cc)
       cc['ift_measure'].update(movieintervall = 60. * 10., moviefilename = 'movie')
       return name, cc
@@ -371,8 +374,8 @@ if not qsub.is_client and __name__=='__main__':
       with h5py.File(fn, 'r') as f:
         if not f.visititems(find_tum):
           raise AssertionError('Are you sure this is a tumor file???')
-  except Exception, e:
-    print e.message
+  except Exception as e:
+    print(e.message)
     sys.exit(-1)
  
   theParams = getattr(paramIff, goodArguments.Iffparams)

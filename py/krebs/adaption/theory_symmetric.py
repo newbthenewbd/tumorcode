@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -30,7 +30,7 @@ def read_vessel_lengths(vessel_grp):
     node_a_index = np.asarray(vessel_grp['edges/node_a_index'])
     node_b_index = np.asarray(vessel_grp['edges/node_b_index'])
     world_vecs = []
-    for (a,b) in itertools.izip(node_a_index,node_b_index):
+    for (a,b) in zip(node_a_index,node_b_index):
         world_vecs.append(world_pos[a,:]-world_pos[b,:])
     
     l_ges = np.linalg.norm(world_pos[33,:]-world_pos[32,:])
@@ -60,8 +60,8 @@ if __name__ == '__main__':
         total_circulated_length = total_circulated_length + vessel_lengths[number]
     for number in one_total_sequenz:
         delta_p_for_sequenz.append(8.*0.3*vessel_lengths[number]/total_circulated_length)
-    print total_circulated_length
-    print l_ges
+    print(total_circulated_length)
+    print(l_ges)
     dp_ges = 8 * 0.3 #kPa
     r_0 = 23./2.
     etha= 8.*1.2e-6
@@ -72,33 +72,33 @@ if __name__ == '__main__':
     r0 = np.power(under_root,1/4.)
     r00 = vessel_lengths[one_total_sequenz[0]]/50./delta_p_for_sequenz[0]
     print(r0)
-    print("From const. shear: %f" % np.round(r00,1))
+    print(("From const. shear: %f" % np.round(r00,1)))
     
     #first level
     under_root= (Q_ges/2.*8*etha*vessel_lengths[one_total_sequenz[1]])/(delta_p_for_sequenz[1]*np.pi)
     r1 = np.power(under_root,1/4.)
     r11 = vessel_lengths[one_total_sequenz[1]]/50./delta_p_for_sequenz[1]
-    print(np.round(r1,1))
-    print("From const. shear: %f" % np.round(r11,1))
+    print((np.round(r1,1)))
+    print(("From const. shear: %f" % np.round(r11,1)))
     
     #second level
     under_root= (Q_ges/4.*8*etha*vessel_lengths[one_total_sequenz[2]])/(delta_p_for_sequenz[2]*np.pi)
     r2 = np.power(under_root,1/4.)
     r22 = vessel_lengths[one_total_sequenz[2]]/50./delta_p_for_sequenz[2]
-    print(np.round(r2,1))
-    print("From const. shear: %f" % np.round(r22,1))
+    print((np.round(r2,1)))
+    print(("From const. shear: %f" % np.round(r22,1)))
     
     #third level
     under_root= (Q_ges/(2**3)*8*etha*vessel_lengths[one_total_sequenz[3]])/(delta_p_for_sequenz[3]*np.pi)
     r3 = np.power(under_root,1/4.)
     r33 = vessel_lengths[one_total_sequenz[3]]/50./delta_p_for_sequenz[3]
-    print(np.round(r3,1))
-    print("From const. shear: %f" % np.round(r33,1))
+    print((np.round(r3,1)))
+    print(("From const. shear: %f" % np.round(r33,1)))
     
     #fourth level
     under_root= (Q_ges/(2**4)*8*etha*vessel_lengths[one_total_sequenz[4]])/(delta_p_for_sequenz[4]*np.pi)
     r4 = np.power(under_root,1/4.)
     r44 = vessel_lengths[one_total_sequenz[4]]/50./delta_p_for_sequenz[4]
-    print(np.round(r4,1))
-    print("From const. shear: %f" % np.round(r44,1))
+    print((np.round(r4,1)))
+    print(("From const. shear: %f" % np.round(r44,1)))
     

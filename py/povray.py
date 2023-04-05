@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -118,7 +118,7 @@ class Item(ItemBase):
         file.writeln( "%s %s"%(opt[0],', '.join(_toStr(v) for v in opt[1:])) )
       elif opt is not None:
         file.writeln( str(opt) )
-    for key,val in self.kwargs.items():
+    for key,val in list(self.kwargs.items()):
       if _isVector(val):
         val = Vector(*val)
         file.writeln( "%s %s"%(key,val) )
@@ -278,7 +278,7 @@ class Colormap(ItemBase):
         #err = ArgumentError("colormap arguments must be of the form (value1, color1, value2, color2, ...")
         if not len(opts)%2==0:
             raise ValueError("colormap arguments must be of the form (value1, color1, value2, color2, ...")
-        for i in xrange(0,len(opts),2):
+        for i in range(0,len(opts),2):
             val = opts[i]
             col = opts[i+1]
             if not (_isFloat(val) and _isVector(col)):

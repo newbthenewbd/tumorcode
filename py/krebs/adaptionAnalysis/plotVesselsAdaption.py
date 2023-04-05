@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -75,7 +75,7 @@ def getVesselTypes(vessel_groups):
   veins = []
   arteries = []
   capillaries = []
-  if ('edges' in vessel_groups.keys()):# in fact it is only one group!
+  if ('edges' in list(vessel_groups.keys())):# in fact it is only one group!
     g = vessel_groups    
     flags = np.array(krebsutils.read_vessels_from_hdf(g,['flags'])[1])
     circulated = np.bitwise_and(flags,krebsutils.CIRCULATED)
@@ -114,7 +114,7 @@ def printBarPlot_vesseltype_on_root_node_configuration(filenames, pdfpages):
   counter = 0
   for t in 'typeA- typeB- typeC- typeD- typeE- typeF- typeG- typeH- typeI-'.split():
     #print('rBF for type: %s' % t)
-    filteredFiles = filter( lambda fn: t in fn,filenames)
+    filteredFiles = [fn for fn in filenames if t in fn]
   
     files = [h5files.open(fn, 'r+') for fn in filteredFiles]
     groups_of_type = list(itertools.chain.from_iterable(myutils.walkh5(f, 'adaption/recomputed', return_h5objects=True) for f in files))
@@ -136,11 +136,11 @@ def printBarPlot_vesseltype_on_root_node_configuration(filenames, pdfpages):
       std_capillaries.append( np.std(capillaries))
     counter= counter +1
   
-  print("means_arteries: %i " % len(means_arteries))
+  print(("means_arteries: %i " % len(means_arteries)))
   print(means_arteries)
-  print("means_veins: %i " % len(means_veins))
+  print(("means_veins: %i " % len(means_veins)))
   print(means_veins)
-  print("means_capillaries: %i " % len(means_capillaries))
+  print(("means_capillaries: %i " % len(means_capillaries)))
   print(means_capillaries)
   if not counter == len(means_arteries):
     raise AssertionError("Not all configurations found!")
@@ -206,8 +206,8 @@ def printBarPlot_rBF(dataman, fmeasure, filenames, options, pdfpages):
     typelist = 'typeF- '
     
   for t in typelist.split():
-    print('rBF for type: %s' % t)
-    filteredFiles = filter( lambda fn: t in fn,filenames) 
+    print(('rBF for type: %s' % t))
+    filteredFiles = [fn for fn in filenames if t in fn] 
     files = [h5files.open(fn, 'r+') for fn in filteredFiles]
 
     if(len(files)>0):
@@ -236,10 +236,10 @@ def printBarPlot_rBF(dataman, fmeasure, filenames, options, pdfpages):
 
     counter= counter +1    
   
-  print("coutner: %i"%counter)
+  print(("coutner: %i"%counter))
   if counter >0:
-    print("means_without_all: %i" % len(means_without))
-    print("std_without_all: %i" % len(std_without))  
+    print(("means_without_all: %i" % len(means_without)))
+    print(("std_without_all: %i" % len(std_without)))  
   
   if not counter == len(means_without):
     raise AssertionError("Not all configurations found!")
@@ -296,14 +296,14 @@ def PlotQdevs_unnormalized(filenames, pdfpages):
     ax1 = plt.axes()
     ax1.set_title(t)
     fig.add_subplot(ax1)
-    print('Qdev for type: %s' % t)
+    print(('Qdev for type: %s' % t))
      
-    filteredFiles = filter( lambda fn: t in fn,filenames)
+    filteredFiles = [fn for fn in filenames if t in fn]
     files = [h5files.open(fn, 'r+') for fn in filteredFiles]
     groups_with_adaption = list(itertools.chain.from_iterable(myutils.walkh5(f, 'adaption/vessels_after_adaption', return_h5objects=True) for f in files))
     
     for agroup in groups_with_adaption:
-      print("filename: %s" % agroup.file.filename)
+      print(("filename: %s" % agroup.file.filename))
       qdev_vec = np.zeros(2999)
       qdev_vec_read = np.asarray(agroup['qdev'])
       qdev_vec_read = np.sqrt(qdev_vec_read)
@@ -315,7 +315,7 @@ def PlotQdevs_unnormalized(filenames, pdfpages):
         qdev_mat = np.vstack((qdev_mat, qdev_vec))
     average_for_type = np.average(qdev_mat,0)
     std_for_type = np.std(qdev_mat,0)
-    print("len avg: %i, len std: %i" % (len(average_for_type),len(std_for_type)))
+    print(("len avg: %i, len std: %i" % (len(average_for_type),len(std_for_type))))
     ax1.errorbar(np.arange(len(average_for_type)),average_for_type, yerr= std_for_type, errorevery=20)
     #ax1.set_yscale('log')    
     ax1.set_ylabel(r'$\sum_{i=1}^{no. vessels} (r_i-r_{i-1})^2$')    
@@ -357,9 +357,9 @@ def PlotQdevs_normalized(filenames, options, pdfpages):
     ax1 = plt.axes()
     ax1.set_title(t)
     fig.add_subplot(ax1)
-    print('Qdev for type: %s' % t)
+    print(('Qdev for type: %s' % t))
      
-    filteredFiles = filter( lambda fn: t in fn,filenames)
+    filteredFiles = [fn for fn in filenames if t in fn]
     files = [h5files.open(fn, 'r+') for fn in filteredFiles]
     groups_with_adaption = list(itertools.chain.from_iterable(myutils.walkh5(f, 'adaption/vessels_after_adaption', return_h5objects=True) for f in files))
 
@@ -367,7 +367,7 @@ def PlotQdevs_normalized(filenames, options, pdfpages):
       continue
     
     for agroup in groups_with_adaption:
-      print("filename: %s" % agroup.file.filename)
+      print(("filename: %s" % agroup.file.filename))
       vessel_count = agroup['edges'].attrs['COUNT']
       nqdev_vec = np.zeros(300)
       nqdev_vec_read = np.asarray(agroup['nqdev'])
@@ -543,7 +543,7 @@ def generate_murray_data_hist(datamanager, inputfiles, destination_group, destin
     def remove_zeros(x):
       good_indexes = np.where(x>0)[0]
       return x[good_indexes]
-    theo_mother = map(lambda x,y: np.power(x**3+y**3,1/3.),my_dict_stuff['tmp_daughter1'], my_dict_stuff['tmp_daughter2'])
+    theo_mother = list(map(lambda x,y: np.power(x**3+y**3,1/3.),my_dict_stuff['tmp_daughter1'], my_dict_stuff['tmp_daughter2']))
     theo_mother = np.asarray(theo_mother)
     my_dict_stuff['theo_mother']=theo_mother
     good_indexes = np.where(theo_mother>0)[0]
@@ -667,8 +667,8 @@ def printMurray(dataman, f_measure, filenames, options, pdfpages):
       typelist = 'typeF- '
       
     for t in typelist.split():
-      print('Murray for type: %s' % t)
-      filteredFiles = filter( lambda fn: t in fn,filenames) 
+      print(('Murray for type: %s' % t))
+      filteredFiles = [fn for fn in filenames if t in fn] 
       files = [h5files.open(fn, 'r+') for fn in filteredFiles]
   
       if(len(files)>0):#that means no file of dedicated type is left after filter
@@ -761,8 +761,8 @@ def printMurray_alphas_effective(dataman, f_measure, filenames, options, pdfpage
     ax2 = fig.add_subplot(212)
         
     for t in typelist.split():
-      print('Murray for type: %s' % t)
-      filteredFiles = filter( lambda fn: t in fn,filenames) 
+      print(('Murray for type: %s' % t))
+      filteredFiles = [fn for fn in filenames if t in fn] 
       files = [h5files.open(fn, 'r+') for fn in filteredFiles]
   
       #dataman.obtain_data('basic_vessel_global', name, gvessels, cachelocation(gvessels))
@@ -844,8 +844,8 @@ def printBarPlot_rBV(dataman, fmeasure, filenames, options, pdfpages):
     typelist = 'typeI- '
     
   for t in typelist.split():
-    print('rBV for type: %s' % t)
-    filteredFiles = filter( lambda fn: t in fn,filenames) 
+    print(('rBV for type: %s' % t))
+    filteredFiles = [fn for fn in filenames if t in fn] 
     files = [h5files.open(fn, 'r+') for fn in filteredFiles]
 
     if(len(files)>0):#that means no file of dedicated type is left after filter
@@ -880,9 +880,9 @@ def printBarPlot_rBV(dataman, fmeasure, filenames, options, pdfpages):
 
     counter= counter +1    
   
-  print("coutner: %i"%counter)
-  print("means_without_all: %i" % len(means_without_all))
-  print("std_without_all: %i" % len(std_without_all))
+  print(("coutner: %i"%counter))
+  print(("means_without_all: %i" % len(means_without_all)))
+  print(("std_without_all: %i" % len(std_without_all)))
   plt = pyplot
   fig, ax = plt.subplots()
   index = np.arange(counter)
@@ -931,8 +931,8 @@ def PlotRadiusHistogram_with_cache_by_RC(dataman, f_measure, filenames, options,
   Hmat =[]
   for t in typelist.split():
     
-    print('Radius hist for type: %s' % t)
-    filteredFiles = filter( lambda fn: t in fn,filenames) 
+    print(('Radius hist for type: %s' % t))
+    filteredFiles = [fn for fn in filenames if t in fn] 
     files = [h5files.open(fn, 'r+') for fn in filteredFiles]
     if(len(files)==0):
       continue
@@ -1089,7 +1089,7 @@ def DoIt(filenames, options):
       pdfpages.savefig(fig, postfix='_vesselsparams')
     
         
-    if 0 and all(map(lambda g: 'data' in g.parent, groups_without_adaption)):
+    if 0 and all(['data' in g.parent for g in groups_without_adaption]):
       data = VesselData()
       for g in groups_without_adaption:
         data.add(g.parent['data'])

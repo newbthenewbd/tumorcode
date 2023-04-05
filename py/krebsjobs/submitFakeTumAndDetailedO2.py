@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -55,7 +55,7 @@ def worker_on_client(vessel_fn, tumor_parameters, o2_parameter_set_name, num_thr
   pattern1 = 'out0000'
   pattern2 = 'out%04i' % int(round(tend/tumor_parameters['out_intervall']))
   pattern = '|'.join([pattern1,pattern2])
-  print tumor_fn, pattern
+  print(tumor_fn, pattern)
   #os.system("%s -s '%s'" %  (krebsjobs.submitTumOnlyVessels.exe,dicttoinfo(tumor_parameters)))
   os.system("%s -s '%s'" %  (krebs.tumors.run_faketum,dicttoinfo(tumor_parameters)))
   o2_refs = detailedo2.doit(tumor_fn, pattern, (getattr(krebs.detailedo2Analysis.parameterSetsO2, o2_parameter_set_name), o2_parameter_set_name))
@@ -82,8 +82,8 @@ if __name__ == '__main__' and not qsub.is_client:
     for fn in filenames:
         if not os.path.isfile(fn):
             raise AssertionError('The file %s is not present!'%fn)
-  except Exception, e:
-    print e.message
+  except Exception as e:
+    print(e.message)
     sys.exit(-1)
 
   #tumor_parameter_sets = [('defaultconfig', tum_only_vessels.defaultconfig)]

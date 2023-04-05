@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Created on Tue Jan 16 15:39:16 2018
@@ -8,8 +8,8 @@ Created on Tue Jan 16 15:39:16 2018
 import vtk
 
 def doit(goodArguments):
-  print("loading file: %s" % goodArguments.fileName)
-  print("at group: %s" % goodArguments.grpName)
+  print(("loading file: %s" % goodArguments.fileName))
+  print(("at group: %s" % goodArguments.grpName))
   
   pts = vtk.vtkPoints();
   pts.InsertNextPoint(0,0,0);

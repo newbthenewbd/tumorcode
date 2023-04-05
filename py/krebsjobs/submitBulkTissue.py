@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -45,7 +45,7 @@ def f2s(x):
 def mkdir(outfn):
   p = dirname(outfn)
   if p and not os.path.isdir(p):
-    print 'creating', p
+    print('creating', p)
     os.makedirs(p)
 
 
@@ -55,7 +55,7 @@ def run_with_vessels(vessel_fn, name, config_, mem, days):
   config_ = krebs.tumors.set_lattice_size(config_, vessel_fn)
   
   sx, sy, sz = config_['lattice_size']
-  print('cont size: %i, %i, %i' % (sx, sy, sz))
+  print(('cont size: %i, %i, %i' % (sx, sy, sz)))
   #c = PrepConfig_new_python_dict(c)  
   configstr = dicttoinfo(config_)
   qsub.submit(qsub.func(krebs.tumors.run_bulktissue_w_vessels,configstr),
@@ -71,16 +71,16 @@ def run_no_vessels(name, config_, mem, days):
     print('Warning: lattice_size not set properly')
     config_['lattice_size'] = Vec((20,20,20))
   try:
-    if not 'lattice_size' in config_.keys():
+    if not 'lattice_size' in list(config_.keys()):
       raise AssertionError('No lattice_size found in configuration %s' % getattr(config_))
     if type(config_['lattice_size'])==str:
       if config_['lattice_size']=='set me to match the vessel domain':
         raise AssertionError('Find better lattice size' )
-  except Exception, e:
-    print e.message
+  except Exception as e:
+    print(e.message)
     sys.exit(-1) 
   sx, sy, sz = config_['lattice_size']
-  print('cont size: %i, %i, %i' % (sx, sy, sz))
+  print(('cont size: %i, %i, %i' % (sx, sy, sz)))
   #c = PrepConfig_new_python_dict(c)  
   configstr = dicttoinfo(config_)
   qsub.submit(qsub.func(krebs.tumors.run_bulktissue_no_vessels,configstr),
@@ -114,8 +114,8 @@ if not qsub.is_client and __name__ == '__main__':
     try:
       if not goodArguments.tumParamSet in dir(parameterSets):
         raise AssertionError('Unknown parameter set %s!' % goodArguments.tumParamSet)
-    except Exception, e:
-      print e.message
+    except Exception as e:
+      print(e.message)
       sys.exit(-1)
     factory = getattr(parameterSets, goodArguments.tumParamSet)
     run_no_vessels(goodArguments.tumParamSet, factory, '1GB', 2.)
@@ -139,8 +139,8 @@ if not qsub.is_client and __name__ == '__main__':
     try:
       if not goodArguments.tumParamSet in dir(parameterSets):
         raise AssertionError('Unknown parameter set %s!' % goodArguments.tumParamSet)
-    except Exception, e:
-      print e.message
+    except Exception as e:
+      print(e.message)
       sys.exit(-1)
   
     factory = getattr(parameterSets, goodArguments.tumParamSet)

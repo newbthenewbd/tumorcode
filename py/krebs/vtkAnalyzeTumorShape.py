@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -27,7 +27,7 @@ import h5py
 import math
 import pprint
 import vtk
-import vtkcommon
+from . import vtkcommon
 import posixpath
 from mystruct import Struct
 
@@ -58,8 +58,8 @@ def analyzeTumorShape(dataset,
     _, _, out['iso_area'] = vtkcommon.vtkIntegrateData(iso)
     # integrated data
     cd, pd, volume = vtkcommon.vtkIntegrateData(dataset)
-    cd = dict((dataset.GetCellData().GetArray(i).GetName(), cd[i]) for i in xrange(dataset.GetCellData().GetNumberOfArrays()))
-    pd = dict((dataset.GetPointData().GetArray(i).GetName(), pd[i]) for i in xrange(dataset.GetPointData().GetNumberOfArrays()))
+    cd = dict((dataset.GetCellData().GetArray(i).GetName(), cd[i]) for i in range(dataset.GetCellData().GetNumberOfArrays()))
+    pd = dict((dataset.GetPointData().GetArray(i).GetName(), pd[i]) for i in range(dataset.GetPointData().GetNumberOfArrays()))
     data = cd.copy()
     data.update(pd)
     out['tumor_volume'] = (data[contour_name] + volume)*0.5 if contour_value==0 else data[contour_name]
@@ -71,7 +71,7 @@ def analyzeTumorShape(dataset,
 def writeShapeDataToH5(m, dataset, data):
     curv = data.pop('curvature', None)
     m.attrs['version'] = 1
-    for k, v in data.iteritems():
+    for k, v in data.items():
       m.attrs[k] = v
     if curv is not None:
       #m.create_dataset('curvatures', data = curv, compression = 'gzip', compression_opts = 9)
@@ -85,7 +85,7 @@ def analyzeDealiiTumorShapeAndSaveToH5(filenames, dt, dstpath):
   #re dt: dt = 2 for older dealii simulations, dt = 100 for the ones where the tumor can die
   filenames.sort()
   for i, filename in enumerate(filenames):
-    print "processing %i: %s" % (i, filename)
+    print("processing %i: %s" % (i, filename))
     dataset, outfilename = vtkcommon.ZippedRead(vtk.vtkXMLUnstructuredGridReader, filename)
     # create file and store data    
     i = int(outfilename[-4:])
@@ -99,7 +99,7 @@ def analyzeDealiiTumorShapeAndSaveToH5(filenames, dt, dstpath):
     # do the measurement and save
     data = analyzeTumorShape(dataset)
     writeShapeDataToH5(g.require_group("measure_tumglob"), dataset, data)
-    print "-> %s" % (f.filename)
+    print("-> %s" % (f.filename))
     f.close()
 
 
@@ -108,11 +108,11 @@ def analyzeBulkTissueTumorShapeAndSaveToH5(filename, dstfilename):
   f = h5py.File(filename, "r")
   fdst = h5py.File(dstfilename, "a")
   # read write mode, get the tumor data, analyze and save
-  groups = [ g for k, g in f['/'].iteritems() if k.startswith('out') ]
+  groups = [ g for k, g in f['/'].items() if k.startswith('out') ]
   groups.sort(key = lambda g: g.attrs['time'])
 
   for g in groups:
-      print 't = %f' % g.attrs['time']
+      print('t = %f' % g.attrs['time'])
       gdst = fdst.require_group(posixpath.join(
                                 #'measurements', 
                                 posixpath.basename(g.name), 

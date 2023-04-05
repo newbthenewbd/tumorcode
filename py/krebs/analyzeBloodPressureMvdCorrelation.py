@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -43,7 +43,7 @@ import scipy.stats
 
 import myutils
 import mpl_utils
-import analyzeGeneral
+from . import analyzeGeneral
 
 import matplotlib
 import matplotlib.pyplot as pyplot
@@ -83,7 +83,7 @@ class DataPressureMvdCorrelation(object):
 
       if dataname == 'intervascular_map_tumor_mask':
         vesselgroup, tumorgroup, fieldLd, fieldLdFine = args
-        print 'intervascular_map_tumor_mask', str(vesselgroup)
+        print('intervascular_map_tumor_mask', str(vesselgroup))
         def read(gmeasure, groupname):
           return gmeasure[groupname]          
         def write(gmeasure, groupname):
@@ -95,7 +95,7 @@ class DataPressureMvdCorrelation(object):
               
       if dataname == 'local_mvd_map':
         vesselgroup, tumorgroup, fieldLd, fieldLdFine = args
-        print 'local_mvd_map', str(vesselgroup)
+        print('local_mvd_map', str(vesselgroup))
         def read(gmeasure, groupname):
           return gmeasure[groupname]
         def write(gmeasure, groupname):
@@ -122,7 +122,7 @@ class DataPressureMvdCorrelation(object):
       
       if dataname == 'intervascular_pressure_map':
         vesselgroup, tumorgroup, fieldLd, fieldLdFine = args
-        print 'intervascular_pressure_map', str(vesselgroup)
+        print('intervascular_pressure_map', str(vesselgroup))
         def read(gmeasure, groupname):
           return gmeasure[groupname]      
         def write(gmeasure, groupname):
@@ -168,10 +168,10 @@ class DataPressureMvdCorrelation(object):
             grad = np.asarray(grad).ravel()
             mask = np.asarray(mask).ravel()
             data = (i * np.ones(mask.shape, dtype = np.int), mask, mvd, grad)
-            allSamples += zip(*data)
-            stuff = map(unicode.encode, (vesselgroup_before.file.filename, vesselgroup_before.name, vesselgroup_after.name))
+            allSamples += list(zip(*data))
+            stuff = list(map(str.encode, (vesselgroup_before.file.filename, vesselgroup_before.name, vesselgroup_after.name)))
             filemapping += stuff            
-          allSamples = zip(*allSamples)
+          allSamples = list(zip(*allSamples))
           gmeasure = gmeasure.create_group(groupname)
           gmeasure.create_dataset('fileindex', data = allSamples[0]) # index into filemapping array
           gmeasure.create_dataset('mask'     , data = allSamples[1]) # equal true for samples within tumor (?)
@@ -186,17 +186,17 @@ class DataPressureMvdCorrelation(object):
         listofgroups, = args
         group = dataman.obtain_data('intervascular_map_correlations', listofgroups)
         sorteddata = collections.defaultdict(list)
-        stuff = map(lambda s: np.asarray(group[s]), 'fileindex mask mvd grad'.split())
-        stuff = zip(*stuff) # transposed
+        stuff = [np.asarray(group[s]) for s in 'fileindex mask mvd grad'.split()]
+        stuff = list(zip(*stuff)) # transposed
         for fileindex, mask, mvd, grad in stuff:
           sorteddata[fileindex, mask].append((mvd, grad))
         result = []
-        for (fileindex,mask), mvd_grad in sorteddata.iteritems():
+        for (fileindex,mask), mvd_grad in sorteddata.items():
           mvd_grad = np.average(mvd_grad, axis=0) # result: 2 elements: (mvd, grad)
           result.append((fileindex, mask, mvd_grad[0], mvd_grad[1]))
         result = sorted(result, key = lambda t: t[0])
-        result = zip(*result)
-        result = dict(zip('fileindex mask mvd grad'.split(), map(np.asarray, result)))
+        result = list(zip(*result))
+        result = dict(list(zip('fileindex mask mvd grad'.split(), list(map(np.asarray, result)))))
         return result # returns dict of fileindex, mask, mvd, grad
 
 
@@ -209,14 +209,14 @@ if __name__ == '__main__':
   filenames = args[:-2]
   pattern_before = args[-2]
   pattern_after  = args[-1]  
-  print '-----------  looking for files  ----------'
+  print('-----------  looking for files  ----------')
   thegroups = []
   for filename in filenames:
     f = h5files.open(filename)
-    print 'opened -- ', filename,'/',
+    print('opened -- ', filename,'/', end=' ')
     paths_before = myutils.walkh5(f['.'], pattern_before)
     paths_after  = myutils.walkh5(f['.'], pattern_after)
-    print paths_before, paths_after
+    print(paths_before, paths_after)
     for path_before, path_after in zip(paths_before, paths_after):
       vesselgroup_before = f[path_before]
       vesselgroup_after  = f[path_after]
@@ -224,7 +224,7 @@ if __name__ == '__main__':
       assert tumorgroup
       thegroups.append([vesselgroup_before, vesselgroup_after, tumorgroup])  
   
-  prefix, suffix = myutils.splitcommonpresuffix(map(lambda s: basename(s), filenames))
+  prefix, suffix = myutils.splitcommonpresuffix([basename(s) for s in filenames])
   outputbasename, _ = splitext(prefix+suffix)  
   
   fn_measure = join(dirname(outputbasename), 'common-mvd-grad-map-cache.h5')
@@ -235,7 +235,7 @@ if __name__ == '__main__':
     return (f_measure, path)
 
   def cachelocationEnsemble(dataname, groups):
-    groupchecksum = myutils.checksum(*map(lambda g: str(g.file.filename+'/'+g.name), sum(groups, [])))
+    groupchecksum = myutils.checksum(*[str(g.file.filename+'/'+g.name) for g in sum(groups, [])])
     path = ('%s_%s' % (dataname, groupchecksum),)
     return (f_measure, path)
   
@@ -246,10 +246,10 @@ if __name__ == '__main__':
                                       DataPressureMvdCorrelation(200., 5, 30., cachelocation, cachelocationEnsemble)])
 
   if not options.picz:
-      print '-----------computing sammples------------'
+      print('-----------computing sammples------------')
       localSamples = dataman.obtain_data('intervascular_map_correlations', thegroups)
       globalSamples = dataman.obtain_data('intervascular_global_correlations', thegroups)
-      print '--------------plotting ---------------'
+      print('--------------plotting ---------------')
     
       with mpl_utils.PageWriter(outputbasename+'_mvd-grad.pdf', fileformats=['svg']) as pdfwriter:
         fig, axes = pyplot.subplots(1,2, figsize = mpl_utils.a4size*np.asarray((0.8,0.2)))

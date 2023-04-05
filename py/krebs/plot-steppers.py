@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -64,14 +64,14 @@ if __name__ == "__main__":
   model_lambda = f.attrs['lambda']
   bytime = collections.defaultdict(list)
   bymethod = collections.defaultdict(list)
-  for g in f['/'].itervalues():
+  for g in f['/'].values():
     if g.name == '/exact':
       exact = g
     else:
       bytime[g.attrs['dt']].append(g)
       bymethod[g.attrs['method']].append(g)
 
-  for dt, groups in sorted(bytime.iteritems(), key = lambda (k, v): k):
+  for dt, groups in sorted(iter(bytime.items()), key = lambda k_v1: k_v1[0]):
     if dt < exact['x'][-1]*0.01: 
       continue
     fig = plt.figure(figsize=(11.7, 8.3))
@@ -87,14 +87,14 @@ if __name__ == "__main__":
     pdf.savefig(fig)
 
   err = collections.defaultdict(collections.defaultdict)
-  for g in f['/'].itervalues():
+  for g in f['/'].values():
       if g.name == '/exact': continue
       val = abs(g['y'][-1] - exact['y'][-1])
       m, t = g.attrs['method'], g.attrs['dt']
       err[m][t] = val
-      print m, t, val
-  for k, d in err.iteritems():
-    err[k] = np.asarray(sorted(d.iteritems(), key = lambda (k, v): k)).transpose()
+      print(m, t, val)
+  for k, d in err.items():
+    err[k] = np.asarray(sorted(iter(d.items()), key = lambda k_v: k_v[0])).transpose()
 
   fig = plt.figure(figsize=(11.7, 8.3))
   plot = fig.add_subplot(1,1,1)
@@ -102,7 +102,7 @@ if __name__ == "__main__":
   plot.set_xscale("log")
   plot.set_xlabel('dt')
   plot.set_ylabel('e')
-  for marker, (method, (t, y)) in zip(markers, err.iteritems()):
+  for marker, (method, (t, y)) in zip(markers, iter(err.items())):
     plot.plot(t, y, label = method, marker=marker)
   plot.legend(loc = 'lower right')
   pdf.savefig(fig)

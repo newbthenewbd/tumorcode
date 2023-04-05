@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -77,9 +77,9 @@ def generate(size, pmin, pmax, smin, smax):
 def updateParticle(part, best, phi1, phi2):
     u1 = (random.uniform(0, phi1) for _ in range(len(part)))
     u2 = (random.uniform(0, phi2) for _ in range(len(part)))
-    v_u1 = futures.map(operator.mul, u1, map(operator.sub, part.best, part))
-    v_u2 = futures.map(operator.mul, u2, map(operator.sub, best, part))
-    part.speed = list(futures.map(operator.add, part.speed, map(operator.add, v_u1, v_u2)))
+    v_u1 = futures.map(operator.mul, u1, list(map(operator.sub, part.best, part)))
+    v_u2 = futures.map(operator.mul, u2, list(map(operator.sub, best, part)))
+    part.speed = list(futures.map(operator.add, part.speed, list(map(operator.add, v_u1, v_u2))))
     for i, speed in enumerate(part.speed):
         if speed < part.smin:
             part.speed[i] = part.smin
@@ -115,7 +115,7 @@ def main():
   print("starting loop")
   for g in range(GEN):
       fitnesses = list(futures.map(toolbox.evaluate,pop))
-      print("generation: %i " % g)
+      print(("generation: %i " % g))
       for ind, fit in zip(pop,fitnesses):
         ind.fitness.values = fit
       for part in pop:  
@@ -129,10 +129,10 @@ def main():
         toolbox.update(part, best)
        #Gather all the fitnesses in one list and print the stats
       logbook.record(gen=g, evals=len(pop), **stats.compile(pop))
-      print(logbook.stream)
+      print((logbook.stream))
       
   print("best fitness.values :")
-  print(best.fitness.values)
+  print((best.fitness.values))
   print("best")
   print(best)
   return pop, logbook, best
@@ -150,12 +150,12 @@ if __name__ == "__main__":
   parser.add_argument('-p',dest='populations', type=int, default=5, help='populations of PSO')
   
   goodArguments, otherArguments = parser.parse_known_args()
-  print("running with %s" % goodArguments.AdaptionParamSet)
+  print(("running with %s" % goodArguments.AdaptionParamSet))
   
   if( str(goodArguments.AdaptionParamSet).startswith('value_li' ) ):
     if not goodArguments.listindex is None:
       bla = int(goodArguments.listindex)
-      print("list index: %i chosen" % bla)
+      print(("list index: %i chosen" % bla))
       shared.setConst(parameterListIndex = bla)
   
   #adaption parameters
@@ -183,7 +183,7 @@ if __name__ == "__main__":
   print("best: ")
   print(best)
   print("fitness: ")
-  print(best.fitness.values)
+  print((best.fitness.values))
   
   #print("pop: ")
   #print(pop)
@@ -198,7 +198,7 @@ if __name__ == "__main__":
 #      print("warning updating filename")
 #      outfile_name = 'deap_results_%s_%i.h5' % (str(goodArguments.AdaptionParamSet), k)
     
-  print('outfile: %s will be stored at: %s' % (outfile_name, os.getcwd()))
+  print(('outfile: %s will be stored at: %s' % (outfile_name, os.getcwd())))
   
   
   with h5py.File(outfile_name) as f:
@@ -206,7 +206,7 @@ if __name__ == "__main__":
     #check if key already exists
     k=0
     suggested_name = str(goodArguments.listindex)
-    while suggested_name in f.keys():
+    while suggested_name in list(f.keys()):
       suggested_name = "%s_%i" % (suggested_name, k)
       k=k+1
       

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -326,7 +326,7 @@ if (__name__ == '__main__'):
 
     filenames = args[:-1]
     pattern   = args[-1]
-    datalist = map(lambda s: s, map(str.strip, options.datalist.split(',')))
+    datalist = [s for s in list(map(str.strip, options.datalist.split(',')))]
 
     labels = {
       'flow' : 'Flow Rate /nl',

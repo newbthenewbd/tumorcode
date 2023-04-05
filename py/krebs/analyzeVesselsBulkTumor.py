@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -42,7 +42,7 @@ import matplotlib.cm
 import matplotlib.pyplot as pyplot
 import mpl_utils
 
-from quantities import Prettyfier
+from .quantities import Prettyfier
 
 from krebs.analyzeGeneral import DataVesselGlobal, DataTumorTissueSingle, DataDistanceFromCenter, DataBasicVessel, DataVesselSamples, DataVesselRadial, BinsSpecRange, BinsSpecArray, obtain_distmap_, generate_samples, combineSamples, HdfCacheRadialDistribution, CalcPhiVessels, calc_distmap
 from krebs.analyzeBloodFlow import DataTumorBloodFlow
@@ -58,7 +58,7 @@ class EnsembleItem(object):
     self.gvessels = None
     self.gtumor = None
     self.group = None
-    for k, v in kwargs.iteritems():
+    for k, v in kwargs.items():
       setattr(self, k, v)
 
 
@@ -78,7 +78,7 @@ class EnsembleFiles(object):
             source = h5files.openLink(g, 'SOURCE')
             gtumor = source.parent['tumor']
             g = source.parent
-          except Exception, e:
+          except Exception as e:
             raise RuntimeError('tried to get tumor data but failed:' + str(e))
         else:
           gvessels, gtumor = g['vessels'], (g['tumor'] if 'tumor' in g else None)
@@ -91,8 +91,8 @@ class EnsembleFiles(object):
       d = collections.defaultdict(list) # path -> list of EnsembleItem
       for e in items:
         d[e.path].append(e)
-      tumor_snapshot_times = dict((k,np.average(map(lambda e: e.time, v))) for k,v in d.items())
-      tumor_snapshot_order = sorted(tumor_snapshot_times.keys(), key = (lambda path: tumor_snapshot_times[path]))
+      tumor_snapshot_times = dict((k,np.average([e.time for e in v])) for k,v in list(d.items()))
+      tumor_snapshot_order = sorted(list(tumor_snapshot_times.keys()), key = (lambda path: tumor_snapshot_times[path]))
       tumor_snapshots      = [(d[path], path, tumor_snapshot_times[path]) for path in tumor_snapshot_order]
     self.files = files
     self.items = items
@@ -104,8 +104,7 @@ class EnsembleFiles(object):
 
 
 def GetAverageApproximateTumorRadius(dataman, ensemble, ensembleitems):
-  l = map(lambda item: dataman.obtain_data('approximate_tumor_radius', item.gtumor),
-          ensembleitems)
+  l = [dataman.obtain_data('approximate_tumor_radius', item.gtumor) for item in ensembleitems]
   return np.average(l)
 
 
@@ -116,7 +115,7 @@ def CollectAllRadialData(dataman, ensembleitems, measurementinfo):
     for name in ['mvd','velocity','phi_vessels', 'shearforce', 'radius', 'hematocrit']:
       data = dataman.obtain_data('basic_vessel_radial', name, item.gvessels, item.gtumor, measurementinfo['sample_length'], bin_spec, measurementinfo['distancemap_spec'], None, measurementinfo['cachelocation_callback'](item.group))
       curves[name].append(data)
-  print ' ... finished getting radial curves'
+  print(' ... finished getting radial curves')
   return bin_spec, curves
 
 
@@ -135,8 +134,8 @@ def PlotRadialCurves(pdfwriter, bins_spec, snapshotlist, measurementinfo, world_
   default_colors = 'rgbcmyk'
 
   def plot(ax, name, scalefactor = 1., label = None, colors = default_colors, errorbars = True, zero_ylim = True):
-    for color, i, (time, tumor_radius, curves) in itertools.izip(itertools.cycle(colors), itertools.count(), snapshotlist):
-      curve = myutils.MeanValueArray.fromSummation(map(lambda x: x.avg, curves[name]))
+    for color, i, (time, tumor_radius, curves) in zip(itertools.cycle(colors), itertools.count(), snapshotlist):
+      curve = myutils.MeanValueArray.fromSummation([x.avg for x in curves[name]])
       label = FmtTime(time)
       mask = ~curve.avg.mask
       if errorbars:
@@ -153,7 +152,7 @@ def PlotRadialCurves(pdfwriter, bins_spec, snapshotlist, measurementinfo, world_
     else:
       mpl_utils.add_crosshair(ax, (0.5e-3*world_size[0], None))
       ax.set(xlim=(0, 0.5e-3*world_size[0]))
-      for color, i, (time, tumor_radius, curves) in itertools.izip(itertools.cycle(colors), itertools.count(), snapshotlist):
+      for color, i, (time, tumor_radius, curves) in zip(itertools.cycle(colors), itertools.count(), snapshotlist):
         mpl_utils.add_crosshair(ax, (tumor_radius*1.e-3, None), ls=':', color = color)
       
 
@@ -194,11 +193,11 @@ def doit(filenames, pattern):
 
   ensemble = EnsembleFiles(dataman, filenames, pattern)
   if ensemble.has_tumor:
-    print 'paths: ', map(lambda (_t0, path, _t1): path, ensemble.tumor_snapshots)
+    print('paths: ', [_t0_path__t1[1] for _t0_path__t1 in ensemble.tumor_snapshots])
   else:
-    print 'paths: ', set(map(lambda e: e.path, ensemble.items))
+    print('paths: ', set([e.path for e in ensemble.items]))
 
-  prefix, suffix = myutils.splitcommonpresuffix(map(lambda s: basename(s), filenames))
+  prefix, suffix = myutils.splitcommonpresuffix([basename(s) for s in filenames])
   outputbasename, _ = splitext(prefix+suffix)
   fn_measure = outputbasename+'-radial-cache.h5'
   f_measure = h5files.open(fn_measure, 'a')
@@ -211,7 +210,7 @@ def doit(filenames, pattern):
                          cachelocation_callback = cachelocation,
                          distancemap_spec = 'radial')
 
-  print 'getting radial curves'
+  print('getting radial curves')
   stuff = []
   stuff2 = []
   for items, path, time in ensemble.tumor_snapshots:
@@ -225,15 +224,15 @@ def doit(filenames, pattern):
     PlotRadialCurves(pdfwriter, bins_spec, stuff, measurementinfo, ensemble.world_size)
   
   with h5py.File(outputbasename+'-radial.h5', 'w') as f:
-    f.attrs['COMMONPREFIX'] = os.path.commonprefix(map(lambda s: basename(s), filenames))
+    f.attrs['COMMONPREFIX'] = os.path.commonprefix([basename(s) for s in filenames])
     f.create_dataset('files', data = filenames)
-    f.create_dataset('groups', data = np.asarray(set(map(lambda item: item.path, ensemble.items)), dtype = np.str))
+    f.create_dataset('groups', data = np.asarray(set([item.path for item in ensemble.items]), dtype = np.str))
     for i, ( time, tumorradius, curves, path) in enumerate(stuff2):
       g = f.create_group(path.strip('/').replace('/','-'))
       g.attrs['TUMORRADIUS'] = tumorradius
       g.attrs['TIME'] = time
-      for name, curve in curves.iteritems():
-        curve = myutils.MeanValueArray.fromSummation(map(lambda x: x.avg, curve))
+      for name, curve in curves.items():
+        curve = myutils.MeanValueArray.fromSummation([x.avg for x in curve])
         g.create_dataset(name+'/avg', data = np.asarray(curve.avg))
         g.create_dataset(name+'/std', data = np.asarray(curve.std))
         g.create_dataset(name+'/mask', data = ~curve.avg.mask)

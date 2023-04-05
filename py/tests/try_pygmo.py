@@ -7,7 +7,7 @@ import sys
   
 import identifycluster
 if identifycluster.name == 'snowden':
-  import matplotlib
+  from . import matplotlib
   matplotlib.use('Agg') 
 #import qsub
 #import dicttoinfo
@@ -84,9 +84,9 @@ def own():
   #isl.join()
   #print(isl.population.champion.f)
   
-  print min([isl.population.champion.f for isl in archi])
+  print(min([isl.population.champion.f for isl in archi]))
   archi.evolve(10)
-  print min([isl.population.champion.f for isl in archi])
+  print(min([isl.population.champion.f for isl in archi]))
 if 0:
   class my_tricky_problem(problem.base):
       """
@@ -105,13 +105,13 @@ if 0:
           self.set_bounds(5.12, 6.12)
           self.astring=astring
           self.other=other
-          print('Init: ' + self.astring)
+          print(('Init: ' + self.astring))
       def initialize(self,other,astring):
         self.astring = astring
         self.other = other
       # Reimplement the virtual method that defines the objective function.
       def _objfun_impl(self, x):
-          print('obj: ' + self.astring + ' other: %s' % self.other)
+          print(('obj: ' + self.astring + ' other: %s' % self.other))
           # Compute the sphere function
           f = sum([x[i] ** 2 +self.other for i in range(self.dimension)])
   
@@ -133,9 +133,9 @@ def own2():
   #isl.join()
   #print(isl.population.champion.f)
   
-  print min([isl.population.champion.f for isl in archi])
+  print(min([isl.population.champion.f for isl in archi]))
   archi.evolve(10)
-  print min([isl.population.champion.f for isl in archi])
+  print(min([isl.population.champion.f for isl in archi]))
   
 def pase_to_cpp():
   #vesselgroup = h5files.open('/localdisk/thierry/vessel_trees_better/my_chosen/PSO_data_vessels-large_2d-typeE-17x1L600-sample05_adption_p_human_guess.h5', 'r', search = False)['adaption/vessels_after_adaption']
@@ -147,17 +147,17 @@ def serial():
   prob = problem.schwefel(dim = 200)
   algo = algorithm.de(gen = 500)
   isl = island(algo,prob,20)
-  print isl.population.champion.f
+  print(isl.population.champion.f)
   isl.evolve(10)
-  print isl.population.champion.f
+  print(isl.population.champion.f)
   
 def parallel():
   prob = problem.schwefel(dim = 200)
   algo = algorithm.de(gen = 500)
   archi = archipelago(algo,prob,8,20)
-  print min([isl.population.champion.f for isl in archi])
+  print(min([isl.population.champion.f for isl in archi]))
   archi.evolve(10)
-  print min([isl.population.champion.f for isl in archi])
+  print(min([isl.population.champion.f for isl in archi]))
   
 def other():
   prob = problem.lennard_jones(5)

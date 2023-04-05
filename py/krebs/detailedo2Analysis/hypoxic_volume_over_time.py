@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -70,8 +70,8 @@ def estimate_ratio_hypoxic(oxy_grp,threshold):
 
   po2vessels, po2field_ld, po2field, parameters = dataman('detailedPO2', oxy_grp)
   po2vessels = np.average(po2vessels, axis=0)
-  print 'po2vessels:', po2vessels.min(), po2vessels.max()
-  print 'po2field:', np.amin(po2field), np.amax(po2field)
+  print('po2vessels:', po2vessels.min(), po2vessels.max())
+  print('po2field:', np.amin(po2field), np.amax(po2field))
   #tissueOxygen = np.asarray(oxy_grp['po2field'])
   #print(tissueOxygen)
   
@@ -84,10 +84,10 @@ def estimate_ratio_hypoxic(oxy_grp,threshold):
   number_of_boxes = cropped_oxy.shape[0]*cropped_oxy.shape[1]*cropped_oxy.shape[2]
   #times volume of each box
   cropped_volume = number_of_boxes*np.power(po2field_ld.scale,3)
-  print('considerd volume of: %f mum^3' % cropped_volume)
-  print('considerd volume of: %f mm^3' % (cropped_volume/1e9))
+  print(('considerd volume of: %f mum^3' % cropped_volume))
+  print(('considerd volume of: %f mm^3' % (cropped_volume/1e9)))
   hypoxic_fraction = float(hypoxic_counts)/float(number_of_boxes)
-  print('hypoxic fraction: %s ' % hypoxic_fraction)
+  print(('hypoxic fraction: %s ' % hypoxic_fraction))
   hypoxic_volume = hypoxic_counts*np.power(po2field_ld.scale,3)
   #to mm
   hypoxic_volume = hypoxic_volume/1e9
@@ -105,8 +105,8 @@ def estimate_annoxic_hypoxic_normoxic(oxy_grp, tumorradius,threshold1,threshold2
 
   po2vessels, po2field_ld, po2field, parameters = dataman('detailedPO2', oxy_grp)
   po2vessels = np.average(po2vessels, axis=0)
-  print 'po2vessels:', po2vessels.min(), po2vessels.max()
-  print 'po2field:', np.amin(po2field), np.amax(po2field)
+  print('po2vessels:', po2vessels.min(), po2vessels.max())
+  print('po2field:', np.amin(po2field), np.amax(po2field))
   #tissueOxygen = np.asarray(oxy_grp['po2field'])
   #print(tissueOxygen)
   
@@ -114,14 +114,14 @@ def estimate_annoxic_hypoxic_normoxic(oxy_grp, tumorradius,threshold1,threshold2
   oxy_np_field= np.asarray(po2field)
   #find minimal dimension
   min_dim = np.min(oxy_np_field.shape)
-  print("tumorradius: %f, ld: %f" %(tumorradius,po2field_ld.scale))
+  print(("tumorradius: %f, ld: %f" %(tumorradius,po2field_ld.scale)))
   border0=int(np.floor(oxy_np_field.shape[0]/2)-np.ceil(tumorradius/po2field_ld.scale))
   border1=int(np.floor(oxy_np_field.shape[1]/2)-np.ceil(tumorradius/po2field_ld.scale))
   border2=int(np.floor(oxy_np_field.shape[2]/2)-np.ceil(tumorradius/po2field_ld.scale))
   
-  print("border0: %i" %border0)
-  print("border1: %i" %border1)
-  print("border2: %i" %border2)
+  print(("border0: %i" %border0))
+  print(("border1: %i" %border1))
+  print(("border2: %i" %border2))
   cropped_oxy = oxy_np_field[border0:-border0,border1:-border1,border2:-border2]
   annoxic_Tissue = cropped_oxy<threshold1
   annoxic_counts = np.sum(annoxic_Tissue[:])
@@ -138,10 +138,10 @@ def estimate_annoxic_hypoxic_normoxic(oxy_grp, tumorradius,threshold1,threshold2
   #volume_correction_factor = 1.
   #times volume of each box
   cropped_volume = number_of_boxes*np.power(po2field_ld.scale,3)
-  print('considerd volume of: %f mum^3' % cropped_volume)
-  print('considerd volume of: %f mm^3' % (cropped_volume/1e9))
+  print(('considerd volume of: %f mum^3' % cropped_volume))
+  print(('considerd volume of: %f mm^3' % (cropped_volume/1e9)))
   hypoxic_fraction = float(hypoxic_counts)/float(number_of_boxes)
-  print('hypoxic fraction: %s ' % hypoxic_fraction)
+  print(('hypoxic fraction: %s ' % hypoxic_fraction))
   annoxic_volume = annoxic_counts*np.power(po2field_ld.scale,3) * volume_correction_factor
   #to mm
   annoxic_volume = annoxic_volume/1e9
@@ -154,7 +154,7 @@ def estimate_annoxic_hypoxic_normoxic(oxy_grp, tumorradius,threshold1,threshold2
   #return hypoxic_fraction,hypoxic_volume
   return annoxic_volume,hypoxic_volume,normoxic_volume
 def run(goodArguments):
-  print('starting with arguments: %s' % goodArguments)
+  print(('starting with arguments: %s' % goodArguments))
   no_files = len(goodArguments.oxygenFiles)
   
   hypoxicVolumes=[]
@@ -166,11 +166,11 @@ def run(goodArguments):
       try:
         if not 'po2' in f:
           raise AssertionError('no proper oxygen file: %s!'%f)
-      except Exception, e:
-        print e.message
+      except Exception as e:
+        print(e.message)
         sys.exit(-1)
       paths = myutils.walkh5(f, 'po2/out*')
-      print('found paths: %s' % paths)
+      print(('found paths: %s' % paths))
       hypoxicVolumes_per_time=[]
       tumorVolumes_per_time=[]
       timepoints=[]
@@ -202,7 +202,7 @@ def run(goodArguments):
     pdfpages.savefig(fig1, postfix='_vesselsglobal')
   
 def run_out_in_single_file(goodArguments):
-  print('starting with arguments: %s' % goodArguments)
+  print(('starting with arguments: %s' % goodArguments))
   no_files = len(goodArguments.oxygenFiles)
   
   annoxicVolumes=[]
@@ -225,11 +225,11 @@ def run_out_in_single_file(goodArguments):
       try:
         if not 'po2' in f:
           raise AssertionError('no proper oxygen file: %s!'%f)
-      except Exception, e:
-        print e.message
+      except Exception as e:
+        print(e.message)
         sys.exit(-1)
       paths = myutils.walkh5(f, 'po2/out*')
-      print('found paths: %s' % paths)
+      print(('found paths: %s' % paths))
       
       for path in paths:
         #hypoxicFraction,hypoxicTissueVolume = estimate_ratio_hypoxic(f[path], threshold)
@@ -249,7 +249,7 @@ def run_out_in_single_file(goodArguments):
       normoxicVolumes.append(normoxicVolumes_per_time)
       tumorVolumes.append(tumorVolumes_per_time)
       
-  print("timepoints: %s" % timepoints)    
+  print(("timepoints: %s" % timepoints))    
   fig1 = plt.figure()
   ax1 = fig1.add_subplot(111)
 #  ax1.scatter(timepoints,np.mean(hypoxicVolumes,0),color='r',label=r"hypoxic($PO_2$<%.1f mmHg)" %threshold)
@@ -290,8 +290,8 @@ if __name__ == '__main__':
     for f in goodArguments.oxygenFiles:
         if not os.path.isfile(f.name):
             raise AssertionError('The file %s is not present!'%fn)
-  except Exception, e:
-    print e.message
+  except Exception as e:
+    print(e.message)
     sys.exit(-1)
     
   #run(goodArguments)

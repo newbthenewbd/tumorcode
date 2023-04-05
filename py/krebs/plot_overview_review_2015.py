@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -36,7 +36,7 @@ expectation_value=0
 for i in range(len(length_prob[0,:,0])):
     expectation_value= expectation_value + length_prob[0,i,0]*length_prob[1,i,0]
 
-print('Expectation value: %f' % expectation_value)
+print(('Expectation value: %f' % expectation_value))
 
 plt.semilogy(length_prob[0,:,0],length_prob[1,:,0],'x')
 plt.show()

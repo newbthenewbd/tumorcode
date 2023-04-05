@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -127,7 +127,7 @@ if False:
   for visc in [ 1, 2., 10, 20, 100 ]:
     for sigma, sigmastr in [ (-1., "0"), (0.01, "001") ]:
       name = 'phasetum-hele-shaw-%04ix-sigma-%s' % (visc * 10, sigmastr)
-      print name
+      print(name)
       run(name, tumor_mobility = visc, surface_tension = sigma)
 
 if False:
@@ -203,11 +203,11 @@ if 0:
     p.update(override_params)
     f = h5py.File(fn, 'r+') # read/write file must exist
     if 'parameters' in f:
-      print 'skipped', fn
+      print('skipped', fn)
       return
-    print 'processing', fn
+    print('processing', fn)
     g = f.require_group('parameters')
-    for k, v in p.iteritems():
+    for k, v in p.items():
       g.attrs[k] = v
     f.close()
 

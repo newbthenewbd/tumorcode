@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -97,7 +97,7 @@ def estimateMTS_runtime(runTimeIndex):
     return 6
   if runTimeIndex < 600:
     return 12
-  print('estimate hours for %i: %d' % (runTimeIndex, hours))
+  print(('estimate hours for %i: %d' % (runTimeIndex, hours)))
   #return hours
 ''' returns estimated memory in MB'''
 def estimateMTS_memory(runTimeIndex):
@@ -131,7 +131,7 @@ def estimateMTS_nProc(runTimeIndex):
 def checkIfFileExists(fn):
   print('checking if file exists...')
   if (os.path.isfile(fn)):
-    print('your are about to destroy the file: %s' % fn)
+    print(('your are about to destroy the file: %s' % fn))
     sys.exit()
 
 ''' T.F. notes for cluster snowden execution:
@@ -141,7 +141,7 @@ def checkIfFileExists(fn):
 def run_pipeline(vessel_fn, name, paramSet, mem, days, pipelineLength):
   ''' initial job'''
   name, paramSet = krebsjobs.PrepareConfigurationForSubmission(vessel_fn, name, 'fakeTumMTS', paramSet)
-  print("name: %s" %name)
+  print(("name: %s" %name))
   configstr = dicttoinfo(paramSet)
   config_file_name = '%s.info' % paramSet['fn_out']
   
@@ -232,8 +232,8 @@ if __name__ == '__main__':
       for fn in filenames:
           if not os.path.isfile(fn):
               raise AssertionError('The file %s is not present!'%fn)
-    except Exception, e:
-      print e.message
+    except Exception as e:
+      print(e.message)
       sys.exit(-1)
   
     
@@ -243,15 +243,15 @@ if __name__ == '__main__':
       #run(fn, tumorParameterName, factory, '2GB', 5.)
       run_pipeline(fn, tumorParameterName, factory, '2GB', 5., goodArgumentsMTS.pipelineLength)
   else:
-    print('starting rerun with file: %s' % goodArgumentsMTS.vesselFileNames[0].name)
+    print(('starting rerun with file: %s' % goodArgumentsMTS.vesselFileNames[0].name))
     if not goodArgumentsMTS.rerun == default_reruns:
-      print('starting rerun %i times' % goodArgumentsMTS.rerun)
+      print(('starting rerun %i times' % goodArgumentsMTS.rerun))
       '''hack the file'''
       with h5py.File(goodArgumentsMTS.vesselFileNames[0].name,'r+') as simulationFile:
-        print("found %s" % simulationFile['/parameters'].attrs['max_iteration_per_rerun'] )
+        print(("found %s" % simulationFile['/parameters'].attrs['max_iteration_per_rerun'] ))
         ''' since we use boost property trees, everything is stored as string '''
         simulationFile['/parameters'].attrs['max_iteration_per_rerun'] = "%i" % goodArgumentsMTS.rerun
-        print("changed to %i" %  goodArgumentsMTS.rerun )
+        print(("changed to %i" %  goodArgumentsMTS.rerun ))
     #NOTE: else 
     # it automatically uses the value from the last simulation!!!
     if not os.path.isfile(goodArgumentsMTS.vesselFileNames[0].name):

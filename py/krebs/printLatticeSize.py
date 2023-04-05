@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -34,5 +34,5 @@ path = sys.argv[2]
 
 with h5py.File(fn, 'r') as f:
   ld = krebsutils.read_lattice_data_from_hdf(f[path])
-print 'size [um]', ld.GetWorldSize()
-print 'shape    ', ld.shape
+print('size [um]', ld.GetWorldSize())
+print('shape    ', ld.shape)

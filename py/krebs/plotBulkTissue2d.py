@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -42,16 +42,16 @@ from myutils import f2s, f2l
 import random
 
 
-from plotBulkTissue import commonOutputName, colorbar, contour, imslice, imshow, with_contour_factory, with_cb
-from analyzeGeneral import DataBasicVessel, DataVesselSamples, DataVesselRadial, DataTumorTissueSingle, DataDistanceFromCenter, BinsSpecRange
-from plotVessels import PlotRadiusHistogram
-from quantities import Prettyfier
+from .plotBulkTissue import commonOutputName, colorbar, contour, imslice, imshow, with_contour_factory, with_cb
+from .analyzeGeneral import DataBasicVessel, DataVesselSamples, DataVesselRadial, DataTumorTissueSingle, DataDistanceFromCenter, BinsSpecRange
+from .plotVessels import PlotRadiusHistogram
+from .quantities import Prettyfier
 
 import matplotlib
 import matplotlib.pyplot as pyplot
 import mpl_utils
 
-import analyzeGeneral
+from . import analyzeGeneral
 
 
 class DataTumor3dRendering(object):
@@ -59,8 +59,8 @@ class DataTumor3dRendering(object):
 
   def obtain_data(self, dataman, dataname, *args):
     if dataname == '3drendering':
-      import cStringIO
-      import povrayRenderTumor
+      import io
+      from . import povrayRenderTumor
       import PIL.Image as Image
 
       f, group, showVessels, showTumor = args[0], args[1], args[2], args[3]
@@ -70,7 +70,7 @@ class DataTumor3dRendering(object):
 
       def read(gmeasure, groupname):
         ds = np.asarray(gmeasure[groupname])
-        memfile = cStringIO.StringIO(ds)
+        memfile = io.StringIO(ds)
         img = Image.open(memfile)
         arr = np.array(img)
         return arr
@@ -123,7 +123,7 @@ class DataTumorMeasureCurvature(object):
       group, = args
       distmap = obtain_data('fieldvariable', 'dist_tumor', group)
       curvature = krebsutils.curvature(ld, distmap, False, False)
-      curvature = np.ma.array(curvature, mask = curvature<>0.)
+      curvature = np.ma.array(curvature, mask = curvature!=0.)
       # kappa = (1/r0 + 1/r1), r0=r1 -> r = 2/kappa
       curvature = 2.* np.ma.power(curvature, -1.)
       return curvature
@@ -131,7 +131,7 @@ class DataTumorMeasureCurvature(object):
     if dataname == 'shape_metrics':
       group, = args
       def read(gmeasure, groupname):
-        return dict((k, float(v[...])) for (k,v) in gmeasure[groupname].iteritems())
+        return dict((k, float(v[...])) for (k,v) in gmeasure[groupname].items())
       def write(gmeasure, groupname):
         dim = 2 if ld.shape[2]==1 else 3
         cellvol = ld.scale**dim
@@ -172,7 +172,7 @@ class DataTumorMeasureCurvature(object):
                  cylinder_equiv_radius = cylinder_equiv_radius, cylinder_equiv_area = cylinder_equiv_area
                  )
         g = gmeasure.create_group(groupname)
-        for k,v in res.iteritems():
+        for k,v in res.items():
           g.create_dataset(k, data = v)
         gmeasure.file.flush()
       fm = myutils.MeasurementFile(f, h5files)
@@ -295,7 +295,7 @@ def PlotRadial(pdfwriter, dataman, resultfiles, distance_distribution_name):
       #tumor_radius = f.f[outgroup_name]['tumor'].attrs['TUMOR_RADIUS'] # this needs work ...
       tumor_radius = dataman.obtain_data('approximate_tumor_radius', gtumor)
       curves_by_path_and_name[outgroup_name, 'approximate_tumor_radius'].append(myutils.MeanValueArray(1,tumor_radius,tumor_radius**2))
-  for k, v in curves_by_path_and_name.items():
+  for k, v in list(curves_by_path_and_name.items()):
     curves_by_path_and_name[k] = myutils.MeanValueArray.fromSummation(v_.avg for v_ in v)
   # ---- here goes the plotting -----#
   charsize = 12/90.
@@ -410,7 +410,7 @@ def printVolumina(filenames, group):
   vr_viable = data[2]
   def printavg(name, data):
     avg, std = np.average(data), np.std(data)
-    print '%s = %s +/- %s' % (name, f2s(avg), f2s(std))
+    print('%s = %s +/- %s' % (name, f2s(avg), f2s(std)))
   printavg('V_Sys', v_tot)
   printavg('V_trum', vr_tumor*v_tot)
   printavg('V_viable',vr_viable*v_tot)
@@ -443,7 +443,7 @@ def plotSnapshots(resultfile, pdfpages):
     @with_contour
     def plot_phi_cells(ax):
       data = resultfile.obtain_data('fieldvariable', 'phi_viabletumor', groupname, 'imslice')
-      ax.set(title = ur'$\phi$')
+      ax.set(title = r'$\phi$')
       imshow_cb(ax, data, ld, matplotlib.cm.coolwarm, (0.4, 0.5), 1.)
       contour(ax, oxy, ld, levels = [param_oxy_death, param_oxy_prol], colors = ('r', 'b'),  worldscaling=1.e-3)
 
@@ -454,7 +454,7 @@ def plotSnapshots(resultfile, pdfpages):
 
     def plot_sources(ax):
       data = resultfile.obtain_data('fieldvariable', 'sources', groupname, 'imslice')
-      ax.set(title = ur'$\Gamma_\phi$')
+      ax.set(title = r'$\Gamma_\phi$')
       imshow_cb(ax, data, ld, matplotlib.cm.coolwarm, 'zero-centered', 1.e3)
       contour(ax, oxy, ld, levels = [param_oxy_death, param_oxy_prol], colors = ('r', 'b'),  worldscaling=1.e-3)
 
@@ -472,7 +472,7 @@ def plotSnapshots(resultfile, pdfpages):
     @with_contour
     def plot_vesselvolume(ax):
       data = resultfile.obtain_data('fieldvariable','phi_vessels', groupname, 'imslice')
-      ax.set(title = ur'$\phi_v$')
+      ax.set(title = r'$\phi_v$')
       imshow_cb(ax, data, ld, matplotlib.cm.coolwarm, (0., 1.), 1.)
       contour(ax, oxy, ld, levels = [param_oxy_death], colors = 'r',  worldscaling=1.e-3)
 
@@ -502,7 +502,7 @@ def plotShapeMetrics(resultfile, pdfpages):
   data = collections.defaultdict(list)
   for groupname in resultfile.groupnames:
     metrics = resultfile.obtain_data('shape_metrics', groupname)
-    for k,v in metrics.iteritems():
+    for k,v in metrics.items():
       data[k].append(v)
     data['time'].append(resultfile.obtain_data('time',groupname))
 
@@ -524,14 +524,14 @@ def plotShapeMetrics(resultfile, pdfpages):
     h, bins = np.histogram(curv, bins=10, weights = curv_weights, normed = True)
     bins = 0.5*(bins[1:]+bins[:-1])
     axes[0,1].bar(bins, h, width=bins[1]-bins[0])
-    axes[0,1].set(title = ur'$\kappa$', xlabel = ur'[1/\u03BCm]', ylabel = 'N')
+    axes[0,1].set(title = r'$\kappa$', xlabel = r'[1/\u03BCm]', ylabel = 'N')
 
     axes[1,0].plot(data['time'], data['radius'], marker = 'x')
     axes[1,0].set(xlabel = '$t$', ylabel = r'$r_{tum}$')
     v, y0 = linearFit(data['time'], data['radius'])
     x = np.asarray([0., data['time'][-1]*1.1])
     y = y0 + v*x
-    axes[1,0].plot(x, y, label = ur'v = %s [\u03BCm/h]' % f2s(v))
+    axes[1,0].plot(x, y, label = r'v = %s [\u03BCm/h]' % f2s(v))
     axes[1,0].legend()
 
     axes[1,1].set_visible(False)
@@ -614,7 +614,7 @@ def fix_time(g):
     g.attrs['time'] = t
   g.file.flush()
   if isinstance(g, (h5py.Group,h5py.File)):
-    for child in g.itervalues():
+    for child in g.values():
       fix_time(child)
 
 

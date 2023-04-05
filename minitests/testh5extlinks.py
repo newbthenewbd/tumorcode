@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -43,18 +43,18 @@ if 0:
   f2 = h5py.File('t2.h5','r')
   ds1 = f2['l1']
   ds2 = f2['l2']
-  print f2,
-  print ds1
-  print ds1.file
-  print ds2
-  print ds2.file
+  print(f2, end=' ')
+  print(ds1)
+  print(ds1.file)
+  print(ds2)
+  print(ds2.file)
   f1 = h5py.File('t1.h5','r+')
-  print f1
+  print(f1)
 
 import h5files
 with h5files.open('t1.h5', 'a') as f1:
-  print f1
+  print(f1)
   with h5files.open('t1.h5', 'a') as f2:
-    print f2
-  print f1
-print f1
+    print(f2)
+  print(f1)
+print(f1)

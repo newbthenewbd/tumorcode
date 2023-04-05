@@ -33,7 +33,7 @@ num_seg
 '''
 num_seg=30
 #find blender installation path
-print("bpy is at: %s" % os.path.dirname(bpy.data.filepath))
+print(("bpy is at: %s" % os.path.dirname(bpy.data.filepath)))
 def createSphere(origin=(0, 0, 0)):
     # Create icosphere
     bpy.ops.mesh.primitive_ico_sphere_add(location=origin)

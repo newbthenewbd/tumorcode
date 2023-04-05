@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -46,9 +46,9 @@ def generate(size, pmin, pmax, smin, smax):
 def updateParticle(part, best, phi1, phi2):
     u1 = (random.uniform(0, phi1) for _ in range(len(part)))
     u2 = (random.uniform(0, phi2) for _ in range(len(part)))
-    v_u1 = map(operator.mul, u1, map(operator.sub, part.best, part))
-    v_u2 = map(operator.mul, u2, map(operator.sub, best, part))
-    part.speed = list(map(operator.add, part.speed, map(operator.add, v_u1, v_u2)))
+    v_u1 = list(map(operator.mul, u1, list(map(operator.sub, part.best, part))))
+    v_u2 = list(map(operator.mul, u2, list(map(operator.sub, best, part))))
+    part.speed = list(map(operator.add, part.speed, list(map(operator.add, v_u1, v_u2))))
     for i, speed in enumerate(part.speed):
         if speed < part.smin:
             part.speed[i] = part.smin
@@ -104,12 +104,12 @@ def test_sum():
   # Python's standard serial function
   start = time.time()
   serialSum = sum(map(abs, data))
-  print(start-time.time())
+  print((start-time.time()))
 
   # SCOOP's parallel function
   start = time.time()
   parallelSum = futures.mapReduce(abs, operator.add, data)
-  print(start-time.time())
+  print((start-time.time()))
   assert serialSum == parallelSum
 
 if __name__ == '__main__':
@@ -123,8 +123,8 @@ if __name__ == '__main__':
     pop, logbook, best = main_pso()
     print("runtime:")
     end = time.time()
-    print(end-start)
+    print((end-start))
     print("best: ")
     print(best)
     print("fitness: ")
-    print(best.fitness.values)
+    print((best.fitness.values))

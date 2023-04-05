@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -98,7 +98,7 @@ class Measure(object):
         g = f.require_group('frames')
         idx = g.attrs.get('num_frames', 0)
         g.attrs.modify('num_frames', idx+1)
-        print 'write t = %f, idx = %i' % (t, idx)
+        print('write t = %f, idx = %i' % (t, idx))
         gt = g.create_group('%04i' % idx)
         gt.attrs['time'] = t
         gt.attrs['number'] = idx

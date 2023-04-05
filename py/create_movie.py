@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -24,7 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ''' usage:
   cat ../tum-q2d-mini-11layer-P10-typeA-sample00-q2d_11layer_off-out000*.png |
-  python2 ~/tumorcode/py/create_movie.py -l typeA
+  python3 ~/tumorcode/py/create_movie.py -l typeA
 
 1) create your images with usual povray
 2) maybe merge adaption an no adaption
@@ -58,7 +58,7 @@ if __name__ == '__main__':
   options, args = parser.parse_args()  
   
   if 1:
-    print("FFMPEG_BIN: %s" % FFMPEG_BIN)
+    print(("FFMPEG_BIN: %s" % FFMPEG_BIN))
     stamp = datetime.datetime.now().time()
 
     command = [ FFMPEG_BIN,

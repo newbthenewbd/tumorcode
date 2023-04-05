@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -40,7 +40,7 @@ from os.path import basename
 
 import mpl_utils
 
-from plotIff import DataTissue, DataGlobalIff, DataRadialIff, DataTumorBloodFlow, averaged
+from .plotIff import DataTissue, DataGlobalIff, DataRadialIff, DataTumorBloodFlow, averaged
 
 if __name__ == '__main__':
   
@@ -57,7 +57,7 @@ if __name__ == '__main__':
     array_of_v_max = []
     
     for f in files:
-      print('Running file: %s' % f.filename)
+      print(('Running file: %s' % f.filename))
       iff_pressure = dataman('iff_radial', f, 'vs_dr', 'iff_pressure')
       iff_velocity_mag = dataman('iff_radial', f, 'vs_dr', 'iff_velocity_mag')
       bins =(1./1000.) * dataman('iff_radial', f, 'vs_dr', 'bins')
@@ -67,7 +67,7 @@ if __name__ == '__main__':
       
       plateau = 1/4.*(np.sum(nice_iff_pressure[0:4]))
       max_velocity = np.max(nice_iff_velocity_mag)
-      print('max IFP: %f, max IFV: %f' % (plateau, max_velocity))
+      print(('max IFP: %f, max IFV: %f' % (plateau, max_velocity)))
       array_of_plateau.append(plateau)
       array_of_v_max.append(max_velocity)
       
@@ -133,7 +133,7 @@ if __name__ == '__main__':
       #plot('ivp_minus_ifp', label = '$p_v - p_i$', marker='>', color = 'b')
       #end pressure
       ax = axes[1]
-      ax.set(ylabel = ur'[\u03BCm/s]') #, xlabel = r'$\theta$ [mm]', title = 'velocity')
+      ax.set(ylabel = r'[\u03BCm/s]') #, xlabel = r'$\theta$ [mm]', title = 'velocity')
       ax.set(xticklabels=[])
   #    plot('iff_velocity_out', label = r'$v_{||}$', marker = 'o', color = 'r')
   #    plot('iff_velocity_mag', label = r'$|v|$', marker = 's', color = 'b')

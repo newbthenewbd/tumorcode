@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -30,7 +30,7 @@ import myutils
 def check_allow_delete(name, opts):
   if opts.force:
     return True
-  ok = raw_input(' [y|.]')
+  ok = input(' [y|.]')
   return ok=='y'
 
 
@@ -38,10 +38,10 @@ def delete_items(fn, pattern, opts):
   with h5py.File(fn, 'r+') as f:
     items = myutils.walkh5(f, pattern)
     for item in items:
-      print '%s:%s' % (fn, item),
+      print('%s:%s' % (fn, item), end=' ')
       if not opts.dry and check_allow_delete(item, opts):
         del f[item]
-      print '\n',
+      print('\n', end=' ')
 
 if __name__ == '__main__':
   parser = optparse.OptionParser()

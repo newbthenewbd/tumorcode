@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -588,7 +588,7 @@ def breastv4(count):
       detailedO2name = 'breastv4'
     )
     return p
-  return list(mk1() for i in xrange(count))
+  return list(mk1() for i in range(count))
 
 
 breastv3const = deepcopy(breastv3)
@@ -758,4 +758,4 @@ swine1 = dict(
 )
 if __name__ == '__main__':
   abc = breastv4(3)
-  print breastv4(3)
+  print(breastv4(3))

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -62,7 +62,7 @@ def plot_shearstress(vessel_grp,pp):
     
     pressure_at_vessel=[]
         
-    for NodeA, NodeB in itertools.izip(node_a_index,node_b_index):
+    for NodeA, NodeB in zip(node_a_index,node_b_index):
         pressure_at_vessel.append((pressure_at_nodes[NodeA]+pressure_at_nodes[NodeB])/2 * 1/0.1333)
     
     fig = matplotlib.figure.Figure()
@@ -135,7 +135,7 @@ def plot_diameter(vessel_grp,pp):
     
     pressure_at_vessel=[]
         
-    for NodeA, NodeB in itertools.izip(node_a_index,node_b_index):
+    for NodeA, NodeB in zip(node_a_index,node_b_index):
         pressure_at_vessel.append((pressure_at_nodes[NodeA]+pressure_at_nodes[NodeB])/2 * 1/0.1333)
     
     fig = matplotlib.figure.Figure()
@@ -210,7 +210,7 @@ def plot_hydrodynamic_stimuli(vessel_grp,pp):
     
     pressure_at_vessel=[]
         
-    for NodeA, NodeB in itertools.izip(node_a_index,node_b_index):
+    for NodeA, NodeB in zip(node_a_index,node_b_index):
         pressure_at_vessel.append((pressure_at_nodes[NodeA]+pressure_at_nodes[NodeB])/2 * 1/0.1333)
     pressure_at_vessel = np.asarray(pressure_at_vessel)
     pressure_stimuli = 100 - 86 *np.exp(-5000*np.log10(np.log10(pressure_at_vessel))**5.4)
@@ -236,7 +236,7 @@ def plot_hydrodynamic_stimuli(vessel_grp,pp):
     ax.xaxis.labelpad = 0.5
     ax.set_ylabel(r'signal $S_1$, $S_2$',fontsize=18)
     if goodArguments.apj:
-      print("goodArguments.FileNames: %s" % goodArguments.FileNames[0].name)
+      print(("goodArguments.FileNames: %s" % goodArguments.FileNames[0].name))
       ax.set_ylim([-2.2,4])
       if not 'initial' in goodArguments.FileNames[0].name:
         print('first')
@@ -294,7 +294,7 @@ def plot_conductive_stimuli(adaption_grp,pp):
     
     pressure_at_vessel=[]
     
-    for NodeA, NodeB in itertools.izip(node_a_index,node_b_index):
+    for NodeA, NodeB in zip(node_a_index,node_b_index):
         pressure_at_vessel.append((pressure_at_nodes[NodeA]+pressure_at_nodes[NodeB])/2 * 1/0.1333)
     
     fig2 = matplotlib.figure.Figure()
@@ -348,7 +348,7 @@ def plot_movie(f,pp):
   #all_grp = f['Asymetric/vessels_after_adaption']
   all_grp = f['adaption']
     
-  max_iterlength=len(all_grp.keys())-5
+  max_iterlength=len(list(all_grp.keys()))-5
   i=1
   k=0
   while i<max_iterlength :
@@ -370,7 +370,7 @@ def plot_movie(f,pp):
     
     pressure_at_vessel=[]
         
-    for NodeA, NodeB in itertools.izip(node_a_index,node_b_index):
+    for NodeA, NodeB in zip(node_a_index,node_b_index):
         pressure_at_vessel.append((pressure_at_nodes[NodeA]+pressure_at_nodes[NodeB])/2 * 7.5)
     pressure_at_vessel = np.array(pressure_at_vessel)
     fig = plt.figure()
@@ -459,8 +459,8 @@ def plot_movie(f,pp):
     plt.grid()
     plt.savefig("mov_%03i.png"%k)
     plt.close()
-    #os.system("python2 /localdisk/thierry/tumorcode/py/krebs/povrayRenderVessels.py ../test_configs.h5 /Asymetric/vessels_after_adaption/vessels_after_adaption_%03i"%i)
-    os.system("python2 /daten/tumorcode/py/krebs/povrayRenderVessels.py /daten/localdisk/adaption_project/vessels-q2d-8mm-P6-typeE-9x3L130-sample00_adption_p_typeE.h5 /adaption/vessels_after_adaption_%i"%i)
+    #os.system("python3 /localdisk/thierry/tumorcode/py/krebs/povrayRenderVessels.py ../test_configs.h5 /Asymetric/vessels_after_adaption/vessels_after_adaption_%03i"%i)
+    os.system("python3 /daten/tumorcode/py/krebs/povrayRenderVessels.py /daten/localdisk/adaption_project/vessels-q2d-8mm-P6-typeE-9x3L130-sample00_adption_p_typeE.h5 /adaption/vessels_after_adaption_%i"%i)
     i=i+100
     k=k+1
     #plt.show()
@@ -469,7 +469,7 @@ def plot_movie_typeE(f,pp):
   all_grp = f['adaption']
   x_min=20
   x_max=50
-  max_iterlength=len(all_grp.keys())-5
+  max_iterlength=len(list(all_grp.keys()))-5
   i=1
   k=0
   while i<max_iterlength :
@@ -491,7 +491,7 @@ def plot_movie_typeE(f,pp):
     
     pressure_at_vessel=[]
         
-    for NodeA, NodeB in itertools.izip(node_a_index,node_b_index):
+    for NodeA, NodeB in zip(node_a_index,node_b_index):
         pressure_at_vessel.append((pressure_at_nodes[NodeA]+pressure_at_nodes[NodeB])/2 * 7.5)
     pressure_at_vessel = np.array(pressure_at_vessel)
     fig = plt.figure()
@@ -580,8 +580,8 @@ def plot_movie_typeE(f,pp):
     plt.grid()
     plt.savefig("mov_%03i.png"%k)
     plt.close()
-    #os.system("python2 /localdisk/thierry/tumorcode/py/krebs/povrayRenderVessels.py ../test_configs.h5 /Asymetric/vessels_after_adaption/vessels_after_adaption_%03i"%i)
-    os.system("python2 /daten/tumorcode/py/krebs/povrayRenderVessels.py /daten/localdisk/adaption_project/vessels-q2d-8mm-P6-typeE-9x3L130-sample00_adption_p_typeE.h5 /adaption/vessels_after_adaption_%i"%i)
+    #os.system("python3 /localdisk/thierry/tumorcode/py/krebs/povrayRenderVessels.py ../test_configs.h5 /Asymetric/vessels_after_adaption/vessels_after_adaption_%03i"%i)
+    os.system("python3 /daten/tumorcode/py/krebs/povrayRenderVessels.py /daten/localdisk/adaption_project/vessels-q2d-8mm-P6-typeE-9x3L130-sample00_adption_p_typeE.h5 /adaption/vessels_after_adaption_%i"%i)
     i=i+100
     k=k+1
     #plt.show()

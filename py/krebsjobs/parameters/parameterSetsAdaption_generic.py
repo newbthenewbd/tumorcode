@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -503,7 +503,7 @@ def _value1():
       a_flow = flow,
     )
     return p
-  return list(mk1(i) for i in xrange(len(combined)))
+  return list(mk1(i) for i in range(len(combined)))
 
 value_list1 = _value1()
 
@@ -524,7 +524,7 @@ def _value2():
       max_nun_iterations = 150,
     )
     return p
-  return list(mk1(i) for i in xrange(len(combined)))
+  return list(mk1(i) for i in range(len(combined)))
 value_list2 = _value2()
 
 def _value3():
@@ -544,7 +544,7 @@ def _value3():
       max_nun_iterations = 150,
     )
     return p
-  return list(mk1(i) for i in xrange(len(combined)))
+  return list(mk1(i) for i in range(len(combined)))
 value_list3 = _value3()
 
 def _value4():
@@ -564,7 +564,7 @@ def _value4():
       max_nun_iterations = 150,
     )
     return p
-  return list(mk1(i) for i in xrange(len(combined)))
+  return list(mk1(i) for i in range(len(combined)))
 value_list4 = _value4()
 
 def _value5():
@@ -585,7 +585,7 @@ def _value5():
       Q_refdot = 10.,
     )
     return p
-  return list(mk1(i) for i in xrange(len(combined)))
+  return list(mk1(i) for i in range(len(combined)))
 value_list5 = _value5()
 
 def _value6():
@@ -607,7 +607,7 @@ def _value6():
       cond_length = 2500.,
     )
     return p
-  return list(mk1(i) for i in xrange(len(combined)))
+  return list(mk1(i) for i in range(len(combined)))
 value_list6 = _value6()
 
 def _value7():
@@ -629,7 +629,7 @@ def _value7():
       cond_length = 2500.,
     )
     return p
-  return list(mk1(i) for i in xrange(len(combined)))
+  return list(mk1(i) for i in range(len(combined)))
 value_list7 = _value7()
 
 def _value8():
@@ -651,7 +651,7 @@ def _value8():
       cond_length = 2500.,
     )
     return p
-  return list(mk1(i) for i in xrange(len(combined)))
+  return list(mk1(i) for i in range(len(combined)))
 value_list8 = _value8()
 
 def _value9():
@@ -673,7 +673,7 @@ def _value9():
       #cond_length = 2500.,
     )
     return p
-  return list(mk1(i) for i in xrange(len(combined)))
+  return list(mk1(i) for i in range(len(combined)))
 value_list9 = _value9()
 
 def _value10():
@@ -695,7 +695,7 @@ def _value10():
       cond_length = 2500.,
     )
     return p
-  return list(mk1(i) for i in xrange(len(combined)))
+  return list(mk1(i) for i in range(len(combined)))
 value_list10 = _value10()
 
 def _value11():
@@ -717,7 +717,7 @@ def _value11():
       #cond_length = 2500.,
     )
     return p
-  return list(mk1(i) for i in xrange(len(combined)))
+  return list(mk1(i) for i in range(len(combined)))
 value_list11 = _value11()
 def _value12():
   #import random
@@ -739,7 +739,7 @@ def _value12():
       #cond_length = 2500.,
     )
     return p
-  return list(mk1(i) for i in xrange(len(combined)))
+  return list(mk1(i) for i in range(len(combined)))
 value_list12 = _value12()
 def _value13():
   #import random
@@ -762,7 +762,7 @@ def _value13():
       #cond_length = 2500.,
     )
     return p
-  return list(mk1(i) for i in xrange(len(combined)))
+  return list(mk1(i) for i in range(len(combined)))
 value_list13 = _value13()
 def _value14():
   #import random
@@ -783,7 +783,7 @@ def _value14():
       #cond_length = 2500.,
     )
     return p
-  return list(mk1(i) for i in xrange(len(combined)))
+  return list(mk1(i) for i in range(len(combined)))
 value_list14 = _value14()
 ''' the a_pressure variable is the arterial pressure
     the a_flow variable is venous pressure
@@ -815,7 +815,7 @@ def _value_pressure_1():
       cond_length = 2500.,
     )
     return p
-  return list(mk1(i) for i in xrange(len(combined)))
+  return list(mk1(i) for i in range(len(combined)))
 value_list_pressure_1 = _value_pressure_1()
 def _value_pressure_2():
   #import random
@@ -837,7 +837,7 @@ def _value_pressure_2():
       cond_length = 1700.,
     )
     return p
-  return list(mk1(i) for i in xrange(len(combined)))
+  return list(mk1(i) for i in range(len(combined)))
 value_list_pressure_2 = _value_pressure_2()
 
 deap_id5 = deepcopy(deap_test_4)

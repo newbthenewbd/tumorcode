@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -125,7 +125,7 @@ originalSecombDataOfK = '''
    50           0.730
    54		    0.747
 '''
-originalSecombDataOfK = np.asarray(map(float, filter(lambda s: s, map(str.strip, originalSecombDataOfK.split(' ')))))
+originalSecombDataOfK = np.asarray(list(map(float, [s for s in map(str.strip, originalSecombDataOfK.split(' ')) if s])))
 originalSecombDataOfK = originalSecombDataOfK.reshape(-1,2)
 
 secombMTC = originalSecombDataOfK.copy()
@@ -135,7 +135,7 @@ secombMTC[:,1] = np.power(math.pi * K * d, -1.)
 secombMTC[:,0] = 0.5 * d
 del d, K
 
-print 'secomb MTC bounds: (%f - %f um) = %f - %f' % (secombMTC[:,0].min(), secombMTC[:,0].max(), secombMTC[:,1].min() ,secombMTC[:,1].max())
+print('secomb MTC bounds: (%f - %f um) = %f - %f' % (secombMTC[:,0].min(), secombMTC[:,0].max(), secombMTC[:,1].min() ,secombMTC[:,1].max()))
 
 
 def BadFitNusseltNumber(r):  # used in single vessel experiments
@@ -160,10 +160,10 @@ nuFromSecomb[:,1] = MTC2Nusselt(secombMTC[:,1], secombMTC[:,0], paramspo2base)
 nuExtraLarge = sherwood_numbers_extra.copy()
 nuExtraLarge[:,1] = SherwoodToNusselt(sherwood_numbers_extra[:,1], sherwood_numbers_extra[:,0], paramspo2base)
 
-print 'nusselt Extra Large = ', nuExtraLarge
+print('nusselt Extra Large = ', nuExtraLarge)
 
 actuallyUsedCoeffsForActuallyUsedMTC = (0.0052*1.1, 16, 0.0078/math.exp(-4./16)*1.6) # = (0.00572, 16, 0.016024637200263012)
-print 'actuallyUsedCoeffsForActuallyUsedMTC =', actuallyUsedCoeffsForActuallyUsedMTC
+print('actuallyUsedCoeffsForActuallyUsedMTC =', actuallyUsedCoeffsForActuallyUsedMTC)
 
 def actuallyUsedMTC(r):
   p1, p2 ,p3  = actuallyUsedCoeffsForActuallyUsedMTC
@@ -202,8 +202,8 @@ if 0:  # this is a better version of the function below.  It takes into account 
     def objectivefunction2(coeff_):
       return fitDataW*(fitDataY - fitfunction2(fitDataX, coeff_))
     (nusselt_fitcoeff, stuff) = scipy.optimize.leastsq(objectivefunction2, initialCoeff)
-    fitlabel2 = '{1}\,(1 - exp(-r/{0})) + {2} r'.format(*map(f2l_, nusselt_fitcoeff))
-    print 'nusselt_fitcoeff for %s = %s' % (fitlabel2, nusselt_fitcoeff)
+    fitlabel2 = '{1}\,(1 - exp(-r/{0})) + {2} r'.format(*list(map(f2l_, nusselt_fitcoeff)))
+    print('nusselt_fitcoeff for %s = %s' % (fitlabel2, nusselt_fitcoeff))
 else:
     def fitfunction2(r, coeff_):
       p1, p2 = coeff_
@@ -212,18 +212,18 @@ else:
     def objectivefunction2(coeff_):
       return fitDataW*(fitDataY - fitfunction2(fitDataX, coeff_))
     (nusselt_fitcoeff, stuff) = scipy.optimize.leastsq(objectivefunction2, initialCoeff)
-    fitlabel2 = '{1}\,(1 - exp(-r/{0}))'.format(*map(f2l_, nusselt_fitcoeff))
-    print 'nusselt_fitcoeff for %s = %s' % (fitlabel2, nusselt_fitcoeff)
+    fitlabel2 = '{1}\,(1 - exp(-r/{0}))'.format(*list(map(f2l_, nusselt_fitcoeff)))
+    print('nusselt_fitcoeff for %s = %s' % (fitlabel2, nusselt_fitcoeff))
     
 
-print 'Nu @r = 3000 = ', fitfunction2(3000., nusselt_fitcoeff)
+print('Nu @r = 3000 = ', fitfunction2(3000., nusselt_fitcoeff))
 
 nuFromMtc_arr = fitfunction2(r_arr, nusselt_fitcoeff)
 
 mask = (r_arr<60.)  & (r_arr>2.)
 a = NuToMTC(nuFromMtc_arr[mask], r_arr[mask], paramspo2base)
 r = r_arr[mask]
-print 'used in Single Vessel Plots: MTC(r = %f) = %f,  MTC(r = %f) = %f' % (r[0], a[0], r[-1], a[-1])
+print('used in Single Vessel Plots: MTC(r = %f) = %f,  MTC(r = %f) = %f' % (r[0], a[0], r[-1], a[-1]))
 
 actuallUsedNu_arr = actuallyUsedNu(r_arr)
 
@@ -264,6 +264,6 @@ else:
   fig, ax = pyplot.subplots(1,1, figsize = (mpl_utils.a4size[0]*0.8, mpl_utils.a4size[0]*0.4))
   r = np.linspace(1., 200., 200)
   mtc = fitfunction(r, coeff)/r
-  print np.amin(mtc), np.amax(mtc)
+  print(np.amin(mtc), np.amax(mtc))
   ax.plot(r, mtc, label = 'mtc', color = 'k')
   pyplot.show()

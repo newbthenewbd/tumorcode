@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -49,8 +49,8 @@ if __name__ == '__main__':
     graph = krebsutils.read_vesselgraph(vesselgroup, ['position', 'flags'])
     graph = graph.get_filtered(myutils.bbitwise_and(graph['flags'], krebsutils.CIRCULATED))
 
-  print 'vessel ld:'
-  print ldvessels
+  print('vessel ld:')
+  print(ldvessels)
   ''' this splits splits space in lattices of 300.
       the second 300 adds a 'safety layer of 100. mum
       so we do not consider the outermost data for calculating the
@@ -58,8 +58,8 @@ if __name__ == '__main__':
   '''
   fieldld = krebsutils.SetupFieldLattice(wbbox, 3, 20., 100.)
   wbbox     = fieldld.worldBox
-  print 'field ld:'
-  print fieldld
+  print('field ld:')
+  print(fieldld)
   z = fieldld.shape[2]/2
 
   weights = krebsutils.sample_edges_weights(graph.nodes['position'], graph.edgelist, 30.)
@@ -71,12 +71,12 @@ if __name__ == '__main__':
             np.arange(y0, y1, fieldld.scale*eps),
             np.arange(z0, z1, fieldld.scale*eps),
             ]
-  print 'histogram bin ends:',map(lambda r: (r.min(), r.max()), ranges)
+  print('histogram bin ends:',[(r.min(), r.max()) for r in ranges])
   mvd, _ = np.histogramdd(positions, bins = ranges, weights = weights)
   mvd *= 1.e6/(fieldld.scale**3)
-  print 'result shape:',mvd.shape
+  print('result shape:',mvd.shape)
   print('average mvd')
-  print(np.mean(mvd[1:-1,1:-1,1:-1]))
+  print((np.mean(mvd[1:-1,1:-1,1:-1])))
   
   fig, ax = pyplot.subplots(1)
   plt = ax.imshow(mvd[:,:,z], interpolation = 'none')

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -19,7 +19,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
-from __future__ import print_function  
+  
 import os, sys
 from os.path import join, basename, dirname, splitext
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),'../..'))
@@ -443,7 +443,7 @@ def sample_line_general(quantity_name, group_name, starting_point, end_point):
   print(goodArguments)
   with h5py.File(goodArguments.vbl_simulation_file_name, 'r') as f:
   
-    datalist = map(lambda s: s, map(str.strip, goodArguments.datalist.split(',')))
+    datalist = [s for s in list(map(str.strip, goodArguments.datalist.split(',')))]
     
     vesselgroup = f[os.path.join(group_name, 'vessels')]
     graph = krebsutils.read_vessels_from_hdf(vesselgroup, ['position', 'radius', 'hematocrit', 'pressure', 'flow', 'flags','shearforce'] + datalist, return_graph=True)
@@ -759,7 +759,7 @@ class DataArterialBifurcation(object):
       def read(hdf_cache_grp, data_name):
         print('data_name: %s' %data_name)
         print('hdf_cache_grp in read')
-        print(hdf_cache_grp.keys())
+        print(list(hdf_cache_grp.keys()))
         return (np.asarray(hdf_cache_grp[data_name + '/' + 'average_po2']),np.asarray(hdf_cache_grp[data_name + '/' + 'average_po2_error']),np.asarray(hdf_cache_grp[data_name + '/' + 'distances']))
       def write(hdf_cache_grp, data_name):
         (average_value, errors, distances) = sample_line_general('o2', this_out_grp_name, artery_p1, artery_p2)
@@ -805,7 +805,7 @@ class DataVenousBifurcation(object):
       def read(hdf_cache_grp, data_name):
         print('data_name: %s' %data_name)
         print('hdf_cache_grp in read')
-        print(hdf_cache_grp.keys())
+        print(list(hdf_cache_grp.keys()))
         return (np.asarray(hdf_cache_grp[data_name + '/' + 'average_po2']),np.asarray(hdf_cache_grp[data_name + '/' + 'average_po2_error']),np.asarray(hdf_cache_grp[data_name + '/' + 'distances']))
       def write(hdf_cache_grp, data_name):
         (average_value, errors, distances) = sample_line_general('o2', this_out_grp_name, vein_parallel_p1, vein_parallel_p2)
@@ -844,7 +844,7 @@ class DataVenousBifurcation(object):
       def read(hdf_cache_grp, data_name):
         print('data_name: %s' %data_name)
         print('hdf_cache_grp in read')
-        print(hdf_cache_grp.keys())
+        print(list(hdf_cache_grp.keys()))
         return (np.asarray(hdf_cache_grp[data_name + '/' + 'average_po2']),np.asarray(hdf_cache_grp[data_name + '/' + 'average_po2_error']),np.asarray(hdf_cache_grp[data_name + '/' + 'distances']))
       def write(hdf_cache_grp, data_name):
         (average_value, errors, distances) = sample_line_general('o2', this_out_grp_name, vein_ortho_p1, vein_ortho_p2)
@@ -911,7 +911,7 @@ if __name__ == '__main__':
         raise AssertionError('pattern "%s" not found in "%s"!' % (goodArguments.grp_pattern, goodArguments.vbl_simulation_file_name))
       else:
         dirs = set.union(dirs,d)
-  except Exception, e:
+  except Exception as e:
     print(e.message)
     sys.exit(-1)
     

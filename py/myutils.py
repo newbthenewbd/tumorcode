@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -29,7 +29,7 @@ import posixpath
 import fnmatch
 import posixpath
 import md5
-import cPickle
+import pickle
 import uuid
 import decimal
 
@@ -44,7 +44,7 @@ else:
 
 commonprefix = posixpath.commonprefix
 def commonsuffix(l):
-  rev = map(lambda s: s[::-1], l)
+  rev = [s[::-1] for s in l]
   ret = commonprefix(rev)
   ret = ret[::-1]
   return ret
@@ -64,7 +64,7 @@ def splitcommonpresuffix(l):
   '''split common prefix and suffix from a list of strings so that 
      prefix + suffix = input in the edge case of a single input string'''
   prefix  = commonprefix(l)
-  restinv = map(lambda s: s[len(prefix):][::-1], l) # remove prefix and reverse char sequence
+  restinv = [s[len(prefix):][::-1] for s in l] # remove prefix and reverse char sequence
   suffixinv  = commonprefix(restinv)
   return prefix, suffixinv[::-1]
 
@@ -77,7 +77,7 @@ def updated(d1, d2):
 
 def checksum(*objs):
   '''computes a checksum as md5 of the pickled arguments'''
-  return md5.new(cPickle.dumps(objs)).hexdigest()
+  return md5.new(pickle.dumps(objs)).hexdigest()
 
 
 def uuidstr():
@@ -96,7 +96,7 @@ def iterate_items(d, keys, skip = False):
   for k in keys:
     try:
       value = d[k]
-    except KeyError, e:
+    except KeyError as e:
       if skip:
         continue
       else:
@@ -181,7 +181,7 @@ def largeDatasetAverageAndStd(ds, **kwargs):
 
 def testProcessLargeDataset():
   def fun(ds):
-    print 'fun on ',ds[...]
+    print('fun on ',ds[...])
     return np.average(ds), 1.*np.product(ds.shape)
   
   def reduction(a, b, wa, wb):
@@ -190,19 +190,19 @@ def testProcessLargeDataset():
     #wb = Nb/(Na+Nb)
     return (a*wa + b*wb), (Na+Nb)
 
-  print 'test1'
+  print('test1')
   a = np.arange(20)
   result = processLargeDataset(a, fun, reduction, blocksize = 3)
-  print result, 'vs', np.average(a)
+  print(result, 'vs', np.average(a))
   
-  print 'test2'
+  print('test2')
   a = np.arange(30).reshape((3,5,2))
   result = processLargeDataset(a, fun, reduction, blocksize = 3)
-  print result, 'vs', np.average(a)
+  print(result, 'vs', np.average(a))
   
-  print 'test3'
+  print('test3')
   mu, sd = largeDatasetAverageAndStd(a, blocksize = 3)
-  print mu, sd, 'vs', np.average(a), np.std(a)
+  print(mu, sd, 'vs', np.average(a), np.std(a))
 
 
 def closest_items(seq, key, picks):
@@ -238,7 +238,7 @@ import pprint as pprint_
 class MyPrettyPrinter(pprint_.PrettyPrinter):
   def _format(self, obj, *args, **kwargs):
     if isinstance(obj, collections.defaultdict):
-      obj = dict(obj.iteritems())
+      obj = dict(iter(obj.items()))
     elif isinstance(obj, MeanValueArray):
       #obj = (obj.__class__.__name__, np.asarray(obj.avg))
       obj = "%s %s %s" % ( obj.__class__.__name__, obj.sum.dtype, obj.sum.shape)
@@ -291,7 +291,7 @@ def getTimeSortedGroups(supergroup, namestart = '', key='time'):
     returns list of hdf groups
     startname -> filter out groups the name of which does not start with namestart. Uses the local path name within supergroup. Beware of preceeding '/'
   """
-  groups = [ g for k, g in supergroup.iteritems() if ((not namestart or k.startswith(namestart)) and key in g.attrs) ]
+  groups = [ g for k, g in supergroup.items() if ((not namestart or k.startswith(namestart)) and key in g.attrs) ]
   groups.sort(key = lambda g: g.attrs[key])
   return groups
 
@@ -314,7 +314,7 @@ def require_snapshot_group_(fmeasure, *args):
 
 
 def MeasurementFile(f, h5files, prefix='measure_'):
-  if not isinstance(f, (str, unicode)):
+  if not isinstance(f, str):
     fn = f.filename
   else:
     fn = f
@@ -353,7 +353,7 @@ def hdf_write_dict_hierarchy(grp, name, data):
       g = grp.require_group(name)
     else:
       g = grp
-    for k, v in data.iteritems():
+    for k, v in data.items():
       hdf_write_dict_hierarchy(g, k, v)
   elif isinstance(data, np.ma.masked_array):
     ds = grp.create_dataset(name, data=data.torecords())
@@ -366,11 +366,11 @@ def hdf_write_dict_hierarchy(grp, name, data):
 def hdf_read_dict_hierarchy(o):
   if isinstance(o, h5py.Group):
     return dict(
-      (k, hdf_read_dict_hierarchy(v)) for (k,v) in o.iteritems()
+      (k, hdf_read_dict_hierarchy(v)) for (k,v) in o.items()
     )
   elif isinstance(o, h5py.Dataset):
     if o.shape == (1,):
-      print o.dtype
+      print(o.dtype)
     a = np.asarray(o)
     if np.ndim(a) == 0:
       a = np.asscalar(a)
@@ -378,11 +378,11 @@ def hdf_read_dict_hierarchy(o):
 
 def hdf_read_dict_hierarchy_attr(o):
   assert isinstance(o, h5py.Group)
-  d = dict(o.attrs.items())
-  for k, v in o.iteritems():
+  d = dict(list(o.attrs.items()))
+  for k, v in o.items():
     if isinstance(v, h5py.Group):
       d[k] = hdf_read_dict_hierarchy_attr(v)
-  for k,v in d.items():
+  for k,v in list(d.items()):
     if v == 'true' or v == 'false':
       d[k] = bool(v)
     else:
@@ -425,7 +425,7 @@ def hdf_data_caching(read, write, f, path, versions = None):
       vstored = stored_group.attrs['VERSION']
     except KeyError:
       return True
-    return v <> vstored
+    return v != vstored
 
   def set_metadata(g, v):
     g.attrs['UUID'] = uuidstr()  # unused at the moment. Useful for later
@@ -475,7 +475,7 @@ def make_hashable(a):
   if isinstance(a, (list, tuple)):
     return tuple(make_hashable(q) for q in a)
   if isinstance(a, dict):
-    return tuple((k, make_hashable(q)) for k, q in a.iteritems())
+    return tuple((k, make_hashable(q)) for k, q in a.items())
   return a
 
 
@@ -614,7 +614,7 @@ def f2s(q, exponential=None, prec=3, latex=False):
   """
   if isinstance(q, (np.float, np.float32, np.float64)):
     q = float(q)
-  if isinstance(q, float): # hack around python2.6 limiation
+  if isinstance(q, float): # hack around python3.6 limiation
     try:
       q = q.as_integer_ratio()
     except OverflowError:
@@ -627,7 +627,7 @@ def f2s(q, exponential=None, prec=3, latex=False):
   else:
     q = decimal.Decimal(q)
   p = q.adjusted() # Used for determining the position of the most significant digit with respect to the decimal point.
-  if (abs(p)>3 or exponential==True) and exponential<>False:
+  if (abs(p)>3 or exponential==True) and exponential!=False:
     expo = p
     q *= decimal.Decimal(10)**(-expo)
 #    print 'expo = ',expo
@@ -662,7 +662,7 @@ def multif2s(*args, **kwargs):
   def turnIntoDecimal(q):
     if isinstance(q, (np.float, np.float32, np.float64)):
       q = float(q)
-    if isinstance(q, float): # hack around python2.6 limiation
+    if isinstance(q, float): # hack around python3.6 limiation
       try:
         q = q.as_integer_ratio()
       except OverflowError:
@@ -672,7 +672,7 @@ def multif2s(*args, **kwargs):
       q = decimal.Decimal(q)
     return q
 
-  args = map(turnIntoDecimal, args)
+  args = list(map(turnIntoDecimal, args))
   firstArgExponent = args[0].adjusted()
   prec = kwargs.get('prec', 3)
   
@@ -686,7 +686,7 @@ def multif2s(*args, **kwargs):
     #  q = str(q).rstrip('0')
     return q
       
-  return map(formatNumber, args)
+  return list(map(formatNumber, args))
   
 
 def f2l(*args, **kwargs):
@@ -719,12 +719,12 @@ def zipListOfDicts(s, numpy_output = True):
     Can produce numpy arrays instead of lists.
   """
   if not len(s): return {}
-  d = dict((k,[]) for k in s[0].iterkeys())
+  d = dict((k,[]) for k in s[0].keys())
   for q in s:
-    for k, v in q.iteritems():
+    for k, v in q.items():
       d[k].append(v)
   if numpy_output:
-    for k, v in d.iteritems():
+    for k, v in d.items():
       d[k] = np.asarray(v)
   return d
 
@@ -751,13 +751,13 @@ def walkh5_(gparent, pattern, return_h5objects = False, rec_path_=''):
       try:
         down = gparent[head]
       except KeyError:
-        print 'Error: cannot open path %s/%s' % (gparent.name, head)
+        print('Error: cannot open path %s/%s' % (gparent.name, head))
         return []
       else:
         return walkh5_(down, tail, return_h5objects, rec_path_ = posixpath.join(rec_path_, head))
     else:
       res = []
-      for k in gparent.keys():
+      for k in list(gparent.keys()):
         if fnmatch.fnmatch(k, head):
           res += walkh5_(gparent[k], tail, return_h5objects, rec_path_ = posixpath.join(rec_path_, k))
       return res
@@ -984,7 +984,7 @@ class MeanValueArray(object):
 
 
 def UpdateHierarchical(d1, d2):
-  for k2, v2 in d2.iteritems():
+  for k2, v2 in d2.items():
     if isinstance(v2, dict):
       if not k2 in d1:
         d1[k2] = type(v2)()
@@ -1068,14 +1068,14 @@ class MultiDict(dict):
 
 
 def printndarray(a):
-  print 'ndim',a.ndim
-  print 'shape',a.shape
-  print 'size',a.size
-  print 'nbytes',a.nbytes
-  print 'strides',a.strides
-  print 'flags',a.flags
-  print 'dtype',a.dtype
-  print 'itemsize',a.itemsize
+  print('ndim',a.ndim)
+  print('shape',a.shape)
+  print('size',a.size)
+  print('nbytes',a.nbytes)
+  print('strides',a.strides)
+  print('flags',a.flags)
+  print('dtype',a.dtype)
+  print('itemsize',a.itemsize)
 
 
 if __name__ == '__main__':
@@ -1086,44 +1086,44 @@ if __name__ == '__main__':
   if 0:
     p = LRU_Cache(ord, maxsize=3)
     for c in 'abcdecaeaa':
-        print(c, p(c))
+        print((c, p(c)))
   if 0:
     class Test(object):
       def __init__(self, name):
         self.name = name
-        print '%s init' % self.name
+        print('%s init' % self.name)
       def __enter__(self):
-        print '%s enter' % self.name
+        print('%s enter' % self.name)
       def __exit__(self, type, value, traceback):
-        print '%s exit' % self.name
+        print('%s exit' % self.name)
 
-    print 'start'
+    print('start')
     with RAII(Test('a'), Test('b')) as q:
-      print 'acquired before bad'
-      print q[0].name
-      print q[1].name
+      print('acquired before bad')
+      print(q[0].name)
+      print(q[1].name)
       raise RuntimeError('bad')
-      print 'fail'
-    print 'released'
+      print('fail')
+    print('released')
 
   if 0:
     f = h5py.File('test.hdf5', driver='core', backing_store=False)
     with f.create_group('gtest') as g:
       g.create_dataset('fubar', data = 1.)
-    print g, f
+    print(g, f)
 
   if 0:
     md = MultiDict(lambda : 'defaultitem!')
     md[1,'shit','t'] = 'test1'
     md[2,'shit','t'] = 'test2'
     md[1,'t'] = 'test3'
-    print md.values('t')
-    print md.values(1,'t')
-    print md.values('shit','t')
-    print md['k',]
-    md = MultiDict((k, v+'_transformed') for k,v in md.iteritems())
+    print(md.values('t'))
+    print(md.values(1,'t'))
+    print(md.values('shit','t'))
+    print(md['k',])
+    md = MultiDict((k, v+'_transformed') for k,v in md.items())
     for k, v in md.iteritems('t',1):
-      print k,'=',v
-    print '----------'
-    for k, v in md.iteritems():
-      print k,'=',v
+      print(k,'=',v)
+    print('----------')
+    for k, v in md.items():
+      print(k,'=',v)

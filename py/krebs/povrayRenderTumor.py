@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -29,10 +29,10 @@ from os.path import basename, splitext
 
 import krebsutils
 import numpy as np
-import povrayRenderVessels
-import povrayRenderCells
+from . import povrayRenderVessels
+from . import povrayRenderCells
 #from povrayRenderVessels import *
-import povrayEasy
+from . import povrayEasy
 import myutils
 import math
 import copy

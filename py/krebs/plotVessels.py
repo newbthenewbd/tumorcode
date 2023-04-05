@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -44,9 +44,9 @@ from myutils import f2l
 
 import matplotlib
 
-from quantities import Prettyfier
-import analyzeGeneral
-import analyzeBloodFlow
+from .quantities import Prettyfier
+from . import analyzeGeneral
+from . import analyzeBloodFlow
 
 import krebsjobs.submitVesseltreeCalibration
 
@@ -63,7 +63,7 @@ class VesselData(object):
       num_branches_by_rad = []
     )
   def add(self, group):
-    for name, datas in self.data.iteritems():
+    for name, datas in self.data.items():
       ds = group[name]
       datas.append(np.asarray(ds))
   def getAvgCurve(self, name):
@@ -155,9 +155,9 @@ def generate_samples(graph, name, association, scale):
   else:
     data = graph.nodes[name]
 #  return data
-  print('going to sample %s' % name)
+  print(('going to sample %s' % name))
   print('data.shape')
-  print(data.shape)
+  print((data.shape))
   return krebsutils.sample_edges(graph.nodes['position'], graph.edgelist, data, scale, DATA_LINEAR | DATA_PER_NODE)
 
 
@@ -184,7 +184,7 @@ def getMultiScatter(scale, vesselgroups):
       indices[n] = np.where(np.logical_and(flags & f, 0==(flags & krebsutils.WITHIN_TUMOR)))[0]
     indices['tum'] = np.where(flags & krebsutils.WITHIN_TUMOR)[0]
 
-    print '%i edges, sample length %f' % (len(graph.edgelist), scale)
+    print('%i edges, sample length %f' % (len(graph.edgelist), scale))
 
     #print graph.nodes['position']
 
@@ -202,16 +202,16 @@ def getMultiScatter(scale, vesselgroups):
 #    r *= np.sign(np.random.random_sample(r.shape)-0.5)
     r = mydata[('radius', 'art')]
     r *= -1.
-    for k, v in mydata.iteritems():
+    for k, v in mydata.items():
       datas[k].append(v)
-  res = dict( (k,np.hstack(v)) for k,v in datas.iteritems() )
+  res = dict( (k,np.hstack(v)) for k,v in datas.items() )
   return res
 
 
 def plotMultiScatterBeauty(measures, pdfpages, withRadiusPressureRelation=False):
     # data is stored in dict as measureres[(dataname,side)]=dataarray
     avtypes = ['art','capi','vein','tum']
-    if not any( side=='tum' for name,side in measures.iterkeys() ):
+    if not any( side=='tum' for name,side in measures.keys() ):
         avtypes.remove('tum')
     getindx = lambda dat: np.where(np.logical_and(dat>-80.0,dat<120.0))[0]
     r = dict((t, getindx(measures[('radius',t)])) for t in avtypes)
@@ -245,7 +245,7 @@ def plotMultiScatterBeauty(measures, pdfpages, withRadiusPressureRelation=False)
     plot(axes[2],'radius','velocity', ly=True)
     plot(axes[3], 'radius', 'flow', ly=True, lx=True)
     r = np.linspace(-100., 100., 200)
-    pressure = map(lambda r: krebsutils.PressureRadiusRelation(abs(r), bool(r<0)), r)
+    pressure = [krebsutils.PressureRadiusRelation(abs(r), bool(r<0)) for r in r]
     if(withRadiusPressureRelation):
       axes[1].plot(r, pressure, label = 'Pressure Radius Relation')
     pdfpages.savefig(fig, dpi=320, postfix='_flowsccatter')
@@ -353,7 +353,7 @@ class Format_(object):
     exponent = Format.exponents[name]
     multi    = Format.multi[name]
     if exponent:
-      exponent_str = ('\,10^{%i}' % exponent) if exponent<>0 else ''
+      exponent_str = ('\,10^{%i}' % exponent) if exponent!=0 else ''
       f = math.pow(10., exponent)
       s = r'%s \pm %s%s' % (f2l(avg/f*multi, exponential=False), f2l(std/f*multi, exponential=False), exponent_str)
     else:
@@ -367,9 +367,9 @@ def fmt_(b):
       yield '%s = %s .. %s mm' % (c, f2l(b[0][i]*1.e-3, exponential=False), f2l(b[1][i]*1.e-3, exponential=False))
 
 def PrintGlobalDataWithOxygen(pdfpages, po2groups, vesselgroups, f_measure, dataman):
-  from analyzeBloodVolumeSimple import cylinderCollectionVolumeDensity
-  import detailedo2Analysis.plotsForPaper
-  import detailedo2
+  from .analyzeBloodVolumeSimple import cylinderCollectionVolumeDensity
+  from . import detailedo2Analysis.plotsForPaper
+  from . import detailedo2
   
   sample_length = detailedo2Analysis.plotsForPaper.sample_length
   def cachelocation(g):
@@ -408,7 +408,7 @@ def PrintGlobalDataWithOxygen(pdfpages, po2groups, vesselgroups, f_measure, data
   except OSError:
     pass
   with h5py.File('initialvesseldata.h5', 'w-') as f:
-    for k, v in data_by_name.iteritems():
+    for k, v in data_by_name.items():
       f.create_dataset(k, data = v)
 
   
@@ -503,9 +503,9 @@ def PrintGlobalDataWithOxygen(pdfpages, po2groups, vesselgroups, f_measure, data
 #      map(make_, vesselgroups))
 #  return result
 def PrintGlobalData(pdfpages, vesselgroups, f_measure, dataman):
-  from analyzeBloodVolumeSimple import cylinderCollectionVolumeDensity
-  import detailedo2Analysis.plotsForPaper
-  import detailedo2
+  from .analyzeBloodVolumeSimple import cylinderCollectionVolumeDensity
+  from . import detailedo2Analysis.plotsForPaper
+  from . import detailedo2
   
   sample_length = detailedo2Analysis.plotsForPaper.sample_length
   def cachelocation(g):
@@ -538,7 +538,7 @@ def PrintGlobalData(pdfpages, vesselgroups, f_measure, dataman):
   except OSError:
     pass
     with h5py.File('initialvesseldata.h5', 'w-') as f:
-      for k, v in data_by_name.iteritems():
+      for k, v in data_by_name.items():
         f.create_dataset(k, data = v)
   
   result_string = []
@@ -609,7 +609,7 @@ def plot_geometric_stuff_on_RC(dataman, f_measure, filenames, options, pdfpages)
     factors = []
     files = [h5files.open(fn, 'r+') for fn in filenames]
     for f in files:
-      if 'enlargeFactor' in f.attrs.keys():
+      if 'enlargeFactor' in list(f.attrs.keys()):
         if not f.attrs.get('enlargeFactor') in factors:
           factors.append(f.attrs.get('enlargeFactor'))
     return factors
@@ -627,8 +627,8 @@ def plot_geometric_stuff_on_RC(dataman, f_measure, filenames, options, pdfpages)
           big_dict[str(fac)][t][endity]=[]#,'avg_cap_dist'=[],'mean_rs'=[],'perfusion_s'=[])
       
   for t in reduceTypeList:
-    print('data for type: %s' % t)
-    filteredFiles = filter( lambda fn: t in fn,filenames) 
+    print(('data for type: %s' % t))
+    filteredFiles = [fn for fn in filenames if t in fn] 
     files = [h5files.open(fn, 'r+') for fn in filteredFiles]
 
     if(len(files)>0):#that means no file of dedicated type is left after filter
@@ -664,7 +664,7 @@ def plot_geometric_stuff_on_RC(dataman, f_measure, filenames, options, pdfpages)
         for f in files:
           #rBV_of_file = analyzeGeneral.generate_rBV_of_group(dataman, destination_group, f)
           g_vessels = f['vessels']
-          if 'enlargeFactor' in f.attrs.keys():
+          if 'enlargeFactor' in list(f.attrs.keys()):
             current_fac = f.attrs.get('enlargeFactor')
           else:
             current_fac = 0
@@ -694,7 +694,7 @@ def plot_geometric_stuff_on_RC(dataman, f_measure, filenames, options, pdfpages)
     
     counter= counter +1    
 
-  print("coutner: %i"%counter)
+  print(("coutner: %i"%counter))
 
   def type_to_label(typelist):
     type_to_label_dict={"typeA-": "RC1","typeB-": "RC2","typeC-": "RC3","typeD-": "RC4","typeE-": "RC5","typeF-": "RC6","typeG-": "RC7","typeH-": "RC8","typeI-": "RC9"}
@@ -715,11 +715,11 @@ def plot_geometric_stuff_on_RC(dataman, f_measure, filenames, options, pdfpages)
   #print(data_vector_rBV)
   #    'rBVs avg_cap_dist mean_rs perfusion_s'
       #ax.boxplot(data_vector_rBV,positions=np.array(xrange(len(data_vector_rBV)))*2.0-0.4+k, sym='', widths=0.6)
-      ax.boxplot(data_vector_rBV,positions=np.array(xrange(len(data_vector_rBV)))+k*0.25, sym='', widths=0.2)
+      ax.boxplot(data_vector_rBV,positions=np.array(range(len(data_vector_rBV)))+k*0.25, sym='', widths=0.2)
       ax.set_xlim([-2,9])
     #ax.axhspan(0,.10,facecolor='b',alpha=0.5)
     ax.set_xticklabels(type_to_label(typelist))
-    ax.set_xticks(np.array(xrange(len(data_vector_rBV)))+0.35)
+    ax.set_xticks(np.array(range(len(data_vector_rBV)))+0.35)
     ax.set_xlabel('Configuration')
     ax.set_ylabel(endity)
     #ax.set_title('Vessel Volume Fractions by RC')
@@ -781,10 +781,10 @@ def plot_geometric_stuff_on_RC(dataman, f_measure, filenames, options, pdfpages)
     fig4.tight_layout()
     pdfpages.savefig(fig4, bbox_inches='tight')
 def FormatParameters(root):
-  from quantities import Prettyfier
+  from .quantities import Prettyfier
   parametergroup = root['parameters']
   parameters = dict(parametergroup.attrs)
-  parameters = sorted(parameters.items(), key = lambda (k, v): k)
+  parameters = sorted(list(parameters.items()), key = lambda k_v: k_v[0])
   result = ['++++ Vessel Network Creation Parameters ++++']
   for k, v in parameters:
     k = 'vgp_'+k
@@ -823,11 +823,11 @@ def DoIt(filenames, pattern, with_o2):
   f_measure = h5py.File('plotVessels_chache.h5', 'a')
   groups = list(itertools.chain.from_iterable(myutils.walkh5(f, pattern, return_h5objects=True) for f in files))
   if len(groups)<=0:
-    print 'no matching groups in hdf file(s)'
+    print('no matching groups in hdf file(s)')
     sys.exit(0)
 
   if with_o2:
-    name = posixpath.commonprefix(map(lambda g: g.name, groups))
+    name = posixpath.commonprefix([g.name for g in groups])
     name = myutils.strip_from_start(name, '/po2/vessels').replace('/', '-')
     fn_measure += name
 
@@ -837,9 +837,9 @@ def DoIt(filenames, pattern, with_o2):
     rc('axes', titlesize = 10., labelsize = 8.)
 
     if with_o2:
-      import detailedo2Analysis as o2analysis
-      import detailedo2Analysis.plotsForPaper
-      import detailedo2
+      from . import detailedo2Analysis as o2analysis
+      from . import detailedo2Analysis.plotsForPaper
+      from . import detailedo2
       dataman = myutils.DataManager(20, [o2analysis.DataDetailedPO2(),
                                          analyzeGeneral.DataTumorTissueSingle(), 
                                          analyzeGeneral.DataDistanceFromCenter(),
@@ -883,7 +883,7 @@ def DoIt(filenames, pattern, with_o2):
       if 1:
         PlotRadiusHistogram2(dataman, vesselgroups, pdfpages)
             
-      if 1 and all(map(lambda g: 'data' in g.parent, vesselgroups)):
+      if 1 and all(['data' in g.parent for g in vesselgroups]):
         data = VesselData()
         for g in vesselgroups:
           data.add(g.parent['data'])
@@ -916,11 +916,11 @@ if __name__ == "__main__":
           raise AssertionError('pattern "%s" not found in "%s"!' % (grp_pattern, fn))
         else:
           dirs = set.union(dirs,d)
-  except Exception, e:
-    print e.message
+  except Exception as e:
+    print(e.message)
     sys.exit(-1)
   
-  print('Resolved groups: %s' % ','.join(dirs))
+  print(('Resolved groups: %s' % ','.join(dirs)))
   #create filename due to former standards
   filenames=[]
   for fn in goodArguments.vesselFileNames:

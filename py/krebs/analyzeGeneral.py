@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -49,8 +49,8 @@ def RemoveArteriovenousFlagsFromCapillaries(flags):
 def totalLdVolume(vesselgrp):
   if vesselgrp.attrs['CLASS'] == 'GRAPH':
     #ld = krebsutils.read_lattice_data_from_hdf(vesselgrp['lattice'])
-    print(str(vesselgrp.file.filename))
-    print(vesselgrp.name)
+    print((str(vesselgrp.file.filename)))
+    print((vesselgrp.name))
     ld = krebsutils.read_lattice_data_from_hdf_by_filename(str(vesselgrp.file.filename), str(vesselgrp.name)+'/lattice')
     #if we have 2d config one entry of sizeOfDim is zero!  
     sizeOfDim = ld.GetWorldSize()
@@ -107,7 +107,7 @@ def getTotalPerfusion(vesselgroups):
      Returns list of perfusion values in units of blood volume per volume and sec'''
   And = myutils.bbitwise_and
   data = []
-  import analyzeBloodVolumeSimple as anaBloodV
+  from . import analyzeBloodVolumeSimple as anaBloodV
 #  if 'edges' in vesselgroups.keys():
 #    g = vesselgroups # only a single group there
 #    graph = read_vessels_data(g, ['flow', 'flags'])
@@ -126,7 +126,7 @@ def getTotalPerfusion(vesselgroups):
     graph = read_vessels_data(g, ['flow', 'flags'])
     #ld    = krebsutils.read_lattice_data_from_hdf(g['lattice'])
     roots = set(g['nodes/roots'][...])
-    mask  = np.asarray(map(lambda (a,b): a in roots or b in roots, graph.edgelist), dtype = np.bool)
+    mask  = np.asarray([a_b[0] in roots or a_b[1] in roots for a_b in graph.edgelist], dtype = np.bool)
     vol   = anaBloodV.totalLdVolume(g)
     flow  = graph.edges['flow']
     flags = graph.edges['flags']
@@ -153,7 +153,7 @@ def generate_rBV_of_group(datamanager, destination_group, f):
     return [gmeasure[name][()] for name in datanames ]
     
   def write(gmeasure, groupname):
-    if 'adaption' in f.keys():
+    if 'adaption' in list(f.keys()):
       vessel_grp = f['adaption/vessels_after_adaption']
     else:
       vessel_grp = f['vessels']
@@ -418,7 +418,7 @@ def CalcPhiVessels(dataman, vesselgroup, ld, scaling, samples_per_cell = 5):
      of its volume to the volume of a grid cell times the samples_per_cell'''
   graph = krebsutils.read_vessels_from_hdf(vesselgroup, ['position', 'radius', 'flags'] , return_graph=True)
   mask=myutils.bbitwise_and(graph['flags'], krebsutils.CIRCULATED)
-  print(mask.shape)
+  print((mask.shape))
   graph = graph.get_filtered(edge_indices = mask)
   print('vessels filtered before fraction calculation!')
   theRadii = np.asarray(graph['radius'])*scaling
@@ -432,24 +432,24 @@ def CalcPhiVessels(dataman, vesselgroup, ld, scaling, samples_per_cell = 5):
   theEdgeList = np.asarray(graph.edgelist)
   if sys.flags.debug:
     print(thePositions)
-    print(thePositions.shape)
-    print(type(thePositions))
-    print("thepos: %s" % thePositions.dtype)
+    print((thePositions.shape))
+    print((type(thePositions)))
+    print(("thepos: %s" % thePositions.dtype))
 
     print(theEdgeList)
-    print(theEdgeList.shape)
-    print(type(theEdgeList))
-    print("theEd: %s" % theEdgeList.dtype)
+    print((theEdgeList.shape))
+    print((type(theEdgeList)))
+    print(("theEd: %s" % theEdgeList.dtype))
 
     print(theRadii)
-    print(theRadii.shape)
-    print(type(theRadii))
-    print('theRadii: %s' % theRadii.dtype)
+    print((theRadii.shape))
+    print((type(theRadii)))
+    print(('theRadii: %s' % theRadii.dtype))
 
     print(ld)
-    print(type(ld))
-    print(ld.GetScale())
-    print(type(samples_per_cell))
+    print((type(ld)))
+    print((ld.GetScale()))
+    print((type(samples_per_cell)))
   
   vessel_fraction = krebsutils.make_vessel_volume_fraction_field(thePositions,theEdgeList,theRadii,ld,samples_per_cell)
   
@@ -592,7 +592,8 @@ def GenerateRadialDistributions(dataman, vesselgroup, tumorgroup, sample_length,
   return res
 
 
-def HdfCacheRadialDistribution((read, write), property_name, bins_spec, distance_distribution_name, cachelocation, version):
+def HdfCacheRadialDistribution(xxx_todo_changeme, property_name, bins_spec, distance_distribution_name, cachelocation, version):
+  (read, write) = xxx_todo_changeme
   path1 = 'radial_vs_'+distance_distribution_name+'_bins'+str(hash(bins_spec))
   version_args = myutils.checksum(30., 13)
   return myutils.hdf_data_caching(read, write, cachelocation[0], (path1,cachelocation[1],property_name), (version_args,0,version))
@@ -712,7 +713,7 @@ class DataVesselGlobal(object):
           data  = (np.sum(l) / volume, 0.)
           data  = [d*1e6 for d in data] #from 1/mum^2 to 1/mm^2
         elif property_name in 'phi_vessels phi_a phi_v phi_c'.split():
-          from analyzeBloodVolumeSimple import cylinderCollectionVolumeDensity
+          from .analyzeBloodVolumeSimple import cylinderCollectionVolumeDensity
           phi_vessels, phi_a, phi_v, phi_c = cylinderCollectionVolumeDensity(vesselgroup)
           if property_name == 'phi_vessels':
             data = [phi_vessels, 0.]
@@ -723,7 +724,7 @@ class DataVesselGlobal(object):
           if property_name == 'phi_c':
             data = [phi_c, 0.]
         elif property_name in 'mvd mvd_a mvd_v mvd_c'.split():
-          from analyzeBloodVolumeSimple import cylinderCollectionLineDensity
+          from .analyzeBloodVolumeSimple import cylinderCollectionLineDensity
           mvd, mvd_a, mvd_v, mvd_c = cylinderCollectionLineDensity(vesselgroup)
           if property_name == 'mvd':
             data = [mvd, 0.]
@@ -735,7 +736,7 @@ class DataVesselGlobal(object):
             data = [mvd_c, 0.]
         elif property_name == 'mvd_sphere_sampling':
           #ld = krebsutils.read_lattice_data_from_hdf(vesselgroup.parent['field_ld'])
-          print('try to read: %s' % vesselgroup.file.filename)
+          print(('try to read: %s' % vesselgroup.file.filename))
           ld = krebsutils.read_lattice_data_from_hdf_by_filename(str(vesselgroup.file.filename),str('vessels/lattice'))
           mvd_sampling_results, mvd_bins = dataman.obtain_data('sphere_vessel_density',  vesselgroup, None, suggest_bins_from_world(ld), 'radial', ld, cachelocation )
             #print(mvd_sampling_results)    
@@ -895,7 +896,7 @@ class DataTumorTissueSingle(object):
         raise RuntimeError('unkown field %s' % fieldname)
 
       if len(args)>3 and args[3] == 'imslice':
-        import plotBulkTissue
+        from . import plotBulkTissue
         return plotBulkTissue.imslice(data)
       else:
         return np.asarray(data)

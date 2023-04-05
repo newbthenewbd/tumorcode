@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -161,8 +161,8 @@ def plotCapillaryRadiusHistogram(dataman, f_measure, filenames, options, pdfpage
     ax2.set_ylabel(r'$\rho$')
     
     for (i,t) in enumerate(typelist.split()):
-      print('Capillary radius for type: %s' % t)
-      filteredFiles = filter( lambda fn: t in fn,filenames) 
+      print(('Capillary radius for type: %s' % t))
+      filteredFiles = [fn for fn in filenames if t in fn] 
       files = [h5files.open(fn, 'r+') for fn in filteredFiles]
   
       if(len(files)==0):#that means no file of dedicated type is left after filter
@@ -228,7 +228,7 @@ def generate_capillary_hist(dataman, inputfiles, destination_group, destination_
     x_edges_nA = np.logspace(1,5.5,100)
     x_edges_yA = np.logspace(1,5.5,100)
     nA_flows,yA_flows, = process(inputfiles)
-    print(nA_flows.shape)
+    print((nA_flows.shape))
     h1, x_edges_nA = np.histogram(nA_flows,bins=x_edges_nA,density=True)
     h2, x_edges_yA = np.histogram(yA_flows,bins=x_edges_yA,density=True)
     gmeasure.create_dataset('h_nA', data=h1)
@@ -275,8 +275,8 @@ def plotCapillaryFlowHistogram(dataman, f_measure, filenames, options, pdfpages)
     ax2.set_ylabel(r'$\rho$')
     
     for (i,t) in enumerate(typelist.split()):
-      print('Capillary flow for type: %s' % t)
-      filteredFiles = filter( lambda fn: t in fn,filenames) 
+      print(('Capillary flow for type: %s' % t))
+      filteredFiles = [fn for fn in filenames if t in fn] 
       files = [h5files.open(fn, 'r+') for fn in filteredFiles]
   
       if(len(files)==0):#that means no file of dedicated type is left after filter
@@ -392,8 +392,8 @@ def plotRadiusHistogram(dataman, f_measure, filenames, options, pdfpages):
     ax2.set_ylabel(r'$\rho$')
     
     for (i,t) in enumerate(typelist.split()):
-      print('Capillary radius for type: %s' % t)
-      filteredFiles = filter( lambda fn: t in fn,filenames) 
+      print(('Capillary radius for type: %s' % t))
+      filteredFiles = [fn for fn in filenames if t in fn] 
       files = [h5files.open(fn, 'r+') for fn in filteredFiles]
   
       if(len(files)==0):#that means no file of dedicated type is left after filter
@@ -460,7 +460,7 @@ def generate_flow_hist(dataman, inputfiles, destination_group, destination_name)
     x_edges_nA = np.logspace(0.5,6.5,100)
     x_edges_yA = np.logspace(0.5,6.5,100)
     nA_flows,yA_flows, = process(inputfiles)
-    print(nA_flows.shape)
+    print((nA_flows.shape))
     h1, x_edges_nA = np.histogram(nA_flows,bins=x_edges_nA, density=True)
     h2, x_edges_yA = np.histogram(yA_flows,bins=x_edges_yA, density=True)
     gmeasure.create_dataset('h_nA', data=h1)
@@ -510,8 +510,8 @@ def plotFlowHistogram(dataman, f_measure, filenames, options, pdfpages):
     ax2.text(-0.1, 1.15, 'B', transform=ax2.transAxes,fontsize=16, fontweight='bold', va='top', ha='right')
     
     for (i,t) in enumerate(typelist.split()):
-      print('Capillary flow for type: %s' % t)
-      filteredFiles = filter( lambda fn: t in fn,filenames) 
+      print(('Capillary flow for type: %s' % t))
+      filteredFiles = [fn for fn in filenames if t in fn] 
       files = [h5files.open(fn, 'r+') for fn in filteredFiles]
   
       if(len(files)==0):#that means no file of dedicated type is left after filter

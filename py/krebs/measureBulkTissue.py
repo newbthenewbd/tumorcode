@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -27,7 +27,7 @@ if __name__ == '__main__':
   sys.path.append(join(dirname(__file__),'..'))
 import h5py
 import numpy as np
-import vtkcommon
+from . import vtkcommon
 import extensions # for asarray with h5py support
 import krebsutils
 import math
@@ -39,9 +39,9 @@ from collections import defaultdict
 from pprint import pprint
 
 #from plotBulkTissue import commonOutputName, LabelFactory, colorbar, contour, imslice, imshow, ColorMaps
-from plotBulkTissue import commonOutputName
+from .plotBulkTissue import commonOutputName
 
-from plotIff import mk_LF_, mk_CM_
+from .plotIff import mk_LF_, mk_CM_
 
 from matplotlib.ticker import MaxNLocator
 import matplotlib
@@ -58,7 +58,7 @@ a4size = mpl_utils.a4size
 gridcolor = (0.7,0.7,0.7)
 f2s = lambda x: myutils.f2s(x, latex=True)
 
-import extractVtkFields, plotVessels
+from . import extractVtkFields, plotVessels
 
 bins_rad = np.arange(0, 20000, 30.)
 bins_dist = np.arange(-10000., 10000., 30.)
@@ -98,7 +98,7 @@ def generate_data(statedata, dstgroup):
     main routine that does all the measurement. 
     Enable Individual parts. Computed date overwrites old data.
   """
-  print statedata.file.filename, statedata.name
+  print(statedata.file.filename, statedata.name)
 
   time = statedata.attrs['time']
   tum_grp = statedata['tumor']
@@ -131,13 +131,13 @@ def generate_data(statedata, dstgroup):
              )
     pprint(d)
 
-    print 'geometry data for %s/%s' % (statedata.file.filename, statedata.name)
+    print('geometry data for %s/%s' % (statedata.file.filename, statedata.name))
     g = dstgroup.recreate_group('geometry')
     myutils.hdf_write_dict_hierarchy(g,'.',d)
 
 
   if 1:
-    print 'regenerating radial for %s/%s' % (statedata.file.filename, statedata.name)
+    print('regenerating radial for %s/%s' % (statedata.file.filename, statedata.name))
     dstdata = dstgroup.recreate_group('radial')
 
     ## radial data; vessels
@@ -271,7 +271,7 @@ def plot_many(filenames, pdfpages):
     for g in groups:
       groups_by_time[round(g.attrs['time'])].append(g)
 
-  times = groups_by_time.keys()
+  times = list(groups_by_time.keys())
   times.sort()
   times = np.asarray(times)
 
@@ -288,8 +288,8 @@ def plot_many(filenames, pdfpages):
     func = lambda p, x, y: (x*p[0]+p[1]-y)
     p, success = leastsq(func, (1, 0), args=(data[0], data[1]))
     velocity = p[0]
-    print 'estimated velocity: %f'  % velocity
-    print 'fit params: %s' % str(p)
+    print('estimated velocity: %f'  % velocity)
+    print('fit params: %s' % str(p))
   else:
     velocity = 0.
 
@@ -307,7 +307,7 @@ def plot_many(filenames, pdfpages):
     def plt_rad(ax):
       ax.set(ylabel='[mm]', xlabel='t [h]')
       mpl_utils.errorbar(ax, times, 1.e-3*radius, yerr=1.e-3*radius_std, label = 'r', lw = 0., marker = 'x', color = 'k', markersize = 5.)
-      label = u'$r_0 + v_{fit} t$\n$v_{fit} = %s$ [\u03BCm/h]' % f2s(velocity)
+      label = '$r_0 + v_{fit} t$\n$v_{fit} = %s$ [\u03BCm/h]' % f2s(velocity)
       ax.plot(times, 1.e-3*(p[1] + p[0] * times), label = label, color = 'r')
       ax.legend()
       #ax.text(0.6, 0.2, r'$v_{fit} = %s$' % f2s(velocity), transform = ax.transAxes)
@@ -374,44 +374,44 @@ def plot_many(filenames, pdfpages):
 
   def plt_mvd(ax):
     # mvd can be written as N^3 * L0/N * 3 / V = (V=L0^3) ... = N^2 / L0^2
-    ax.set(ylabel = ur'$\times 10^3$ [\u03BCm$^{-2}$]', xlim = xlim)
+    ax.set(ylabel = r'$\times 10^3$ [\u03BCm$^{-2}$]', xlim = xlim)
     plot_times(ax,'mvd', value_prefactor = 1e3)
     text1(ax, r'$L/V$')
     ax.legend(loc = mpl_utils.loc.lower_left, frameon = True)
 
   def plt_rad(ax):
-    ax.set(ylabel = ur'[\u03BCm]', xlim = xlim)
+    ax.set(ylabel = r'[\u03BCm]', xlim = xlim)
     plot_times(ax,'radius')
     text1(ax, r'$r_v$')
 
   def plt_vel(ax):
-    ax.set(ylabel = ur'[\u03BCm/h]', xlim = xlim)
+    ax.set(ylabel = r'[\u03BCm/h]', xlim = xlim)
     text1(ax, r'$v_\phi$')
     plot_times(ax,'vel')
 
   def plt_tum(ax):
-    ax.set(ylabel = ur'', xlim = xlim, ylim = (-0.1, 0.7))
+    ax.set(ylabel = r'', xlim = xlim, ylim = (-0.1, 0.7))
     plot_times(ax,'phi_tumor')
     text1(ax, r'$\phi_t$')
 
   def plt_oxy(ax):
-    ax.set(ylabel = ur'', xlim = xlim)
+    ax.set(ylabel = r'', xlim = xlim)
     plot_times(ax,'oxy')
     text1(ax,r'$c_o$')
 
   def plt_sf(ax):
-    ax.set(ylabel = ur'[Pa]', xlim = xlim)
+    ax.set(ylabel = r'[Pa]', xlim = xlim)
     plot_times(ax,'shearforce', value_prefactor = 1e3)
     text1(ax,r'$f_v$')
 
   def plt_wall(ax):
-    ax.set(ylabel = ur'[\u03BCm]', xlim = xlim)
+    ax.set(ylabel = r'[\u03BCm]', xlim = xlim)
     plot_times(ax,'maturation')
     text1(ax,r'$w_v$')
 
   def plt_qv(ax):
-    ax.set(ylabel = ur'[\u03BCm]', xlim = xlim)
-    ax.set(xlabel = ur'$\theta$ [mm]')
+    ax.set(ylabel = r'[\u03BCm]', xlim = xlim)
+    ax.set(xlabel = r'$\theta$ [mm]')
     plot_times(ax,'flow')
     text1(ax,r'$q_v$')
 
@@ -423,7 +423,7 @@ def plot_many(filenames, pdfpages):
   plt_wall(axes[2,0])
   plt_sf(axes[2,1])
 
-  for ax in axes[2,:]: ax.set(xlabel = ur'$\theta$ [mm]')
+  for ax in axes[2,:]: ax.set(xlabel = r'$\theta$ [mm]')
 
   axes = axes.ravel()
   for i, ax in enumerate(axes):

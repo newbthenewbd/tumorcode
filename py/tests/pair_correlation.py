@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -30,8 +30,8 @@ import scipy.spatial
 import scipy.fftpack
 import scipy.io
 from PIL import Image
-import matplotlib.pyplot as plt
-import matplotlib
+from . import matplotlib.pyplot as plt
+from . import matplotlib
 from third_party.utilities import *
 from third_party.paircorrelation import pairCorrelationFunction_3D
 

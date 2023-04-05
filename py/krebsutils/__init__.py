@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -223,7 +223,7 @@ def get_full_tumor_executable_path(name):
   for p in [path1, path2]:
     exe = abspath(join(p, name))
     if os.path.isfile(exe):
-      print 'found executable in %s' % exe
+      print('found executable in %s' % exe)
       return exe
   raise RuntimeError('tried to find tumor simulation executable %s but failed' % name)
 
@@ -308,8 +308,8 @@ def LatticeDataGetCentered(ld):
   #org[i] = -0.5*size[i]+(origin[i]-wbb.min[i]);
   wbox = ld.worldBox.reshape(3,2)
   originOffset = ld.GetOriginPosition()
-  compute = lambda ((l, r), o): -0.5*(r-l) + o - l
-  originOffset = map(compute, zip(wbox, originOffset))
+  compute = lambda l_r_o: -0.5*(l_r_o[0][1]-l_r_o[0][0]) + l_r_o[1] - l_r_o[0][0]
+  originOffset = list(map(compute, list(zip(wbox, originOffset))))
   ld = ld.Copy()
   ld.SetOriginPosition(originOffset)
   return ld
@@ -447,15 +447,15 @@ class Graph(object):
   def __contains__(self, name):
     return name == 'edgelist' or name in self.nodes or name in self.edges
   def keys(self):
-    return self.nodes.keys()+self.edges.keys()
+    return list(self.nodes.keys())+list(self.edges.keys())
   def values(self):
-    return self.nodes.values()+self.edges.values()
+    return list(self.nodes.values())+list(self.edges.values())
   def items(self):
-    return self.nodes.items()+self.edges.items()
+    return list(self.nodes.items())+list(self.edges.items())
   def get_filtered(self, edge_indices=None):
     #assert not self.roots, 'implement filtering of roots'
     if self.roots is not None:
-      print 'WARNING: test Graph.get_filtered for tree roots (untested)!'
+      print('WARNING: test Graph.get_filtered for tree roots (untested)!')
     try:
       tmp = np.asarray(edge_indices)
     except:
@@ -464,18 +464,18 @@ class Graph(object):
       if tmp.dtype == np.bool and tmp.shape[0] == self.edgelist.shape[0]:
         edge_indices = np.nonzero(tmp)[0]
     el = self.edgelist
-    nnames, nprop = zip(*self.nodes.items()) if self.nodes else ([], [])
-    enames, eprop = zip(*self.edges.items()) if self.edges else ([], [])
+    nnames, nprop = list(zip(*list(self.nodes.items()))) if self.nodes else ([], [])
+    enames, eprop = list(zip(*list(self.edges.items()))) if self.edges else ([], [])
     new_el, new_eprop, new_nprop, _, toOldNode, toNewNode = filter_graph_byedge2(el, eprop, nprop, edge_indices, True)
     if self.roots is not None:
       self.roots = np.take(toNewNode, self.roots)
     g = Graph(edgelist = new_el)
     g.from_fn = self.from_fn
-    g.nodes = dict(zip(nnames,new_nprop))
-    g.edges = dict(zip(enames,new_eprop))
+    g.nodes = dict(list(zip(nnames,new_nprop)))
+    g.edges = dict(list(zip(enames,new_eprop)))
     return g
   def __str__(self):
-    return '<Graph N: %i %s, E: %i %s>' % (self.edgelist.max(), self.nodes.keys(), len(self.edgelist), self.edges.keys())
+    return '<Graph N: %i %s, E: %i %s>' % (self.edgelist.max(), list(self.nodes.keys()), len(self.edgelist), list(self.edges.keys()))
 
 
 def find_lattice_group_(vesselgroup):
@@ -519,25 +519,25 @@ def vessels_require_(vesselgroup, g, name):
       pos_x, pos_y, pos_z = read_vessel_positions_from_hdf_by_filename(fn, path)
       pos = np.asarray([pos_x, pos_y, pos_z])
       print("before:")
-      print("max x: %f" % np.max(pos_x))
-      print("min x: %f" % np.min(pos_x))
-      print("max y: %f" % np.max(pos_y))
-      print("min y: %f" % np.min(pos_y))
-      print("max z: %f" % np.max(pos_z))
-      print("min z: %f" % np.min(pos_z))
-      print(pos.shape)
+      print(("max x: %f" % np.max(pos_x)))
+      print(("min x: %f" % np.min(pos_x)))
+      print(("max y: %f" % np.max(pos_y)))
+      print(("min y: %f" % np.min(pos_y)))
+      print(("max z: %f" % np.max(pos_z)))
+      print(("min z: %f" % np.min(pos_z)))
+      print((pos.shape))
       print(pos)
       pos = pos.transpose()
       print("after:")
-      print(pos.shape)
+      print((pos.shape))
       print(pos)
       
-      print("max x: %f" % np.max(pos[:,0]))
-      print("min x: %f" % np.min(pos[:,0]))
-      print("max y: %f" % np.max(pos[:,1]))
-      print("min y: %f" % np.min(pos[:,1]))
-      print("max z: %f" % np.max(pos[:,2]))
-      print("min z: %f" % np.min(pos[:,2]))
+      print(("max x: %f" % np.max(pos[:,0])))
+      print(("min x: %f" % np.min(pos[:,0])))
+      print(("max y: %f" % np.max(pos[:,1])))
+      print(("min y: %f" % np.min(pos[:,1])))
+      print(("max z: %f" % np.max(pos[:,2])))
+      print(("min z: %f" % np.min(pos[:,2])))
       
       g.nodes['position'] = pos  
     else:
@@ -831,7 +831,7 @@ def sample_field(pos, field, ld, linear_interpolation=True, extrapolation_value 
   #assert pos.dtype == field.dtype
   func = get_krebssubroutine_by_type_('sample_field', field.dtype)
   field = np.atleast_3d(field)
-  assert all(ld.shape[i] == field.shape[i] for i in xrange(3))
+  assert all(ld.shape[i] == field.shape[i] for i in range(3))
   use_extrapolation_value = extrapolation_value is not None
   if not use_extrapolation_value:
     extrapolation_value = 0
@@ -884,7 +884,7 @@ def field_gradient(field, spacing=1.):
   res = []
   org_field = field
   func = get_krebssubroutine_by_type_('diff_field', field.dtype)
-  for ax in xrange(len(field.shape)):
+  for ax in range(len(field.shape)):
     d = func(field, ax, 1./spacing)
 #    print d.shape, d.min(), d.max()
     d = np.reshape(d, org_field.shape)
@@ -985,8 +985,8 @@ def SumIsoSurfaceIntersectionWithVessels(level, edges, pressure, flags, nodalLev
 def test():
   a = np.arange(12, dtype=np.float).reshape((4,3))
   b = resample_field(a, ((0.,0.),(2.,2.)), ((0.,0.),(1.,1.)), (6,3))
-  print a
-  print b
+  print(a)
+  print(b)
 
 def GetWorldBox(vesselgroup):
     if( vesselgroup.attrs['CLASS'] == 'GRAPH' ):
@@ -1022,8 +1022,8 @@ def test2():
   rad = np.linspace(4., 20., 5)  
   hema = np.linspace(0.45, 0.5, 5)
   length = np.linspace(100., 100., 5)
-  print calc_vessel_conductivities(rad, length, hema)
-  print CalcViscosities(rad, hema, dict())
+  print(calc_vessel_conductivities(rad, length, hema))
+  print(CalcViscosities(rad, hema, dict()))
 
 
 

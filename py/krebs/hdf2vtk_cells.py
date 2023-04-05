@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -27,7 +27,7 @@ if __name__ == '__main__':
 import os, sys
 from os.path import join, basename, dirname, splitext
 import krebsutils
-import extractVtkFields
+from . import extractVtkFields
 import pprint
 import numpy as np
 import h5py
@@ -40,7 +40,7 @@ import identifycluster
 #  from vtk import *
   
 from vtk import *
-from vtkcommon import *
+from .vtkcommon import *
 import extensions
 import itertools
 import myutils
@@ -59,11 +59,11 @@ def ConvertMyHdfVesselsToVTKPolydata(graph, newflag_for_backward_compatibility, 
   rad = graph['radius']
   flags = graph['flags']
   shearforce = graph['shearforce']
-  if 'metabolicSignal' in graph.keys():
+  if 'metabolicSignal' in list(graph.keys()):
     meta_sig = graph['metabolicSignal']
-  if 'conductivitySignal' in graph.keys():
+  if 'conductivitySignal' in list(graph.keys()):
     cond_sig = graph['conductivitySignal']
-  if 'S_tot' in graph.keys():
+  if 'S_tot' in list(graph.keys()):
     S_tot = graph['S_tot']
   #print('WARNING!!!!! SCALING RADIUS')
   #rad = rad * 3
@@ -72,7 +72,7 @@ def ConvertMyHdfVesselsToVTKPolydata(graph, newflag_for_backward_compatibility, 
   
   num_verts = len(pos)
   num_edges = len(edges)
-  print( "v %i e %i" % (num_verts, num_edges))
+  print(( "v %i e %i" % (num_verts, num_edges)))
 
   pts = vtkPoints()
   pts.SetNumberOfPoints(len(pos))
@@ -91,7 +91,7 @@ def ConvertMyHdfVesselsToVTKPolydata(graph, newflag_for_backward_compatibility, 
     #nodes
     node_rad = np.zeros(num_verts)
     node_n   = np.zeros(num_verts)
-    for r,(a,b) in itertools.izip(rad,edges): # itertools, or it will blow up in yr face cuz ultra slow python lists and shit will be created
+    for r,(a,b) in zip(rad,edges): # itertools, or it will blow up in yr face cuz ultra slow python lists and shit will be created
       node_rad[a] += r
       node_rad[b] += r
       node_n[a] += 1.
@@ -136,7 +136,7 @@ def ConvertMyHdfVesselsToVTKPolydata(graph, newflag_for_backward_compatibility, 
     
   if 1:
     #indices of edges
-    print(len(edges))
+    print((len(edges)))
     polydata.GetCellData().AddArray(asVtkArray(np.arange(0,len(edges)), "IndexOfEdges2", vtkIntArray))
     polydata.GetCellData().AddArray(asVtkArray(edges, "IndexOfEdges", vtkIntArray))
     polydata.GetCellData().AddArray(asVtkArray(hema, "hematocrit", vtkFloatArray))
@@ -155,7 +155,7 @@ def ConvertMyHdfVesselsToVTKPolydata(graph, newflag_for_backward_compatibility, 
       polydata.GetCellData().AddArray(asVtkArray(cond_sig, "conductive", vtkFloatArray))
     else:
       print("Warning: bad cond_sig value")
-      print( np.where(np.isnan(cond_sig) ==1)[0])
+      print(( np.where(np.isnan(cond_sig) ==1)[0]))
       bad_cond_sig = np.isnan(cond_sig)
       cond_sig[bad_cond_sig] = 0
       polydata.GetCellData().AddArray(asVtkArray(cond_sig, "conductive", vtkFloatArray))
@@ -164,8 +164,8 @@ def ConvertMyHdfVesselsToVTKPolydata(graph, newflag_for_backward_compatibility, 
       polydata.GetCellData().AddArray(asVtkArray(meta_sig, "metabolic", vtkFloatArray))
     else:
       print("warning: bad meta_sig value")
-      print( np.where(np.isnan(meta_sig) ==1)[0])
-      print( np.where(np.isinf(meta_sig) ==1)[0])
+      print(( np.where(np.isnan(meta_sig) ==1)[0]))
+      print(( np.where(np.isinf(meta_sig) ==1)[0]))
       bad_meta_sig_nan = np.isnan(meta_sig)
       bad_meta_sig_inf = np.isinf(meta_sig)
       meta_sig[bad_meta_sig_nan] = 0
@@ -176,19 +176,19 @@ def ConvertMyHdfVesselsToVTKPolydata(graph, newflag_for_backward_compatibility, 
       polydata.GetCellData().AddArray(asVtkArray(S_tot, "S_tot", vtkFloatArray))
     else:
       print("warning: bad S_tot at ")
-      print( np.where(np.isnan(S_tot) ==1)[0])
-      print( np.where(np.isinf(S_tot) ==1)[0])
+      print(( np.where(np.isnan(S_tot) ==1)[0]))
+      print(( np.where(np.isinf(S_tot) ==1)[0]))
       bad_S_tot_nan = np.isnan(S_tot)
       bad_S_tot_inf = np.isinf(S_tot)
       S_tot[bad_S_tot_nan]=0
       S_tot[bad_S_tot_inf]=0
       print("len(S_tot)")
-      print(len(S_tot))
+      print((len(S_tot)))
       polydata.GetCellData().AddArray(asVtkArray(S_tot, "S_tot", vtkFloatArray))
-  if 'po2_node' in graph.keys():
+  if 'po2_node' in list(graph.keys()):
     po2_node = graph['po2_node']    
     polydata.GetPointData().AddArray(asVtkArray(po2_node, "point_vessel_po2", vtkFloatArray))
-  if 'po2_vessel' in graph.keys():
+  if 'po2_vessel' in list(graph.keys()):
     po2_vessels = graph['po2_vessel']
     polydata.GetCellData().AddArray(asVtkArray(po2_vessels, "po2_vessel", vtkFloatArray))
   if 0:
@@ -197,23 +197,23 @@ def ConvertMyHdfVesselsToVTKPolydata(graph, newflag_for_backward_compatibility, 
 
     #everything else
     ignore = ['lattice_pos','roots','node_a_index','node_b_index','radius']
-    g = vesselgroup['edges'].values() + vesselgroup['nodes'].values()
+    g = list(vesselgroup['edges'].values()) + list(vesselgroup['nodes'].values())
     for item in g:
       short_name = item.name.split('/')[-1]
       if short_name in ignore: continue
       n = item.shape
-      if len(n) <> 1:
-        print 'ignoring item %s because if unsupported shape %s' % (item.name, n)
+      if len(n) != 1:
+        print('ignoring item %s because if unsupported shape %s' % (item.name, n))
         continue
       n = n[0]
       if n == num_verts:
-        print 'vert data %s [%s,%s]' % (item.name, item.dtype, str(item.shape))
+        print('vert data %s [%s,%s]' % (item.name, item.dtype, str(item.shape)))
         polydata.GetPointData().AddArray(asVtkArray(np.asarray(item), short_name))
       elif n == num_edges:
-        print 'edge data %s [%s,%s]' % (item.name, item.dtype, str(item.shape))
+        print('edge data %s [%s,%s]' % (item.name, item.dtype, str(item.shape)))
         polydata.GetCellData().AddArray(asVtkArray(np.asarray(item), short_name))
       else:
-        print 'ignoring item %s because array size does not match' % (item.name)
+        print('ignoring item %s because array size does not match' % (item.name))
   return polydata
 
 
@@ -233,7 +233,7 @@ def writeFields_(graph, options):
   search_groups = []
   search_groups.append(str(options.writeFields))
   e = extractVtkFields.Extractor(f, search_groups, recursive = True, lattice_path="field_ld") 
-  print 'found field datasets:'
+  print('found field datasets:')
   pprint.pprint(e.getDatasetPaths())
   filename_append = 'fields_%s' % str(os.path.split(search_groups[0])[-1])
   e.write(options.outfn % filename_append)
@@ -243,7 +243,7 @@ def writeVessels_(graph, options):
   polydata = ConvertMyHdfVesselsToVTKPolydata(graph, False, goodArguments);
   writer = vtkPolyDataWriter()
   print("begin writeVessels_")
-  print("use vtkVersion: %s" % vtkVersion.GetVTKVersion())
+  print(("use vtkVersion: %s" % vtkVersion.GetVTKVersion()))
   if(int(vtkVersion.GetVTKVersion()[0])>5):
     writer.SetInputData(polydata)
   else:
@@ -278,7 +278,7 @@ def writeCells_(graph, options):
     polydata.GetPointData().AddArray(asVtkArray(cell_radii, 'cell_radii', vtkFloatArray))
     
     ''' this covers the initial data set by tumorcode'''
-    for aKey in cellGroup.keys():
+    for aKey in list(cellGroup.keys()):
       if not aKey == 'cell_radii':
         npReadOut = np.asarray(cellGroup[aKey])
         if aKey == 'o2':
@@ -299,12 +299,12 @@ def writeCells_(graph, options):
           npReadOut = np.asarray(vblGroup[aKey])
           polydata.GetPointData().AddArray(asVtkArray(npReadOut, aKey, vtkFloatArray))
         else:
-          print('%s is not found in your data file' % aKey)
+          print(('%s is not found in your data file' % aKey))
     else:
       print('vbl subfolder not found!')
       
     writer = vtkPolyDataWriter()
-    print("use vtkVersion: %s" % vtkVersion.GetVTKVersion())
+    print(("use vtkVersion: %s" % vtkVersion.GetVTKVersion()))
     if(int(vtkVersion.GetVTKVersion()[0])>5):
       writer.SetInputData(polydata)
     else:
@@ -347,7 +347,7 @@ if __name__ == '__main__':
   for fn in goodArguments.vesselFileNames:
     filenames.append(fn.name)
     
-  datalist = map(lambda s: s, map(str.strip, goodArguments.datalist.split(',')))
+  datalist = [s for s in list(map(str.strip, goodArguments.datalist.split(',')))]
   pattern   = goodArguments.grp_pattern
   
   '''check input'''
@@ -362,8 +362,8 @@ if __name__ == '__main__':
           raise AssertionError('pattern "%s" not found in "%s"!' % (grp_pattern, fn))
         else:
           dirs = set.union(dirs,d)
-  except Exception, e:
-    print e.message
+  except Exception as e:
+    print(e.message)
     sys.exit(-1)
 
   for fn in filenames:
@@ -375,7 +375,7 @@ if __name__ == '__main__':
     else:
       pattern = pattern.replace('/', '_')
       goodArguments.outfn = outfn = "%s-%%s.vtk" % (os.path.splitext(os.path.basename(fn))[0]+('_%s'%pattern))
-    print("you chose: %s as outfilename" % goodArguments.outfn)
+    print(("you chose: %s as outfilename" % goodArguments.outfn))
     for d in dirs:
       if 'vessels' in d and 'po2' not in d:
         vesselgroup = f[join('/',d)]['.']

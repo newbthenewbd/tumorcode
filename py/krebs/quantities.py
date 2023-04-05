@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -74,7 +74,7 @@ def FormatUnumLatex(u):
       return ''
     return r'^{%i}' % e
   l = [] # collect string pieces
-  items = sorted(u.items(), key = lambda (name, e): -e)
+  items = sorted(list(u.items()), key = lambda name_e: -name_e[1])
   for name, e in items:
     l.append(
       '%s%s' % (tbl.get(name, name),fmtExponent(e)))
@@ -320,38 +320,38 @@ if __name__ == '__main__':
   #print thesecondunit
   #print FormatUnumLatex(thesecondunit)
   moreUnits = unum.units.mlO2
-  print FormatUnumLatex(moreUnits)
+  print(FormatUnumLatex(moreUnits))
   moreUnits = unum.units.mlO2 / unum.units.ml
-  print moreUnits
-  print moreUnits.asUnit(unum.units.mlO2_per_ml)
+  print(moreUnits)
+  print(moreUnits.asUnit(unum.units.mlO2_per_ml))
   u4 = unum.units.unitless.asUnit(unum.units.percent)
-  print u4
-  print (1*u4).asNumber()
-  print unum.units.unitless.asNumber(unum.units.percent)
+  print(u4)
+  print((1*u4).asNumber())
+  print(unum.units.unitless.asNumber(unum.units.percent))
   #u1 = 1./unum.units.m 
   #u2 = 1./unum.units.km 
   u1 = unum.units.mlO2_per_ml / unum.units.min
   u2 = unum.units.ulO2_per_ml / unum.units.min
   u3 = unum.units.mlO2_per_ml / unum.units.s
   u4 = unum.units.mlO2 / unum.units.ml / unum.units.min
-  print 'u1=',u1, FormatUnumLatex(u1)
-  print 'u2=',u2, FormatUnumLatex(u2)
-  print 'u3=',u3, FormatUnumLatex(u3)
-  print 'u4=',u4, FormatUnumLatex(u4)
-  print 'u1 as u2 = ',u1.asUnit(u2)
-  print 'u2 as u1 = ',u2.asUnit(u1)
-  print 'u3 as u1 = ',u3.asUnit(u1)
-  print 'u4 as u1 = ',u4.asUnit(u1)
+  print('u1=',u1, FormatUnumLatex(u1))
+  print('u2=',u2, FormatUnumLatex(u2))
+  print('u3=',u3, FormatUnumLatex(u3))
+  print('u4=',u4, FormatUnumLatex(u4))
+  print('u1 as u2 = ',u1.asUnit(u2))
+  print('u2 as u1 = ',u2.asUnit(u1))
+  print('u3 as u1 = ',u3.asUnit(u1))
+  print('u4 as u1 = ',u4.asUnit(u1))
 
   u = mlO2_per_ml/ min
   _, mro2unit =  Prettyfier.get_value_unit('mro2', 1,  mathMode = True, brackets = True)
   s2 = r'[$ml\,O_2\,ml^{-1}\,min^{-1}$]'
   
-  print (unum.units.um**-1).asNumber(unum.units.cm**2 / unum.units.ml)  
-  print FormatUnumLatex(u)
-  print mro2unit  
-  print s2
-  print r'$\mu m\,O2$'
+  print((unum.units.um**-1).asNumber(unum.units.cm**2 / unum.units.ml))  
+  print(FormatUnumLatex(u))
+  print(mro2unit)  
+  print(s2)
+  print(r'$\mu m\,O2$')
 
   import matplotlib.pyplot as pyplot
   fig, ax = pyplot.subplots(1,1)

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -32,8 +32,8 @@ import extensions # for hdf5 support in np.asarray
 import krebsutils
 import myutils
 
-import plotBulkTissue2d
-import plotBulkTissue
+from . import plotBulkTissue2d
+from . import plotBulkTissue
 
 import matplotlib
 import matplotlib.pyplot as pyplot
@@ -52,7 +52,7 @@ def analyzeO2_with_tumor(f):
     group = resultfile.groupnames[-1]
     ld = resultfile.obtain_data('ld')
 
-    print group
+    print(group)
 
     arterial_reference = 12.
 
@@ -86,8 +86,8 @@ def analyzeO2_with_tumor(f):
       plotBulkTissue.colorbar(ax.get_figure(), ax, img)
       plotBulkTissue.contour(ax, plotBulkTissue.imslice(dist_tumor), ld, levels = [0.], colors = ['k'], worldscaling = 1.e-3)
       tissueavg, tumoravg = tumorAndTissueAverages(o2)
-      print 'normal po2: %f +/- %f' %  tissueavg
-      print 'tumor po2:  %f +/- %f' %  tumoravg
+      print('normal po2: %f +/- %f' %  tissueavg)
+      print('tumor po2:  %f +/- %f' %  tumoravg)
       
       fig.suptitle(r'O2 [kPa] (arterial $P_{O_2} = 12 kPa$)')
       fig.text(0.1, 0.90, '<tissue> ' + avgStr(tissueavg) + '\n' +
@@ -103,8 +103,8 @@ def analyzeO2_with_tumor(f):
       plotBulkTissue.contour(ax, plotBulkTissue.imslice(dist_tumor), ld, levels = [0.], colors = ['k'], worldscaling = 1.e-3)
 
       tissueavg, tumoravg = tumorAndTissueAverages(consumption)
-      print 'mro2 normal o2: %f +/- %f' %  tissueavg
-      print 'mro2 tumor o2:  %f +/- %f' %  tumoravg
+      print('mro2 normal o2: %f +/- %f' %  tissueavg)
+      print('mro2 tumor o2:  %f +/- %f' %  tumoravg)
 
       fig.suptitle(r'$MRO_2$ [ml $O_2$ / 100 ml Tissue min]')
       fig.text(0.1, 0.90, '<tissue> ' + avgStr(tissueavg) + '\n' +

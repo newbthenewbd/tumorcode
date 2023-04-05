@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -83,7 +83,7 @@ def CenterTheLattice(f, h5_path):
 def RunsOnClient(configstring_file, workdir, vesselfilename):
   os.chdir(workdir)
   if not os.path.exists(vesselfilename):
-    print 'GENERATING %s' % vesselfilename
+    print('GENERATING %s' % vesselfilename)
     with open(configstring_file, 'r') as f:
       configstring = f.read()
     krebsutils.run_vesselgen(configstring)
@@ -119,7 +119,7 @@ if not qsub.is_client:
      if 0: # config file
        write_config(Factory)
      else:
-       index_range = range(3) # two samples per config
+       index_range = list(range(3)) # two samples per config
        run_config_samples(Factory, index_range, RunsOnClient)      
 
   def SubmitOtherVariationJobsSwine():
@@ -280,7 +280,7 @@ if not qsub.is_client:
       hiters      = [   2,  2,   2,    2,]
       scales      = [110.,90.,100., 105.]
       cube_width  = 1000.
-    nums_points = map(lambda (hiter, scale): int(cube_width / (2**hiter * scale) + 1), zip(hiters, scales))
+    nums_points = [int(cube_width / (2**hiter_scale[0] * hiter_scale[1]) + 1) for hiter_scale in zip(hiters, scales)]
     #### main loop that does the submitting of various configurations #####
     for t in 'typeI typeA typeB typeC typeD typeE typeF typeG typeH'.split():
     #for t in ['typeI']:
@@ -317,7 +317,7 @@ if not qsub.is_client:
         'scale' : None,
       }
       result = dict()
-      for k, v in datasets.items():
+      for k, v in list(datasets.items()):
         if k == 'bins': continue
         mask = masks[k]
         if mask is not None:
@@ -350,16 +350,16 @@ if not qsub.is_client:
     for d in data:
       scale = d['scale']
       byScale[scale].append(d)
-    for k, v in byScale.items():
+    for k, v in list(byScale.items()):
       byScale[k] = myutils.zipListOfDicts(v) 
           
     curves = collections.defaultdict(list)
-    for k, v in byScale.items():
+    for k, v in list(byScale.items()):
       res = ComputeSingleNumberAvgStd(v)
-      for name, (std, avg) in res.items():
+      for name, (std, avg) in list(res.items()):
         curves[name].append((std, avg))
     order = np.argsort(np.asarray(curves['scale'])[:,0])
-    for k, v in curves.items():
+    for k, v in list(curves.items()):
       curves[k] = np.asarray(v).transpose()[:, order]
 
     scales = {
@@ -370,7 +370,7 @@ if not qsub.is_client:
 
     with mpl_utils.PageWriter('vessel-calibration-analysis', fileformats=['pdf']) as pdfwriter:
       fig, axes = pyplot.subplots(3,1, figsize = mpl_utils.a4size*np.asarray([0.4, 0.5]))
-      for scale, data in byScale.items():
+      for scale, data in list(byScale.items()):
         bins = np.average(data['bins'], axis=0) # sanity check, all bins arrays have equal size, so just try to average the bin boundaries, even if it makes no real sense
         x    = bins
         x_rbv    = 0.5*(x[1:]+x[:-1]) # bin center for rBV        
@@ -433,14 +433,14 @@ if not qsub.is_client:
         msg = sample.pop('message')
         dataByMsg[msg].append(sample)
 
-    for msg, data in dataByMsg.items():
+    for msg, data in list(dataByMsg.items()):
       data = myutils.zipListOfDicts(data)
       data = ComputeSingleNumberAvgStd(data)
       fmt = lambda k: (scales[k]*data[k][0], scales[k]*data[k][1])
-      print('MSG = %s' % msg)
-      print('  MVD = %f +/- %f' % fmt('mvd'))
-      print('  rBV = %f +/- %f' % fmt('rbv'))
-      print('  rBF = %f +/- %f' % fmt('rbf'))
+      print(('MSG = %s' % msg))
+      print(('  MVD = %f +/- %f' % fmt('mvd')))
+      print(('  rBV = %f +/- %f' % fmt('rbv')))
+      print(('  rBF = %f +/- %f' % fmt('rbf')))
       # rBF should be about 0.06 ml/ml/min !!!
 
 

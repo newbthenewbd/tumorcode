@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -73,10 +73,10 @@ def povray_cells(goodArguments):
     z_min= np.min(pos[:,2])
     z_max = np.max(pos[:,2])
     center_z = z_min+0.5*(z_max-z_min)
-    print('x: [%f,%f]' % (x_min, x_max))
-    print('y: [%f,%f]' % (y_min, y_max))
-    print('z: [%f,%f]' % (z_min, z_max))
-    print('%f, %f, %f' %(center_x,center_y,center_z))
+    print(('x: [%f,%f]' % (x_min, x_max)))
+    print(('y: [%f,%f]' % (y_min, y_max)))
+    print(('z: [%f,%f]' % (z_min, z_max)))
+    print(('%f, %f, %f' %(center_x,center_y,center_z)))
     #o2 = o2/np.max(o2)
 #    x = pos[:,0]
 #    y = pos[:,1]

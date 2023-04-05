@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -35,8 +35,8 @@ import myutils
 from matplotlib.pylab import * 
 import matplotlib.pyplot as plt
 
-from analyzeGeneral   import DataBasicVessel
-from analyzeBloodFlowResistance import ComputeVascularTreeBloodFlowResistances
+from .analyzeGeneral   import DataBasicVessel
+from .analyzeBloodFlowResistance import ComputeVascularTreeBloodFlowResistances
 
 def DoReadIn(filenames, pattern, fn_measure):
     #read in lots of stuff
@@ -89,20 +89,20 @@ def DoReadIn(filenames, pattern, fn_measure):
                 venous_roots_radii.append(radii_of_boundary[i])
               
         if 1:
-            print("Circulated: %i " % np.sum(index_of_circulated))
-            print("Circulated Arteries: %i " % np.sum(indeces_of_circulated_arteries))
-            print("Circulated Veins: %i " % np.sum(indeces_of_circulated_veins))
-            print("Circulated Capillaries: %i " % np.sum(indeces_of_circulated_capillaries))
+            print(("Circulated: %i " % np.sum(index_of_circulated)))
+            print(("Circulated Arteries: %i " % np.sum(indeces_of_circulated_arteries)))
+            print(("Circulated Veins: %i " % np.sum(indeces_of_circulated_veins)))
+            print(("Circulated Capillaries: %i " % np.sum(indeces_of_circulated_capillaries)))
         if 1:
-            print("# Circulated Nodes: %i " % np.sum(index_of_circulated_nodes))
-            print("# Arterious roots: %i " % len(artery_roots))
-            print("# Venous roots: %i " % len(venous_roots))
+            print(("# Circulated Nodes: %i " % np.sum(index_of_circulated_nodes)))
+            print(("# Arterious roots: %i " % len(artery_roots)))
+            print(("# Venous roots: %i " % len(venous_roots)))
             #print("Circulated Veins: %i " % np.sum(indeces_of_circulated_veins))
             #print("Circulated Capillaries: %i " % np.sum(indeces_of_circulated_capillaries))
         
         #write to file
         if 1:
-            print("Working on file: %s"% afile.filename)
+            print(("Working on file: %s"% afile.filename))
             output_grp = output_f.create_group(os.path.basename(afile.filename))
             #output_grp.attrs.create("#circulated")
             output_grp.attrs['#circulated'] = np.sum(index_of_circulated)
@@ -209,7 +209,7 @@ def DoCalculate(fn_measure):
         rBV_v_of_type_normalized = []
         TF_of_type = []
         rBF_of_type = []
-        for key in f_measure.keys():
+        for key in list(f_measure.keys()):
             if t in key:
                 groups_of_that_type.append(key)
                 number_of_arteries.append(f_measure[key].attrs['#artery'])

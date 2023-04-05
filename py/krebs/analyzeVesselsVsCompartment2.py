@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -42,8 +42,8 @@ import myutils
 from matplotlib.pylab import * 
 import matplotlib.pyplot as plt
 
-from analyzeGeneral   import DataBasicVessel
-from analyzeBloodFlowResistance import ComputeVascularTreeBloodFlowResistances
+from .analyzeGeneral   import DataBasicVessel
+from .analyzeBloodFlowResistance import ComputeVascularTreeBloodFlowResistances
 
 def DoReadIn(filenames, pattern, fn_measure):
     #read in lots of stuff
@@ -104,20 +104,20 @@ def DoReadIn(filenames, pattern, fn_measure):
                 venous_roots_radii.append(radii_of_boundary[i])
               
         if 1:
-            print("Circulated: %i " % np.sum(index_of_circulated))
-            print("Circulated Arteries: %i " % np.sum(indeces_of_circulated_arteries))
-            print("Circulated Veins: %i " % np.sum(indeces_of_circulated_veins))
-            print("Circulated Capillaries: %i " % np.sum(indeces_of_circulated_capillaries))
+            print(("Circulated: %i " % np.sum(index_of_circulated)))
+            print(("Circulated Arteries: %i " % np.sum(indeces_of_circulated_arteries)))
+            print(("Circulated Veins: %i " % np.sum(indeces_of_circulated_veins)))
+            print(("Circulated Capillaries: %i " % np.sum(indeces_of_circulated_capillaries)))
         if 1:
-            print("# Circulated Nodes: %i " % np.sum(index_of_circulated_nodes))
-            print("# Arterious roots: %i " % len(artery_roots))
-            print("# Venous roots: %i " % len(venous_roots))
+            print(("# Circulated Nodes: %i " % np.sum(index_of_circulated_nodes)))
+            print(("# Arterious roots: %i " % len(artery_roots)))
+            print(("# Venous roots: %i " % len(venous_roots)))
             #print("Circulated Veins: %i " % np.sum(indeces_of_circulated_veins))
             #print("Circulated Capillaries: %i " % np.sum(indeces_of_circulated_capillaries))
         
         #write to file
         if 1:
-            print("Working on file: %s"% afile.filename)
+            print(("Working on file: %s"% afile.filename))
             output_grp = output_f.create_group(os.path.basename(afile.filename))
             #output_grp.attrs.create("#circulated")
             output_grp.attrs['#circulated'] = np.sum(index_of_circulated)
@@ -241,7 +241,7 @@ def DoCalculate(fn_measure):
             rBV_v_of_type_normalized = []
             TF_of_type = []
             rBF_of_type = []
-            for key in f_measure.keys():
+            for key in list(f_measure.keys()):
                 if t in key:
                     groups_of_that_type.append(key)
                     number_of_arteries.append(f_measure[key].attrs['#artery'])
@@ -452,7 +452,7 @@ def DoCalculate(fn_measure):
             rBV_cap_of_type_normalized = []
             TF_of_type = []
             rBF_of_type = []
-            for key in f_measure.keys():
+            for key in list(f_measure.keys()):
                 if t in key:
                     groups_of_that_type.append(key)
                     number_of_arteries.append(f_measure[key].attrs['#artery'])
@@ -629,20 +629,20 @@ def DoCalculate(fn_measure):
 
             if 0:
                 matplotlib.pylab.figure(4)
-                plt.errorbar(range(len(velocity_of_that_type)),velocity_of_that_type, yerr = velocity_of_that_type_std, marker= '<>*osd^+x'[color_index], c = colors[color_index])        
+                plt.errorbar(list(range(len(velocity_of_that_type))),velocity_of_that_type, yerr = velocity_of_that_type_std, marker= '<>*osd^+x'[color_index], c = colors[color_index])        
                 plt.xlabel("Index of sample")
                 plt.ylabel(r"Blood flow velocity/ $\mu m/sec$")
             
             if 1:
                 matplotlib.pylab.figure(4)
-                plt.errorbar(range(len(flow_of_that_type)),flow_of_that_type, yerr = flow_of_that_type_std, marker= '<>*osd^+x'[color_index], c = colors[color_index])        
+                plt.errorbar(list(range(len(flow_of_that_type))),flow_of_that_type, yerr = flow_of_that_type_std, marker= '<>*osd^+x'[color_index], c = colors[color_index])        
                 plt.xlabel("Index of sample")
                 plt.ylabel(r"Blood flow / $(\mu m)^s3/sec$")
                 color_index = color_index + 1
         
         matplotlib.pylab.figure(1)
         fig1.tight_layout()
-        matplotlib.pyplot.autoscale(enable=True, axis=u'both', tight=None)
+        matplotlib.pyplot.autoscale(enable=True, axis='both', tight=None)
         #ax1.legend('RC1 RC2 RC3 RC4 RC5 RC6 RC7 RC8 RC9'.split(), loc="center right")
         ax1.legend('RC1 RC2 RC3 RC4 RC5 RC6 RC7 RC8 RC9'.split(), bbox_to_anchor=(0.9, 1.1), loc=2, borderaxespad=0., fontsize= 'x-small')
         
@@ -697,8 +697,8 @@ def DoCalculate(fn_measure):
         
         #fitParams, fitCovariance = curve_fit(my_fit_func,xdata=x_4d,ydata=rBV_for_fit_gamma, p0=p0)
         fitParams, fitCovariance = curve_fit(my_fit_func2,xdata=x_4d,ydata=rBV_for_fit_gamma_normalized, p0=p0)
-        print( ' fit coefficients:\n', fitParams )
-        print( ' fit Covariance:\n', fitCovariance )
+        print(( ' fit coefficients:\n', fitParams ))
+        print(( ' fit Covariance:\n', fitCovariance ))
         #use data from Rinneberg 28.8.2015 plot curve 
         R_Rinneberg = np.arange(1,400,20)
         N_Rinneberg = [260000/(2*thisR) for thisR in R_Rinneberg]

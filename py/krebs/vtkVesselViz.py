@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -19,13 +19,13 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import sys, os
 import numpy as np
 from vtk import *
-from vtkcommon import *
+from .vtkcommon import *
 import time
 
 # render vessels with tube filter
@@ -129,7 +129,7 @@ if __name__ == '__main__':
     dataspec = ('fieldOxy', 'SCALARS', 'CELL_DATA')
     bounds = getDataSetAttributeBounds(fieldataset, *dataspec)
     bounds = fieldataset.GetCellData().GetArray(0).GetValueRange()
-    print 'fielddata is %s with bounds %s' % (dataspec, bounds)
+    print('fielddata is %s with bounds %s' % (dataspec, bounds))
     
     assign_final_attr = assignedAttribute(cutter.GetOutputPort(), *dataspec)
 

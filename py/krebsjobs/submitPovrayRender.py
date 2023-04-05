@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -49,8 +49,8 @@ def clientfunc(job, cwd):
 
 def estimateRuntimeAndMemory(g):
   ''' time in hours. memory in mB '''
-  print('estimate for group: %s' % g)
-  if('simType' in g.attrs.keys()):
+  print(('estimate for group: %s' % g))
+  if('simType' in list(g.attrs.keys())):
     if g.attrs['simType'] == 'MTS':
       print('found MTS simulation')
       N=g['vessels/po2vessels'].shape[1]
@@ -92,7 +92,7 @@ class RenderJob(object):
 #    self.params.update(params)
     params.threads = my_threads
     self.params = params
-    print("self.group_name: %s" % self.group_name)
+    print(("self.group_name: %s" % self.group_name))
     self.runtime_and_mem = estimateRuntimeAndMemory(f[self.group_name])
 
   @property
@@ -220,8 +220,8 @@ if __name__ == '__main__':
             this overwrites the command line arguments!!!!
         """
         params_from_file = getattr(povrayRenderSettings, goodArguments.povParamsSet)
-        for key in params_from_file.keys():
-          print('found %s with %s in file\n' %(key,params_from_file[key]))
+        for key in list(params_from_file.keys()):
+          print(('found %s with %s in file\n' %(key,params_from_file[key])))
           if not key in goodArguments:
             raise AssertionError('Unknown key %s in file\n' % key)
           else:
@@ -230,8 +230,8 @@ if __name__ == '__main__':
     for fn in filenames:
         if not os.path.isfile(fn):
             raise AssertionError('The file %s is not present!'%fn)
-  except Exception, e:
-    print e.message
+  except Exception as e:
+    print(e.message)
     sys.exit(-1)
   
   """ create job"""
@@ -249,7 +249,7 @@ if __name__ == '__main__':
 
   for job in jobs:
     t, m = job.runtime_and_mem
-    print 'submit %s, %i mb, %f h' % (job.imageFilename, m, t)
+    print('submit %s, %i mb, %f h' % (job.imageFilename, m, t))
     qsub.submit(
       qsub.func(clientfunc, job, os.getcwd()),
       name='job_render_'+basename(job.imageFilename),

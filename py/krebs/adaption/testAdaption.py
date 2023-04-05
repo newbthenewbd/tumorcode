@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -380,8 +380,8 @@ def createAsymetric_world(fn):
     #dd = adap.computeAdaption_(f3['Asymetric'].create_group('vessels_after_adaption'), f3['Asymetric/vessels'], adaptionParams)
     
     
-    #os.system("python2 /localdisk/thierry/tumorcode/py/krebs/hdfvessels2vtk.py test_configs.h5 'conduc' '/Asymetric/vessels_after_adaption/vessels_after_adaption'")
-    #os.system("python2 /localdisk/thierry/tumorcode/py/krebs/povrayRenderVessels.py test_configs.h5 /Asymetric/vessels_after_adaption/vessels_after_adaption")
+    #os.system("python3 /localdisk/thierry/tumorcode/py/krebs/hdfvessels2vtk.py test_configs.h5 'conduc' '/Asymetric/vessels_after_adaption/vessels_after_adaption'")
+    #os.system("python3 /localdisk/thierry/tumorcode/py/krebs/povrayRenderVessels.py test_configs.h5 /Asymetric/vessels_after_adaption/vessels_after_adaption")
 
 def createSymetric_worldA(fn):    
     
@@ -552,8 +552,8 @@ def createSymetric_worldA(fn):
     #2019
     #dd = adap.computeAdaption_(f2['/symetricA'].create_group('vessels_after_adaption'), f2['symetricA/vessels'], adaptionParams)
 
-#    a = os.system("python2 /localdisk/thierry/tumorcode/py/krebs/hdfvessels2vtk.py test_configs.h5 'conduc' /symetricA/vessels_after_adaption/vessels_after_adaption")
-#    os.system("python2 /localdisk/thierry/tumorcode/py/krebs/povrayRenderVessels.py test_configs.h5 /symetricA/vessels_after_adaption/vessels_after_adaption") 
+#    a = os.system("python3 /localdisk/thierry/tumorcode/py/krebs/hdfvessels2vtk.py test_configs.h5 'conduc' /symetricA/vessels_after_adaption/vessels_after_adaption")
+#    os.system("python3 /localdisk/thierry/tumorcode/py/krebs/povrayRenderVessels.py test_configs.h5 /symetricA/vessels_after_adaption/vessels_after_adaption") 
  
 
 def createSymetric_worldB(fn):    
@@ -724,8 +724,8 @@ def createSymetric_worldB(fn):
     #dd = adap.computeAdaption_(f2['/symetricB'].create_group('vessels_after_adaption'), f2['symetricB/vessels'], adaptionParams)
     
 
-    #a = os.system("python2 /localdisk/thierry/tumorcode/py/krebs/hdfvessels2vtk.py test_configs.h5 /symetricB/vessels_after_adaption/vessels_after_adaption")
-    #os.system("python2 /localdisk/thierry/tumorcode/py/krebs/povrayRenderVessels.py test_configs.h5 /symetricB/vessels_after_adaption/vessels_after_adaption") 
+    #a = os.system("python3 /localdisk/thierry/tumorcode/py/krebs/hdfvessels2vtk.py test_configs.h5 /symetricB/vessels_after_adaption/vessels_after_adaption")
+    #os.system("python3 /localdisk/thierry/tumorcode/py/krebs/povrayRenderVessels.py test_configs.h5 /symetricB/vessels_after_adaption/vessels_after_adaption") 
 
 def createSymetric_worldB_tumor(fn):    
     
@@ -1176,8 +1176,8 @@ def createSymetricIrregular_world(fn):
     #2019
     #dd = adap.computeAdaption_(f2['/symetricIrregular'].create_group('vessels_after_adaption'), f2['symetricIrregular/vessels'],  adaptionParams)
     dd = adap.do_simple_adaption(str(f2.filename), str('symetricIrregular/vessels'), adaptionParams)
-    #a = os.system("python2 /localdisk/thierry/tumorcode/py/krebs/hdfvessels2vtk.py test_configs.h5 /symetricIrregular/vessels_after_adaption/vessels_after_adaption")
-    #os.system("python2 /localdisk/thierry/tumorcode/py/krebs/povrayRenderVessels.py test_configs.h5 /symetricIrregular/vessels_after_adaption/vessels_after_adaption") 
+    #a = os.system("python3 /localdisk/thierry/tumorcode/py/krebs/hdfvessels2vtk.py test_configs.h5 /symetricIrregular/vessels_after_adaption/vessels_after_adaption")
+    #os.system("python3 /localdisk/thierry/tumorcode/py/krebs/povrayRenderVessels.py test_configs.h5 /symetricIrregular/vessels_after_adaption/vessels_after_adaption") 
 
 def createMostBasic_world(fn):    
     
@@ -1332,7 +1332,7 @@ def createMostBasic_world(fn):
     dd = ku.calc_vessel_hydrodynamics(f2['mostBasic_world/vessels'],adaptionParams['calcflow']['includePhaseSeparationEffect'] , False, None, adaptionParams['calcflow'])
     
     print('Calcflow done')
-    print('starting adaption with paramset name: %s' % set_name)
+    print(('starting adaption with paramset name: %s' % set_name))
     print(adaptionParams)
     #r = adap.computeAdaption(f3['vessels'], None, adaptionParams, adaptionParams['calcflow'], f3['/'] )
     #dst_grp = f2['/symetric'].create_group('symetric/vessels_after_adaption')
@@ -1342,8 +1342,8 @@ def createMostBasic_world(fn):
     
     #dd = adap.computeAdaption_(f2['/mostBasic_world/vessels_after_adaption'], f2['mostBasic_world/vessels'], adaptionParams)
 
-#    a = os.system("python2 /localdisk/thierry/tumorcode/py/krebs/hdfvessels2vtk.py test_configs.h5 'conduc' /symetricA/vessels_after_adaption/vessels_after_adaption")
-#    os.system("python2 /localdisk/thierry/tumorcode/py/krebs/povrayRenderVessels.py test_configs.h5 /symetricA/vessels_after_adaption/vessels_after_adaption") 
+#    a = os.system("python3 /localdisk/thierry/tumorcode/py/krebs/hdfvessels2vtk.py test_configs.h5 'conduc' /symetricA/vessels_after_adaption/vessels_after_adaption")
+#    os.system("python3 /localdisk/thierry/tumorcode/py/krebs/povrayRenderVessels.py test_configs.h5 /symetricA/vessels_after_adaption/vessels_after_adaption") 
  
 
 
@@ -1381,8 +1381,8 @@ if __name__ == '__main__':
   print("shit")
   #plot_pressure_relation()  
   
-#  a = os.system("python2 /localdisk/thierry/tumorcode/py/krebs/hdfvessels2vtk.py test_configs.h5 'conduc' /symetric/vessels_after_adaption/vessels_after_adaption")
+#  a = os.system("python3 /localdisk/thierry/tumorcode/py/krebs/hdfvessels2vtk.py test_configs.h5 'conduc' /symetric/vessels_after_adaption/vessels_after_adaption")
 #  os.system("echo 'hello'")
-#  os.system("python2 /localdisk/thierry/tumorcode/py/krebs/hdfvessels2vtk.py test_configs.h5 'conduc' '/Asymetric/vessels_after_adaption/vessels_after_adaption'")
-#  os.system("python2 /localdisk/thierry/tumorcode/py/krebs/povrayRenderVessels.py test_configs.h5 /symetric/vessels_after_adaption/vessels_after_adaption") 
-#  os.system("python2 /localdisk/thierry/tumorcode/py/krebs/povrayRenderVessels.py test_configs.h5 /Asymetric/vessels_after_adaption/vessels_after_adaption")
+#  os.system("python3 /localdisk/thierry/tumorcode/py/krebs/hdfvessels2vtk.py test_configs.h5 'conduc' '/Asymetric/vessels_after_adaption/vessels_after_adaption'")
+#  os.system("python3 /localdisk/thierry/tumorcode/py/krebs/povrayRenderVessels.py test_configs.h5 /symetric/vessels_after_adaption/vessels_after_adaption") 
+#  os.system("python3 /localdisk/thierry/tumorcode/py/krebs/povrayRenderVessels.py test_configs.h5 /Asymetric/vessels_after_adaption/vessels_after_adaption")

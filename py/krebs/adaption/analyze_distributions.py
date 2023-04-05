@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -270,7 +270,7 @@ def DoCalculate(fn_measure):
         rBV_v_of_type_normalized = []
         TF_of_type = []
         rBF_of_type = []
-        for key in f_measure.keys():
+        for key in list(f_measure.keys()):
             if t in key:
                 groups_of_that_type.append(key)
                 number_of_arteries.append(f_measure[key].attrs['#artery'])

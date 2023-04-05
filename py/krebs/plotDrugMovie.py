@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -24,7 +24,7 @@ if __name__ == '__main__':
   import os.path, sys
   sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),'..'))
 
-from plotDrug import *
+from .plotDrug import *
 import make_video
 
 def generate_frames(filename, outfilename):
@@ -34,7 +34,7 @@ def generate_frames(filename, outfilename):
   times = dataman('movieinfo', f)
   timestr = lambda t: myutils.f2s(t / 3600., latex = True)
 
-  idx_list = range(len(times))
+  idx_list = list(range(len(times)))
   #idx_list = [0, 1]
 
   concframes_in = dataman('movieframes', f, idx_list, 'conc_in')
@@ -69,7 +69,7 @@ def generate_frames(filename, outfilename):
 
     for idx in idx_list[::2]:
       fig, ax = pyplot.subplots(1, 1, figsize = np.asarray([480, 480]) / 180., dpi = 180)
-      print 'frame', idx, 't = ', times[idx]
+      print('frame', idx, 't = ', times[idx])
       mpl_utils.remove_frame(ax)
       plt(ax, idx)
       frame_fn = pdfpages.savefig(fig, dpi = 180)

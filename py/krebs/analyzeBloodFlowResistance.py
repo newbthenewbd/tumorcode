@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -38,7 +38,7 @@ from pprint import pprint
 
 import myutils
 
-from analyzeGeneral   import DataBasicVessel
+from .analyzeGeneral   import DataBasicVessel
 
 def ComputeVascularTreeBloodFlowResistances(vessels):
   edgelist, flags, pressure, flow, nodeflags = vessels.edgelist, vessels['flags'], vessels['pressure'], vessels['flow'], vessels['nodeflags']
@@ -70,26 +70,26 @@ def ComputeVascularTreeBloodFlowResistances(vessels):
       arterial[i] = (0.5*(pressure[a]+pressure[b]), flow[i])
       totalFlow   += flow[i]
       if sys.flags.debug:
-          print("pressure[a]: %f, pressure[b]: %f, flow[i]: %f" % (pressure[a],pressure[b],flow[i]))
+          print(("pressure[a]: %f, pressure[b]: %f, flow[i]: %f" % (pressure[a],pressure[b],flow[i])))
     if (flags[i] & krebsutils.CIRCULATED):
       venous[i] = (0.5*(pressure[a]+pressure[b]), flow[i])
   if sys.flags.debug:
-      print("num_circ: %i" % num_circ)
-      print("num_artery: %i" % num_artery)
-      print("num_vein: %i" % num_vein)
-      print("num_boundary: %i" % num_boundary)
-      print(len(venous))
-      print(len(arterial))
-  avgVenousPressure = np.average([p for (p,q) in venous.values()], weights = [q for (p,q) in venous.values()])
-  avgArterialPressure = np.average([p for (p,q) in arterial.values()], weights = [q for (p,q) in arterial.values()])
+      print(("num_circ: %i" % num_circ))
+      print(("num_artery: %i" % num_artery))
+      print(("num_vein: %i" % num_vein))
+      print(("num_boundary: %i" % num_boundary))
+      print((len(venous)))
+      print((len(arterial)))
+  avgVenousPressure = np.average([p for (p,q) in list(venous.values())], weights = [q for (p,q) in list(venous.values())])
+  avgArterialPressure = np.average([p for (p,q) in list(arterial.values())], weights = [q for (p,q) in list(arterial.values())])
   conductivities = {} # Q = S*dp
-  for k, (p, q) in arterial.iteritems():
+  for k, (p, q) in arterial.items():
     conductivities[k] = q/(p-avgVenousPressure), q, (p-avgVenousPressure)
   return conductivities, avgVenousPressure, avgArterialPressure, totalFlow
 
 
 def AddConductivityBoundaryConditions(vessels, vesselgroup, avgConductivity):
-  print '---- resistor BCs to %s -----' % str(vesselgroup)
+  print('---- resistor BCs to %s -----' % str(vesselgroup))
   fudgeFactor = 100.
   rootNodes = vessels.roots
   pressures = vessels['pressure']
@@ -104,15 +104,15 @@ def AddConductivityBoundaryConditions(vessels, vesselgroup, avgConductivity):
   for rootNode in rootNodes:
     weights[rootNode] = nodeRadi[rootNode]**4
     assert nodeRadi[rootNode]>10. or pressures[rootNode]>minp*1.1 or (nodeFlags[rootNode]&krebsutils.VEIN)
-  weightSum = np.sum(weights.values())  
+  weightSum = np.sum(list(weights.values()))  
   for rootNode in rootNodes:
     weight = weights[rootNode]/weightSum
     #weight = 1
     conductivity = fudgeFactor * avgConductivity * weight
     dataArrays.append((rootNode, krebsutils.FLOWBC_RESIST, pressures[rootNode], conductivity))
-    print 'node %i -> S=%f, w=%f' % (rootNode, conductivity, weight)
+    print('node %i -> S=%f, w=%f' % (rootNode, conductivity, weight))
   # write to h5
-  dataArrays = zip(*dataArrays)
+  dataArrays = list(zip(*dataArrays))
   names = ['bc_node_index', 'bc_type', 'bc_value', 'bc_conductivity_value']
   gnodes = vesselgroup['nodes']
   for name, values in zip(names, dataArrays):
@@ -151,10 +151,10 @@ if __name__ == "__main__":
     def DoBC():
       conductivities, avgVenousPressure, avgArterialPressure, totalFlow = ComputeVascularTreeBloodFlowResistances(vessels)
       avgConductivity = (totalFlow/(avgArterialPressure-avgVenousPressure))
-      print 'avgVenousPressure', avgVenousPressure
-      print 'avgArterialPressure', avgArterialPressure
-      print 'totalFlow', totalFlow
-      print 'avgConductivity', avgConductivity
+      print('avgVenousPressure', avgVenousPressure)
+      print('avgArterialPressure', avgArterialPressure)
+      print('totalFlow', totalFlow)
+      print('avgConductivity', avgConductivity)
       return avgConductivity
     avgConductivity = DoBC()
     
@@ -185,5 +185,5 @@ if __name__ == "__main__":
         except:
           pass
         vesselgroup.file.flush()
-        print 'written new blood flow data'
+        print('written new blood flow data')
           

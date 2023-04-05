@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -19,7 +19,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import h5py as h5
@@ -33,7 +33,7 @@ from mystruct import Struct
 
 
 def exitmsg(msg):
-    print msg
+    print(msg)
     sys.exit(0)
 
 def H5PrintOpt():
@@ -51,7 +51,7 @@ class Printer:
         self.indent = 0
         self.maxlevel = 1000000 if h5opt.recursive else 1
     def writeln(self, s):
-        print ('  '*self.indent)+s
+        print(('  '*self.indent)+s)
     def begin(self):
         self.indent += 1
     def end(self):
@@ -64,7 +64,7 @@ class Printer:
           #print a.get_type().get_array_dims()
         #else:
           #print ''
-      for k, v in o.attrs.iteritems():
+      for k, v in o.attrs.items():
           self.writeln('| %s = %s' % (k, str(v)))
     def writeds(self, g, level):
       s = '%s (%s) (%i A) %s %s' % (
@@ -75,19 +75,19 @@ class Printer:
         g.dtype)
       self.writeln(s)
       if self.h5opt.print_full_dataset == 1:
-        print g[...]
+        print(g[...])
       elif self.h5opt.print_full_dataset == 2:
         # read it
         arr = np.zeros(g.shape, dtype = g.dtype)
         g.read_direct(arr)
         for index, x in np.ndenumerate(arr):
-          print '%s = %s' % (index, x)
+          print('%s = %s' % (index, x))
       elif self.h5opt.print_eval:
         data = np.zeros(g.shape, dtype = g.dtype)
         g.read_direct(data)
         globals_ = dict(np.__dict__)
         globals_.update(data = data)
-        print eval(self.h5opt.print_eval, globals_)
+        print(eval(self.h5opt.print_eval, globals_))
     
     def writeobject(self,g,level=0):
       if isinstance(g,h5.Dataset):
@@ -98,7 +98,7 @@ class Printer:
       if self.h5opt.print_attributes:
         self.writeattrs(g, level)
       if isinstance(g,h5.Group) and level<self.maxlevel:
-          for oname in g.keys():
+          for oname in list(g.keys()):
               if g.id.links.get_info(oname).type in (h5py.h5l.TYPE_SOFT, h5py.h5l.TYPE_EXTERNAL):
                 self.writeln('%s (Link) %s' % (oname, str(g.id.links.get_val(oname))))
               else:
@@ -111,7 +111,7 @@ if __name__ == '__main__':
   """
   try:
     opt, args = getopt.getopt(sys.argv[1:],'rfae:',['help','fullds'])
-  except getopt.GetoptError, e:
+  except getopt.GetoptError as e:
     exitmsg(usage % sys.argv[0])
   help = False
   h5opt = H5PrintOpt()

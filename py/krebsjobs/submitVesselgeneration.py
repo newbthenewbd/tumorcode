@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 This file is part of tumorcode project.
@@ -81,12 +81,12 @@ def runtime_sec(vd):
 def run_config_samples(configfactory, num_samples, client_worker_function):
   vdcopy = configfactory(0)
   vdcopy.roots = []
-  print vdcopy.generate_info_string()
+  print(vdcopy.generate_info_string())
   for sample_num in num_samples:
     vd = configfactory(sample_num)
     vd.outfilename += '-sample%02i' % sample_num
     vd.num_threads = num_threads
-    print 'submitting %s, estimated runtime %f h, %i iters' % (vd.outfilename, runtime_sec(vd)/60/60, vd.num_iter)
+    print('submitting %s, estimated runtime %f h, %i iters' % (vd.outfilename, runtime_sec(vd)/60/60, vd.num_iter))
     fn = vd.outfilename + '.info'
     s  = vd.generate_info_string()
     with open(fn, 'w') as f:
@@ -156,7 +156,7 @@ if (not qsub.is_client) and __name__=="__main__":
 
   
   
-  index_range = range(0, goodArguments.ensemble_size)
+  index_range = list(range(0, goodArguments.ensemble_size))
   if goodArguments.VesselParamSet:
     #check if specified paramSet exists
     try:
@@ -166,10 +166,10 @@ if (not qsub.is_client) and __name__=="__main__":
         factory = getattr(vParams, goodArguments.VesselParamSet)
         nums_points = int(goodArguments.width_cube / (2**goodArguments.iter_h * factory['scale']) + 1)
       if nums_points<5:
-        print('nums_points: %i'% nums_points)
+        print(('nums_points: %i'% nums_points))
         raise AssertionError('This width might be a little small!')
-    except Exception, e:
-      print e.message
+    except Exception as e:
+      print(e.message)
       sys.exit(-1)
     
     if len(goodArguments.type)==1 and goodArguments.type[0]<0:
