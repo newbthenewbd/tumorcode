@@ -290,7 +290,7 @@ def submit_(interpreter, submission_program, script):
 
 pyfuncscript_ = """\
 import imp as imp__
-import cPickle as cPickle__
+import pickle as cPickle__
 import base64 as base64__
 import sys
 sys.path.append('%s')
