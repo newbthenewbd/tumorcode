@@ -28,7 +28,7 @@ import collections
 import posixpath
 import fnmatch
 import posixpath
-import md5
+import hashlib
 import pickle
 import uuid
 import decimal
@@ -77,7 +77,7 @@ def updated(d1, d2):
 
 def checksum(*objs):
   '''computes a checksum as md5 of the pickled arguments'''
-  return md5.new(pickle.dumps(objs)).hexdigest()
+  return hashlib.new('md5').update(pickle.dumps(objs)).hexdigest()
 
 
 def uuidstr():
