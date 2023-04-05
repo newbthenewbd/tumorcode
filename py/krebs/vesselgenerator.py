@@ -352,7 +352,7 @@ def generate_alternating_diluted_config(vd):
     r = random.randint(2, len(roots))
     #indices = np.random.choice(len(roots), size=r, replace=False)
     #new_roots = roots[indices]
-    new_roots = random.sample(roots, r)
+    new_roots = random.sample(list(roots), r)
     #print 'select %i of %i roots'  % (r, len(roots))
     has_artery = any((t == 'a') for (p,t) in new_roots)
     has_vein   = any((t == 'v') for (p,t) in new_roots)
