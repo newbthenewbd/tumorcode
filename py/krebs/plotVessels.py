@@ -50,6 +50,16 @@ from . import analyzeBloodFlow
 
 import krebsjobs.submitVesseltreeCalibration
 
+from collections import defaultdict as ddict
+
+from .analyzeBloodVolumeSimple import cylinderCollectionVolumeDensity
+from . import detailedo2Analysis.plotsForPaper
+from . import detailedo2
+
+from . import detailedo2Analysis as o2analysis
+
+import argparse
+
 ##----------------------------------------------------------------------
 ## to plot the measuremnt data within the original vessel tree files
 ##----------------------------------------------------------------------
@@ -162,8 +172,6 @@ def generate_samples(graph, name, association, scale):
 
 
 def getMultiScatter(scale, vesselgroups):
-  from collections import defaultdict as ddict
-  import math
   datas = ddict(list)
   for f in vesselgroups:
     #ld = krebsutils.read_lattice_data_from_hdf(krebsutils.find_lattice_group_(f['vessels']))
@@ -367,10 +375,6 @@ def fmt_(b):
       yield '%s = %s .. %s mm' % (c, f2l(b[0][i]*1.e-3, exponential=False), f2l(b[1][i]*1.e-3, exponential=False))
 
 def PrintGlobalDataWithOxygen(pdfpages, po2groups, vesselgroups, f_measure, dataman):
-  from .analyzeBloodVolumeSimple import cylinderCollectionVolumeDensity
-  from . import detailedo2Analysis.plotsForPaper
-  from . import detailedo2
-  
   sample_length = detailedo2Analysis.plotsForPaper.sample_length
   def cachelocation(g):
     path = posixpath.join('FileCS_'+myutils.checksum(basename(g.file.filename)), g.name.strip(posixpath.sep))
@@ -503,10 +507,6 @@ def PrintGlobalDataWithOxygen(pdfpages, po2groups, vesselgroups, f_measure, data
 #      map(make_, vesselgroups))
 #  return result
 def PrintGlobalData(pdfpages, vesselgroups, f_measure, dataman):
-  from .analyzeBloodVolumeSimple import cylinderCollectionVolumeDensity
-  from . import detailedo2Analysis.plotsForPaper
-  from . import detailedo2
-  
   sample_length = detailedo2Analysis.plotsForPaper.sample_length
   def cachelocation(g):
     path = posixpath.join('FileCS_'+myutils.checksum(basename(g.file.filename)), g.name.strip(posixpath.sep))
@@ -781,7 +781,6 @@ def plot_geometric_stuff_on_RC(dataman, f_measure, filenames, options, pdfpages)
     fig4.tight_layout()
     pdfpages.savefig(fig4, bbox_inches='tight')
 def FormatParameters(root):
-  from .quantities import Prettyfier
   parametergroup = root['parameters']
   parameters = dict(parametergroup.attrs)
   parameters = sorted(list(parameters.items()), key = lambda k_v: k_v[0])
@@ -837,9 +836,6 @@ def DoIt(filenames, pattern, with_o2):
     rc('axes', titlesize = 10., labelsize = 8.)
 
     if with_o2:
-      from . import detailedo2Analysis as o2analysis
-      from . import detailedo2Analysis.plotsForPaper
-      from . import detailedo2
       dataman = myutils.DataManager(20, [o2analysis.DataDetailedPO2(),
                                          analyzeGeneral.DataTumorTissueSingle(), 
                                          analyzeGeneral.DataDistanceFromCenter(),
@@ -895,7 +891,6 @@ def DoIt(filenames, pattern, with_o2):
 
 
 if __name__ == "__main__":
-  import argparse
   parser = argparse.ArgumentParser(description='Plot/ Analyze infos about vessel network.')
   parser.add_argument('vesselFileNames', nargs='+', type=argparse.FileType('r'), default=sys.stdin, help='Vessel file to calculate')  
   parser.add_argument('grp_pattern',help='Where to find the vessel group in the file')    
