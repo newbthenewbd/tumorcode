@@ -2076,7 +2076,6 @@ void DetailedPO2Sim::WriteDataOutput(H5::Group &po2_out_group)
   catch( H5::Exception &e)
   {
     e.printErrorStack();
-    e.printError();
   }
   
   writeAttrToH5(outputgroup, string("SOURCE_VESSELS_FILE"), params.input_file_name);
