@@ -270,7 +270,7 @@ def submit_(interpreter, submission_program, script):
     time.sleep(0.2)
     if submission_program == 'python' or submission_program == 'python_debug': # running python script with python locally?!! We can do it like so
       print("calling python:")
-      exec(script, dict(), dict())
+      exec(script.decode(), dict(), dict())
     else: # all the other cases go like so!
       print("calling subprocess:")
       #return_from_queuing_system = subprocess.call("%s <<EOFQSUB\n%s\nEOFQSUB" % (submission_program, script), shell=True)
@@ -438,11 +438,11 @@ def submit_qsub(obj, submission_program, **qsubopts):
   }
   first_line = cases[obj.interpreter]
   # add qsub stuff + python script
-  f = io.BytesIO()
-  f.write(first_line.encode())
+  f = io.StringIO()
+  print(first_line, file=f)
   if not submission_program == 'run_locally':
     write_directives_qsub_(f, **qsubopts)
-  f.write(obj.generate_script(qsubopts).encode())
+  print(obj.generate_script(qsubopts), file=f)
   return submit_(obj.interpreter, submission_program, f.getvalue())
   
 
