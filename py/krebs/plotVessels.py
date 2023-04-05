@@ -44,7 +44,7 @@ from myutils import f2l
 
 import matplotlib
 
-from .quantities import Prettyfier
+from quantities import Prettyfier
 from . import analyzeGeneral
 from . import analyzeBloodFlow
 
