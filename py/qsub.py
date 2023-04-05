@@ -270,7 +270,7 @@ def submit_(interpreter, submission_program, script):
     time.sleep(0.2)
     if submission_program == 'python' or submission_program == 'python_debug': # running python script with python locally?!! We can do it like so
       print("calling python:")
-      exec(script.decode(), dict(), dict())
+      exec(script, dict(), dict())
     else: # all the other cases go like so!
       print("calling subprocess:")
       #return_from_queuing_system = subprocess.call("%s <<EOFQSUB\n%s\nEOFQSUB" % (submission_program, script), shell=True)
@@ -298,7 +298,7 @@ qsub = __import__('qsub', globals(), locals())
 setattr(qsub, 'is_client', True)
 %s
 from your_module__ import *
-args__, kwargs__ = cPickle__.loads(base64__.urlsafe_b64decode('%s'))
+args__, kwargs__ = cPickle__.loads(base64__.urlsafe_b64decode(%s))
 %s(*args__, **kwargs__)
 """
 pychangecwd_ = """\
