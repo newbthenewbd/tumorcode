@@ -34,6 +34,10 @@ import uuid
 import decimal
 
 import identifycluster
+from bisect import bisect_left
+import pprint as pprint_
+from collections.abc import Iterable
+from collections import defaultdict
 
 if identifycluster.getname()=='snowden':
   cluster_threads = 16
@@ -212,7 +216,6 @@ def closest_items(seq, key, picks):
     key is used to get values from items
     in seq for comparison with picks
   """
-  from bisect import bisect_left
   l = [ (key(q), q) for q in seq ]
   l.sort(key = lambda q: q[0])
   ltimes = [t for t,q in l]
@@ -233,7 +236,7 @@ def closest_items(seq, key, picks):
       result.append(l[index][1])
   return result
 
-import pprint as pprint_
+
 
 class MyPrettyPrinter(pprint_.PrettyPrinter):
   def _format(self, obj, *args, **kwargs):
@@ -1006,14 +1009,11 @@ def TestUpdateHierarchical():
               f = 102
             ))
   UpdateHierarchical(d1, d2)
-  import pprint
-  pprint.pprint(d1)
+  pprint_.pprint(d1)
 
 
 
 class MultiDict(dict):
-  from collections import Iterable
-  from collections import defaultdict
   def __init__(self, arg = None):
     self.keysets = MultiDict.defaultdict(set)
     if isinstance(arg, MultiDict.Iterable):
