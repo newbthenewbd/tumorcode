@@ -45,8 +45,8 @@ from myutils import f2l
 import matplotlib
 
 from quantities import Prettyfier
-from . import analyzeGeneral
-from . import analyzeBloodFlow
+import analyzeGeneral
+import analyzeBloodFlow
 
 import krebsjobs.submitVesseltreeCalibration
 
