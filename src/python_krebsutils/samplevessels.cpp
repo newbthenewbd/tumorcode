@@ -47,6 +47,7 @@ sample_len - average distance between samples. The samples are taken in regular 
 mode - see Mode enum
 */
 #if BOOST_VERSION>106300
+#warning new boost
 template<class T>
 np::ndarray sample_edges(np::ndarray &pos, np::ndarray &edges, const np::ndarray &data, float sample_len, int mode)
 {
