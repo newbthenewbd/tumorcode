@@ -60,7 +60,9 @@ np::ndarray sample_edges(np::ndarray &pos, np::ndarray &edges, const np::ndarray
 //  int ncomps = data.rank() > 1 ? pos.shape()[1] : 1;
   int abla=data.shape(1);
   int ncomps = abla > 1 ? pos.get_shape()[1] : 1;
+  std::cout << "before dtype" << std::endl;
   np::dtype dtype = data.get_dtype();
+  std::cout << "after dtype" << std::endl;
   //int itemtype = data.itemtype();
   T c[16][2];
 
@@ -68,9 +70,7 @@ np::ndarray sample_edges(np::ndarray &pos, np::ndarray &edges, const np::ndarray
 
   int num_total_samples = 0;
   CylinderNetworkSampler sampler;
-  std::cout << "before sampler.Init" << std::endl;
   sampler.Init(sample_len, ptree());
-  std::cout << "after sampler.Init" << std::endl;
 
   for(int i=0; i<cnt; ++i)
   {
