@@ -279,7 +279,7 @@ def generate_samples(graph, data, association, scale):
   DATA_PER_NODE = krebsutils.VesselSamplingFlags.DATA_PER_NODE
   if isinstance(data, str): data = getattr(graph, association)[data]
   if association == 'edges':
-    data = krebsutils.edge_to_node_property(int(np.amax(graph.edgelist)+1), graph.edgelist, graph.edges[name], 'avg')
+    data = krebsutils.edge_to_node_property(int(np.amax(graph.edgelist)+1), graph.edgelist, data, 'avg')
     return krebsutils.sample_edges(graph.nodes['position'], graph.edgelist, data, scale, DATA_CONST)
   else:
     return krebsutils.sample_edges(graph.nodes['position'], graph.edgelist, data, scale, DATA_LINEAR | DATA_PER_NODE)
