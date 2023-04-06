@@ -70,7 +70,7 @@ np::ndarray sample_edges(np::ndarray &pos, np::ndarray &edges, const np::ndarray
   CylinderNetworkSampler sampler;
   sampler.Init(sample_len, ptree());
 
-  for(int i=0; i<cnt; ++i)
+  /*for(int i=0; i<cnt; ++i)
   {
     Float3 p0, p1;
     for (int j=0; j<3; ++j)
@@ -81,7 +81,7 @@ np::ndarray sample_edges(np::ndarray &pos, np::ndarray &edges, const np::ndarray
 //       p1[j] = pos(edges(i,1), j);
       p0[j] = py::extract<float>(pos[a][j]);
       p1[j] = py::extract<float>(pos[b][j]);
-    }
+    }*/
 printf("got here\n");
     sampler.Set(p0, p1, 0.); // 3rd arg is the radius
     int num_samples = sampler.GenerateLineSamples();
