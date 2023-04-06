@@ -32,7 +32,6 @@ import myutils
 import posixpath
 import math
 import collections
-from plotVessels import generate_samples
 
 """ for bin ing the MVD experimental calculation """
 def suggest_bins_from_world(ld):
@@ -265,25 +264,21 @@ def calc_distmap(ds, ld, level):
   return distmap
 
 
-def generate_samplesbad(graph, data, association, scale):
-  '''A convenence function to call the c++ sampling routine for some data
-  stored in my graph structure. Additionaly it converts nodal to edge
-  properties because the sampling needs data associated with edges, but it
-  can still interpolate between data for the endpoints for each vessel.
-  Returns an array of the sampled data.
-  data = the name of the data, or the data itself,
-  association = 'edges' or 'nodes' or 'avg_edges'
-  scale = length which each sample represents approximately. Larger value = less samples.
-  '''
+def generate_samples(graph, name, association, scale):
   DATA_LINEAR = krebsutils.VesselSamplingFlags.DATA_LINEAR
   DATA_CONST = krebsutils.VesselSamplingFlags.DATA_CONST
   DATA_PER_NODE = krebsutils.VesselSamplingFlags.DATA_PER_NODE
-  if isinstance(data, str): data = getattr(graph, association)[data]
+  if not len(graph.edgelist):
+    return np.asarray([], dtype=float)
   if association == 'edges':
-    #data = krebsutils.edge_to_node_property(int(np.amax(graph.edgelist)+1), graph.edgelist, graph.edges[name], 'avg')
-    return krebsutils.sample_edges(graph.nodes['position'], graph.edgelist, data, scale, DATA_CONST)
+    data = krebsutils.edge_to_node_property(int(np.amax(graph.edgelist)+1), graph.edgelist, graph.edges[name], 'avg')
   else:
-    return krebsutils.sample_edges(graph.nodes['position'], graph.edgelist, data, scale, DATA_LINEAR | DATA_PER_NODE)
+    data = graph.nodes[name]
+#  return data
+  print(('going to sample %s' % name))
+  print('data.shape')
+  print((data.shape))
+  return krebsutils.sample_edges(graph.nodes['position'], graph.edgelist, data, scale, DATA_LINEAR | DATA_PER_NODE)
 
 
 def tumor_path_(f, path):
