@@ -32,6 +32,7 @@ import myutils
 import posixpath
 import math
 import collections
+import plotVessels
 
 """ for bin ing the MVD experimental calculation """
 def suggest_bins_from_world(ld):
@@ -531,7 +532,7 @@ class DataVesselSamples(object):
         else:
           data, association = dataman.obtain_data('vessel_graph_property', vesselgroup, 'auto', property_name)
           data = data[:,0]
-          smpl = generate_samples(graph, data, association, sample_length)
+          smpl = plotVessels.generate_samples(graph, data, association, sample_length)
         return smpl
 
       if dataname == 'basic_vessel_samples_avg':
