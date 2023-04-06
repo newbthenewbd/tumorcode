@@ -59,11 +59,11 @@ np::ndarray sample_edges(np::ndarray &pos, np::ndarray &edges, const np::ndarray
   int cnt = edges.get_shape()[0];
   
 
-//  int ncomps = data.rank() > 1 ? pos.shape()[1] : 1;
-std::cout << "so it's this one?" << std::endl;
-  int abla=data.shape(1);
-  std::cout << "no" << std::endl;
-  int ncomps = abla > 1 ? pos.get_shape()[1] : 1;
+  int ncomps = data.rank() > 1 ? pos.shape()[1] : 1;
+//std::cout << "so it's this one?" << std::endl;
+  //int abla=data.shape(1);
+  //std::cout << "no" << std::endl;
+  //int ncomps = abla > 1 ? pos.get_shape()[1] : 1;
   np::dtype dtype = data.get_dtype();
   //int itemtype = data.itemtype();
   T c[16][2];
