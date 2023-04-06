@@ -82,7 +82,7 @@ np::ndarray sample_edges(np::ndarray &pos, np::ndarray &edges, const np::ndarray
       p0[j] = py::extract<float>(pos[a][j]);
       p1[j] = py::extract<float>(pos[b][j]);
     }*/
-printf("got here\n");
+std::cout << "got here" << std::endl;
     sampler.Set(p0, p1, 0.); // 3rd arg is the radius
     int num_samples = sampler.GenerateLineSamples();
 
@@ -113,7 +113,7 @@ printf("got here\n");
         c[k][0] = py::extract<T>(data[i]);
       }
     }
-printf("got here\n");
+std::cout << "got here" << std::endl;
     for(int j=0; j<num_samples; ++j)
     {
       CylinderNetworkSampler::Sample ls = sampler.GetSample(j);
@@ -137,7 +137,7 @@ printf("got here\n");
 
   py::tuple shape = py::make_tuple(num_total_samples, ncomps);
   np::ndarray acc_res = np::empty(shape, dtype);
-  printf("got here\n");
+  std::cout << "got here" << std::endl;
   for(int i=0, k=0; i<num_total_samples; ++i)
   {
     for(int j=0; j<ncomps; ++j,++k)
