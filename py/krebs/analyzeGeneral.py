@@ -275,7 +275,6 @@ def generate_samples(graph, data, association, scale):
   else:
     data = data
 #  return data
-  print(('going to sample %s' % name))
   print('data.shape')
   print((data.shape))
   return krebsutils.sample_edges(graph.nodes['position'], graph.edgelist, data, scale, DATA_LINEAR | DATA_PER_NODE)
