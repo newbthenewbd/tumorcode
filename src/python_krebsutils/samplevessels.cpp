@@ -50,11 +50,11 @@ mode - see Mode enum
 template<class T>
 np::ndarray sample_edges(np::ndarray &pos, np::ndarray &edges, const np::ndarray &data, float sample_len, int mode)
 {
-//#ifndef NDEBUG
+#ifndef NDEBUG
   std::cout << "in sample_edges with templated Data type" << std::endl;
   auto shape_of_data_as_Py_intptr_t = data.get_shape();
   std::cout << shape_of_data_as_Py_intptr_t[0] << ","<< shape_of_data_as_Py_intptr_t[1] << ","<< shape_of_data_as_Py_intptr_t[2] << std::endl;
-//#endif
+#endif
   int cnt = edges.get_shape()[0];
 
 //  int ncomps = data.rank() > 1 ? pos.shape()[1] : 1;
@@ -82,7 +82,7 @@ np::ndarray sample_edges(np::ndarray &pos, np::ndarray &edges, const np::ndarray
       p0[j] = py::extract<float>(pos[a][j]);
       p1[j] = py::extract<float>(pos[b][j]);
     }
-
+printf("got here\n");
     sampler.Set(p0, p1, 0.); // 3rd arg is the radius
     int num_samples = sampler.GenerateLineSamples();
 
@@ -113,6 +113,7 @@ np::ndarray sample_edges(np::ndarray &pos, np::ndarray &edges, const np::ndarray
         c[k][0] = py::extract<T>(data[i]);
       }
     }
+printf("got here\n");
     for(int j=0; j<num_samples; ++j)
     {
       CylinderNetworkSampler::Sample ls = sampler.GetSample(j);
@@ -136,6 +137,7 @@ np::ndarray sample_edges(np::ndarray &pos, np::ndarray &edges, const np::ndarray
 
   py::tuple shape = py::make_tuple(num_total_samples, ncomps);
   np::ndarray acc_res = np::empty(shape, dtype);
+  printf("got here\n");
   for(int i=0, k=0; i<num_total_samples; ++i)
   {
     for(int j=0; j<ncomps; ++j,++k)
@@ -143,9 +145,9 @@ np::ndarray sample_edges(np::ndarray &pos, np::ndarray &edges, const np::ndarray
       acc_res[i][j] = tmp[k];
     }
   }
-//#ifndef NDEBUG
+#ifndef NDEBUG
   std::cout << "exit sample_edges with templated Data type" << std::endl;
-//#endif
+#endif
   return acc_res;
 }
 #else
