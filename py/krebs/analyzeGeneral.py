@@ -264,16 +264,16 @@ def calc_distmap(ds, ld, level):
   return distmap
 
 
-def generate_samples(graph, name, association, scale):
+def generate_samples(graph, data, association, scale):
   DATA_LINEAR = krebsutils.VesselSamplingFlags.DATA_LINEAR
   DATA_CONST = krebsutils.VesselSamplingFlags.DATA_CONST
   DATA_PER_NODE = krebsutils.VesselSamplingFlags.DATA_PER_NODE
   if not len(graph.edgelist):
     return np.asarray([], dtype=float)
   if association == 'edges':
-    data = krebsutils.edge_to_node_property(int(np.amax(graph.edgelist)+1), graph.edgelist, graph.edges[name], 'avg')
+    data = krebsutils.edge_to_node_property(int(np.amax(graph.edgelist)+1), graph.edgelist, data, 'avg')
   else:
-    data = graph.nodes[name]
+    data = data
 #  return data
   print(('going to sample %s' % name))
   print('data.shape')
