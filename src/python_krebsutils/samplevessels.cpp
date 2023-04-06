@@ -70,10 +70,10 @@ np::ndarray sample_edges(np::ndarray &pos, np::ndarray &edges, const np::ndarray
   CylinderNetworkSampler sampler;
   sampler.Init(sample_len, ptree());
 
-  /*for(int i=0; i<cnt; ++i)
+  for(int i=0; i<cnt; ++i)
   {
     Float3 p0, p1;
-    for (int j=0; j<3; ++j)
+    /*for (int j=0; j<3; ++j)
     {
       int a = py::extract<int>(edges[i][0]);
       int b = py::extract<int>(edges[i][1]);
