@@ -808,8 +808,8 @@ returns:
   """
   edges = np.asarray(edges, dtype=np.int32)
   pos = np.asarray(pos, dtype=np.float32)
-  #print 'sample_edges', pos.shape, pos.dtype, edges.shape, edges.dtype, data.shape, data.dtype
-  func = get_krebssubroutine_by_type_('sample_edges', edges.dtype)
+  print('sample_edges', pos.shape, pos.dtype, edges.shape, edges.dtype, data.shape, data.dtype)
+  func = get_krebssubroutine_by_type_('sample_edges', data.dtype)
   errormsg_(pos.shape[1] == 3, "pos array shape[1] must be 3")
   errormsg_(edges.shape[1] == 2, "edges array shape[1] must be 2")
   errormsg_(not ((mode_flags&VesselSamplingFlags.DATA_PER_NODE) and len(data) != len(pos)), "pos and data arrays must have the same first dimension size")
