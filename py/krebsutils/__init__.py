@@ -808,6 +808,8 @@ returns:
   """
   edges = np.asarray(edges, dtype=np.int32)
   pos = np.asarray(pos, dtype=np.float32)
+  if data.ndim < 2:
+    data = data + (1,)*(2 - data.ndim)
   print('sample_edges', pos.shape, pos.dtype, edges.shape, edges.dtype, data.shape, data.dtype)
   func = get_krebssubroutine_by_type_('sample_edges', data.dtype)
   errormsg_(pos.shape[1] == 3, "pos array shape[1] must be 3")
