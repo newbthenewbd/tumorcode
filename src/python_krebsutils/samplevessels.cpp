@@ -109,8 +109,8 @@ np::ndarray sample_edges(np::ndarray &pos, np::ndarray &edges, const np::ndarray
       }
       else
       {
-        //c[k][0] = py::extract<T>(data[i][k]);
-        c[k][0] = py::extract<T>(data[i]);
+        c[k][0] = py::extract<T>(data[i][k]);
+        //c[k][0] = py::extract<T>(data[i]);
       }
     }
     for(int j=0; j<num_samples; ++j)
