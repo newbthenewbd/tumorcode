@@ -47,15 +47,14 @@ sample_len - average distance between samples. The samples are taken in regular 
 mode - see Mode enum
 */
 #if BOOST_VERSION>106300
-#warning new boost
 template<class T>
 np::ndarray sample_edges(np::ndarray &pos, np::ndarray &edges, const np::ndarray &data, float sample_len, int mode)
 {
-#ifndef NDEBUG
+//#ifndef NDEBUG
   std::cout << "in sample_edges with templated Data type" << std::endl;
   auto shape_of_data_as_Py_intptr_t = data.get_shape();
   std::cout << shape_of_data_as_Py_intptr_t[0] << ","<< shape_of_data_as_Py_intptr_t[1] << ","<< shape_of_data_as_Py_intptr_t[2] << std::endl;
-#endif
+//#endif
   int cnt = edges.get_shape()[0];
 
 //  int ncomps = data.rank() > 1 ? pos.shape()[1] : 1;
@@ -144,9 +143,9 @@ np::ndarray sample_edges(np::ndarray &pos, np::ndarray &edges, const np::ndarray
       acc_res[i][j] = tmp[k];
     }
   }
-#ifndef NDEBUG
+//#ifndef NDEBUG
   std::cout << "exit sample_edges with templated Data type" << std::endl;
-#endif
+//#endif
   return acc_res;
 }
 #else
