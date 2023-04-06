@@ -32,7 +32,7 @@ import myutils
 import posixpath
 import math
 import collections
-import plotVessels
+from plotVessels import generate_samples
 
 """ for bin ing the MVD experimental calculation """
 def suggest_bins_from_world(ld):
@@ -265,7 +265,7 @@ def calc_distmap(ds, ld, level):
   return distmap
 
 
-def generate_samples(graph, data, association, scale):
+def generate_samplesbad(graph, data, association, scale):
   '''A convenence function to call the c++ sampling routine for some data
   stored in my graph structure. Additionaly it converts nodal to edge
   properties because the sampling needs data associated with edges, but it
@@ -532,7 +532,7 @@ class DataVesselSamples(object):
         else:
           data, association = dataman.obtain_data('vessel_graph_property', vesselgroup, 'auto', property_name)
           data = data[:,0]
-          smpl = plotVessels.generate_samples(graph, data, association, sample_length)
+          smpl = generate_samples(graph, data, association, sample_length)
         return smpl
 
       if dataname == 'basic_vessel_samples_avg':
