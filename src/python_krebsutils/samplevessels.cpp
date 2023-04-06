@@ -55,14 +55,14 @@ np::ndarray sample_edges(np::ndarray &pos, np::ndarray &edges, const np::ndarray
   auto shape_of_data_as_Py_intptr_t = data.get_shape();
   std::cout << shape_of_data_as_Py_intptr_t[0] << ","<< shape_of_data_as_Py_intptr_t[1] << ","<< shape_of_data_as_Py_intptr_t[2] << std::endl;
 #endif
+std::cout << "is literally the first ever function here failing" << std::endl;
   int cnt = edges.get_shape()[0];
+  std::cout << "no" << std::endl;
 
 //  int ncomps = data.rank() > 1 ? pos.shape()[1] : 1;
   int abla=data.shape(1);
   int ncomps = abla > 1 ? pos.get_shape()[1] : 1;
-  std::cout << "before dtype" << std::endl;
   np::dtype dtype = data.get_dtype();
-  std::cout << "after dtype" << std::endl;
   //int itemtype = data.itemtype();
   T c[16][2];
 
