@@ -280,7 +280,7 @@ def generate_samples(graph, data, association, scale):
   if isinstance(data, str): data = getattr(graph, association)[data]
   if association == 'edges':
     data = krebsutils.edge_to_node_property(int(np.amax(graph.edgelist)+1), graph.edgelist, data, 'avg')
-    return krebsutils.sample_edges(graph.nodes['position'], graph.edgelist, data, scale, DATA_CONST)
+    return krebsutils.sample_edges(graph.nodes['position'], graph.edgelist, data, scale, DATA_CONST | DATA_PER_NODE)
   else:
     return krebsutils.sample_edges(graph.nodes['position'], graph.edgelist, data, scale, DATA_LINEAR | DATA_PER_NODE)
 
