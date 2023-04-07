@@ -554,7 +554,7 @@ def PrintGlobalData(pdfpages, vesselgroups, f_measure, dataman):
     for gvessels in vesselgroups:
       datatemp = dataman.obtain_data('basic_vessel_global', name, gvessels, cachelocation(gvessels))
       if datatemp.ndim < 2:
-      datatemp = datatemp.reshape(datatemp.shape + (1,) * (2 - datatemp.ndim));
+        datatemp = datatemp.reshape(datatemp.shape + (1,) * (2 - datatemp.ndim));
       data.append(datatemp)
       ld_vessels = krebsutils.read_lattice_data_from_hdf_by_filename(str(gvessels.file.filename),str('vessels/lattice'))
       bbox_vessels.append(ld_vessels.worldBox)
