@@ -27,6 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define BOOST_RESULT_OF_USE_DECLTYPE 1
 
 #include <boost/foreach.hpp>
+#include <boost/noncopyable.hpp>
 #include <boost/python/errors.hpp>
 #include <boost/iterator/transform_iterator.hpp>
 #include <boost/python/errors.hpp>
@@ -1092,7 +1093,7 @@ struct DetailedO2ParamsToPy
 
 void export_oxygen_computation()
 {
-  py::class_<Parameters>("DetailedO2Parameters", py::no_init)
+  py::class_<Parameters, boost::noncopyable>("DetailedO2Parameters", py::no_init)
     .def("Saturation", &Parameters::Saturation)
     .def("BloodPO2ToConc", &Parameters::BloodPO2ToConc)
     .def("ConcToBloodPO2", &Parameters::ConcToBloodPO2)
@@ -1132,7 +1133,7 @@ BOOST_PYTHON_MODULE(libdetailedo2_)
 #endif
   PyEval_InitThreads();
   my::checkAbort = PyCheckAbort; // since this is the python module, this is set to use the python signal check function
-  //DetailedPO2::export_oxygen_computation();
+  DetailedPO2::export_oxygen_computation();
   DetailedPO2::export_parameter_converters();
   //bla
 }
