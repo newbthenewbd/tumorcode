@@ -297,7 +297,11 @@ def PlotRadiusHistogram(ax, dataman, vesselgroups, filterflags=None):
   result = []
   for g in vesselgroups:
     r = dataman.obtain_data('basic_vessel_samples', 'radius', g, 30.)
+    if r.ndim < 2:
+      r = r.reshape(r.shape + (1,) * (2 - r.ndim))
     w = dataman.obtain_data('basic_vessel_samples', 'weight', g, 30.)
+    if w.ndim < 2:
+      w = w.reshape(w.shape + (1,) * (2 - w.ndim))
     f = dataman.obtain_data('basic_vessel_samples', 'flags', g, 30.)
     i = myutils.bbitwise_and(f, krebsutils.CIRCULATED)
     if filterflags is not None:
