@@ -811,7 +811,7 @@ class DataTumorTissueSingle(object):
   def obtain_data(self, dataman, dataname, *args):
     if dataname == 'ld':
       f, = args
-	  ld = krebsutils.read_lattice_data_from_hdf_by_filename(str(f.filename), '/field_ld')
+      ld = krebsutils.read_lattice_data_from_hdf_by_filename(str(f.filename), '/field_ld')
       return ld
 
     ####

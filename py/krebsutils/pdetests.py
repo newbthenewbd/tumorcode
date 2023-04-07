@@ -640,7 +640,7 @@ def runSTFStabilityTest():
       rc('savefig', facecolor = 'white')
       dpi = 100.
       results = Results(filename)
-	  ld = krebsutils.read_lattice_data_from_hdf_by_filename(str(results.f.filename), '/field_ld')
+      ld = krebsutils.read_lattice_data_from_hdf_by_filename(str(results.f.filename), '/field_ld')
       size = ld.shape
       extent = ld.worldBox[:4]
       ldface = (krebsutils.read_lattice_data_from_hdf_by_filename(str(results.f.filename), '/face_ld_0'),

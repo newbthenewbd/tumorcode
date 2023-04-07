@@ -200,7 +200,7 @@ def ComputeSystemPerfusion(dataman, vesselgroup, cachelocation):
     vessels = dataman.obtain_data('vessel_graph', vesselgroup, ['flags', 'flow'])
     arterialFlow, _ = GetRootVesselData(vessels, vessels['flow'])
     arterialFlow = np.sum(arterialFlow)
-	ldvessels = krebsutils.read_lattice_data_from_hdf_by_filename(str(vesselgroup.file.filename),str('vessels/lattice'))
+    ldvessels = krebsutils.read_lattice_data_from_hdf_by_filename(str(vesselgroup.file.filename),str('vessels/lattice'))
     totalVolume = np.cumprod(ldvessels.GetWorldSize())[2]
     perfusion = arterialFlow / totalVolume
     ds = gmeasure.create_dataset(groupname, data = perfusion)
