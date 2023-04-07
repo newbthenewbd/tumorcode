@@ -51,7 +51,7 @@ import myutils
 
 #from plotBulkTissue2d import DataTumorTissueSingle
 from analyzeBloodFlow import DataTumorBloodFlow, obtain_averaged_blood_flow
-from analyzeGeneral import RemoveArteriovenousFlagsFromCapillaries,totalLdVolume
+import analyzeGeneral
 
 
 ## ---------------- ------- ----------------------------------------
@@ -59,10 +59,10 @@ from analyzeGeneral import RemoveArteriovenousFlagsFromCapillaries,totalLdVolume
 ## ---------------- ------- ----------------------------------------
 def cylinderCollectionVolumeDensity(vesselgroup):
   vessels = krebsutils.read_vesselgraph(vesselgroup, ['flags', 'radius', 'length'])
-  flags   = RemoveArteriovenousFlagsFromCapillaries(vessels['flags'])
+  flags   = analyzeGeneral.RemoveArteriovenousFlagsFromCapillaries(vessels['flags'])
   flags = flags[:,0]
   mask1 = myutils.bbitwise_and(flags, krebsutils.CIRCULATED)
-  totalvol = totalLdVolume(vesselgroup)
+  totalvol = analyzeGeneral.totalLdVolume(vesselgroup)
   def compute(flagMask):
     if flagMask:
       mask = mask1 & myutils.bbitwise_and(flags, flagMask)
@@ -78,10 +78,10 @@ def cylinderCollectionVolumeDensity(vesselgroup):
 
 def cylinderCollectionLineDensity(vesselgroup):
   vessels = krebsutils.read_vesselgraph(vesselgroup, ['flags', 'length'])
-  flags   = RemoveArteriovenousFlagsFromCapillaries(vessels['flags'])
+  flags   = analyzeGeneral.RemoveArteriovenousFlagsFromCapillaries(vessels['flags'])
   flags = flags[:,0]
   mask1 = myutils.bbitwise_and(flags, krebsutils.CIRCULATED)
-  totalvol = totalLdVolume(vesselgroup)
+  totalvol = analyzeGeneral.totalLdVolume(vesselgroup)
   def compute(flagMask):
     if flagMask:
       mask = mask1 & myutils.bbitwise_and(flags, flagMask)
@@ -94,10 +94,10 @@ def cylinderCollectionLineDensity(vesselgroup):
 
 def surface2Volume(vesselgroup):
   vessels = krebsutils.read_vesselgraph(vesselgroup, ['flags', 'radius', 'length'])
-  flags   = RemoveArteriovenousFlagsFromCapillaries(vessels['flags'])
+  flags   = analyzeGeneral.RemoveArteriovenousFlagsFromCapillaries(vessels['flags'])
   flags = flags[:,0]
   mask1 = myutils.bbitwise_and(flags, krebsutils.CIRCULATED)
-  totalvol = totalLdVolume(vesselgroup)
+  totalvol = analyzeGeneral.totalLdVolume(vesselgroup)
   def compute(flagMask):
     if flagMask:
       mask = mask1 & myutils.bbitwise_and(flags, flagMask)
