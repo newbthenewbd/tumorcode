@@ -161,5 +161,3 @@ if 0: # my mapping vs standard logarithmic mapping
 def getSortedTimeGroupNames(f):
   gg = myutils.getTimeSortedGroups(f['.'], "out")
   return [ g.name for g in gg ]
-
-from .quantities import Prettyfier
