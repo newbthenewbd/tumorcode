@@ -34,7 +34,7 @@ import math
 import collections
 
 import analyzeBloodVolumeSimple as anaBloodV
-from analyzeBloodVolumeSimple import cylinderCollectionVolumeDensity
+import analyzeBloodVolumeSimple.cylinderCollectionVolumeDensity
 import plotBulkTissue
 
 """ for bin ing the MVD experimental calculation """
