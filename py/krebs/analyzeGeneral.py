@@ -34,7 +34,6 @@ import math
 import collections
 
 import analyzeBloodVolumeSimple as anaBloodV
-import analyzeBloodVolumeSimple.cylinderCollectionVolumeDensity
 import plotBulkTissue
 
 """ for bin ing the MVD experimental calculation """
@@ -720,7 +719,7 @@ class DataVesselGlobal(object):
           data  = (np.sum(l) / volume, 0.)
           data  = [d*1e6 for d in data] #from 1/mum^2 to 1/mm^2
         elif property_name in 'phi_vessels phi_a phi_v phi_c'.split():
-          phi_vessels, phi_a, phi_v, phi_c = cylinderCollectionVolumeDensity(vesselgroup)
+          phi_vessels, phi_a, phi_v, phi_c = anaBloodV.cylinderCollectionVolumeDensity(vesselgroup)
           if property_name == 'phi_vessels':
             data = [phi_vessels, 0.]
           if property_name == 'phi_a':
@@ -730,7 +729,7 @@ class DataVesselGlobal(object):
           if property_name == 'phi_c':
             data = [phi_c, 0.]
         elif property_name in 'mvd mvd_a mvd_v mvd_c'.split():
-          mvd, mvd_a, mvd_v, mvd_c = cylinderCollectionLineDensity(vesselgroup)
+          mvd, mvd_a, mvd_v, mvd_c = anaBloodV.cylinderCollectionLineDensity(vesselgroup)
           if property_name == 'mvd':
             data = [mvd, 0.]
           if property_name == 'mvd_a':
