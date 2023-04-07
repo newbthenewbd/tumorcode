@@ -81,7 +81,7 @@ def updated(d1, d2):
 
 def checksum(*objs):
   '''computes a checksum as md5 of the pickled arguments'''
-  return hashlib.new('md5').update(pickle.dumps(objs)).hexdigest()
+  return hashlib.md5(pickle.dumps(objs)).hexdigest()
 
 
 def uuidstr():
