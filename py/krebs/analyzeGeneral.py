@@ -876,7 +876,7 @@ class DataTumorTissueSingle(object):
           dist_necro = get('dist_necro')
           data = np.maximum(dist_tumor, -dist_necro)
           gmeasure.create_dataset(dsname, data = data, compression = 9)
-        fm = myutils.MeasurementFile(f, h5files)
+        fm = myutils.MeasurementFile(f)
         data = myutils.hdf_data_caching(read, write, fm, (tumor_path, 'dist_viabletumor'), (0,1))
       elif fieldname == 'phi_vessels':
         def read(gmeasure, name):
@@ -884,7 +884,7 @@ class DataTumorTissueSingle(object):
         def write(gmeasure, name):
           phi_vessels = CalcPhiVessels(dataman, f[group]['vessels'], ld, scaling = 1.)
           gmeasure.create_dataset(name, data = phi_vessels, compression = 9)
-        fm = myutils.MeasurementFile(f, h5files)
+        fm = myutils.MeasurementFile(f)
         data = myutils.hdf_data_caching(read, write, fm, (group, 'phi_vessels'), (0,1))
       elif fieldname == 'dist_tumor':
         def read(gmeasure, name):
@@ -894,7 +894,7 @@ class DataTumorTissueSingle(object):
           ls = -ls
           dist = calc_distmap(np.asarray(ls < 0., dtype=np.float32), ld, 0.5)
           gmeasure.create_dataset(name, data = dist, compression = 9)
-        fm = myutils.MeasurementFile(f, h5files)
+        fm = myutils.MeasurementFile(f)
         data = myutils.hdf_data_caching(read, write, fm, (tumor_path, 'dist_tumor_full'), (0,1))
       else:
         raise RuntimeError('unkown field %s' % fieldname)
