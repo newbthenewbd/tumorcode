@@ -54,7 +54,7 @@ from collections import defaultdict as ddict
 
 from analyzeBloodVolumeSimple import cylinderCollectionVolumeDensity
 import detailedo2Analysis as o2analysis
-import o2analysis.plotsForPaper
+import detailedo2Analysis.plotsForPaper
 import detailedo2
 
 import argparse
