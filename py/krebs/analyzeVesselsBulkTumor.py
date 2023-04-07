@@ -42,7 +42,7 @@ import matplotlib.cm
 import matplotlib.pyplot as pyplot
 import mpl_utils
 
-from .quantities import Prettyfier
+from quantities import Prettyfier
 
 from krebs.analyzeGeneral import DataVesselGlobal, DataTumorTissueSingle, DataDistanceFromCenter, DataBasicVessel, DataVesselSamples, DataVesselRadial, BinsSpecRange, BinsSpecArray, obtain_distmap_, generate_samples, combineSamples, HdfCacheRadialDistribution, CalcPhiVessels, calc_distmap
 from krebs.analyzeBloodFlow import DataTumorBloodFlow

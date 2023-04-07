@@ -27,7 +27,7 @@ import h5py
 import math
 import pprint
 import vtk
-from . import vtkcommon
+import vtkcommon
 import posixpath
 from mystruct import Struct
 

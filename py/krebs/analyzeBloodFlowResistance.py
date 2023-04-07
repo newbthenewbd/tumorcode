@@ -38,7 +38,7 @@ from pprint import pprint
 
 import myutils
 
-from .analyzeGeneral   import DataBasicVessel
+import analyzeGeneral
 
 def ComputeVascularTreeBloodFlowResistances(vessels):
   edgelist, flags, pressure, flow, nodeflags = vessels.edgelist, vessels['flags'], vessels['pressure'], vessels['flow'], vessels['nodeflags']
@@ -133,7 +133,7 @@ if __name__ == "__main__":
   if options.write_flow:
     options.force_flow_recompute = True
   
-  dataman = myutils.DataManager(100, [DataBasicVessel()])
+  dataman = myutils.DataManager(100, [analyzeGeneral.DataBasicVessel()])
 
   filenames, pattern = args[:-1], args[-1]
   files = [h5files.open(fn, 'a' if options.add_resistor_bc else 'r+') for fn in filenames]

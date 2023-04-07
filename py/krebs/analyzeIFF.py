@@ -40,7 +40,7 @@ from os.path import basename
 
 import mpl_utils
 
-from .plotIff import DataTissue, DataGlobalIff, DataRadialIff, DataTumorBloodFlow, averaged
+import plotIff
 
 if __name__ == '__main__':
   
@@ -49,7 +49,7 @@ if __name__ == '__main__':
     filenames = sys.argv[1:]
     files = [ h5py.File(fn, 'r') for fn in filenames ]
     fmeasure = h5files.open('analyzeIFF.h5', 'a')
-    dataman = myutils.DataManager(100, [ DataTissue(), DataGlobalIff(), DataRadialIff(), DataTumorBloodFlow()])
+    dataman = myutils.DataManager(100, [ plotIff.DataTissue(), plotIff.DataGlobalIff(), plotIff.DataRadialIff(), plotIff.DataTumorBloodFlow()])
     #data = dataman('iff_radial', files[0], 'vs_dr', 'iff_pressure') 
     xlim = -1.5, 1.0
 
@@ -98,7 +98,7 @@ if __name__ == '__main__':
     
     if 0:
       radialgetter = lambda f,name: dataman('iff_radial', f, 'vs_dr', name)
-      radial = averaged(radialgetter,files,
+      radial = plotIff.averaged(radialgetter,files,
                           ['iff_pressure', 'ivp', 'iff_velocity_mag'])
   
       bins = (1./1000.) * dataman('iff_radial', files[0], 'vs_dr', 'bins')

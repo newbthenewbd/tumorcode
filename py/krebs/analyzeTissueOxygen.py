@@ -32,8 +32,8 @@ import extensions # for hdf5 support in np.asarray
 import krebsutils
 import myutils
 
-from . import plotBulkTissue2d
-from . import plotBulkTissue
+import plotBulkTissue2d
+import plotBulkTissue
 
 import matplotlib
 import matplotlib.pyplot as pyplot

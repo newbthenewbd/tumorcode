@@ -38,7 +38,7 @@ import matplotlib.pyplot as plt
 from collections import defaultdict
 from pprint import pprint
 
-from .analyzeGeneral import DataVesselLength, DataVesselTumor
+import analyzeGeneral
 
 import mpl_utils
 
@@ -355,7 +355,7 @@ def create_nice_file_containing_all_the_data():
   filenames = sys.argv[1:]
   files = [ h5files.open(fn, 'r') for fn in filenames ]
   fmeasure = h5files.open('analyzeVesselTumor.h5', 'a')
-  dataman = myutils.DataManager(10, [DataVesselLength(),DataVesselTumor()])
+  dataman = myutils.DataManager(10, [analyzeGeneral.DataVesselLength(),analyzeGeneral.DataVesselTumor()])
 
   allgroups = defaultdict(list)
   for f in files:

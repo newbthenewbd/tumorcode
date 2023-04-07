@@ -35,6 +35,7 @@ import posixpath
 import math
 import glob
 import collections
+import re
 from pprint import pprint
 import itertools
 
@@ -48,6 +49,8 @@ import mpl_utils
 import krebs.quantities
 import myutils
 import krebs.analyzeGeneral
+
+import detailedo2Analysis
 
 
 def ComputeIsosurfaceBloodFlow(dataman, vesselgroup, nodalLevel, level):
@@ -387,7 +390,6 @@ def GetTimeLabel(vesselgroup):
 
 # note: use insertVesselConfigInO2File.py script (in scripts repository) to copy vesselfile message over. It is the type name in it.
 def GetVesselTypeLabel(group):
-  import re
   try:
     msg = group.file.attrs['VESSELFILE_MESSAGE']
   except KeyError:
@@ -397,8 +399,7 @@ def GetVesselTypeLabel(group):
     return 'unkown'
   m = m.group(1)
   # specific naming scheme for paper
-  from .detailedo2Analysis.plotsForPaper import RewriteVesselLabel
-  return RewriteVesselLabel(m)
+  return detailedo2Analysis.plotsForPaper.RewriteVesselLabel(m)
 
 
 ## ---------------- ------- -----------------------

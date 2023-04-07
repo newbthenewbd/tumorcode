@@ -29,7 +29,7 @@ import numpy as np
 import h5py
 import collections
 import vtk
-from . import vtkcommon
+import vtkcommon
 import myutils
 import krebsutils as ku
 

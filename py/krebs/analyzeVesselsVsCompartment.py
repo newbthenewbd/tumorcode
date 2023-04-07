@@ -35,8 +35,8 @@ import myutils
 from matplotlib.pylab import * 
 import matplotlib.pyplot as plt
 
-from .analyzeGeneral   import DataBasicVessel
-from .analyzeBloodFlowResistance import ComputeVascularTreeBloodFlowResistances
+import analyzeGeneral
+import analyzeBloodFlowResistance
 
 def DoReadIn(filenames, pattern, fn_measure):
     #read in lots of stuff
@@ -123,9 +123,9 @@ def DoReadIn(filenames, pattern, fn_measure):
             output_grp.create_dataset('v_roots_radius', data = venous_roots)
             output_grp.create_dataset('v_roots_pressure', data = venous_roots_pressure)
             
-            dataman = myutils.DataManager(100, [DataBasicVessel()])
+            dataman = myutils.DataManager(100, [analyzeGeneral.DataBasicVessel()])
             vessels = dataman.obtain_data('vessel_graph', afile['/' + pattern + '/'], ['flow', 'pressure', 'flags', 'radius','nodeflags'])
-            conductivities, avgVenousPressure, avgArterialPressure, totalFlow = ComputeVascularTreeBloodFlowResistances(vessels)
+            conductivities, avgVenousPressure, avgArterialPressure, totalFlow = analyzeBloodFlowResistance.ComputeVascularTreeBloodFlowResistances(vessels)
             output_grp.attrs['avgVenousPressure'] = avgVenousPressure
             output_grp.attrs['avgArterialPressure'] = avgArterialPressure
             output_grp.attrs['totalFlow_from_BloodFlowResistance'] = totalFlow

@@ -24,7 +24,7 @@ if __name__ == '__main__':
   import os.path, sys
   sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),'..'))
 
-from .plotIff import plotIffForPaper
+from plotIff import plotIffForPaper
 
 if __name__ == '__main__':
   plotIffForPaper()

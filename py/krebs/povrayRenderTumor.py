@@ -29,10 +29,10 @@ from os.path import basename, splitext
 
 import krebsutils
 import numpy as np
-from . import povrayRenderVessels
-from . import povrayRenderCells
+import povrayRenderVessels
+import povrayRenderCells
 #from povrayRenderVessels import *
-from . import povrayEasy
+import povrayEasy
 import myutils
 import math
 import copy

@@ -27,7 +27,7 @@ if __name__ == '__main__':
   sys.path.append(join(dirname(__file__),'..'))
 import h5py
 import numpy as np
-from . import vtkcommon
+import vtkcommon
 import extensions # for asarray with h5py support
 import krebsutils
 import math
@@ -38,19 +38,19 @@ from copy import deepcopy
 from collections import defaultdict
 from pprint import pprint
 
-#from plotBulkTissue import commonOutputName, LabelFactory, colorbar, contour, imslice, imshow, ColorMaps
-from .plotBulkTissue import commonOutputName
+#from plotBulkTissue import plotBulkTissue.commonOutputName, LabelFactory, colorbar, contour, imslice, imshow, ColorMaps
+import plotBulkTissue
 
-from .plotIff import mk_LF_, mk_CM_
+import plotIff
 
 from matplotlib.ticker import MaxNLocator
 import matplotlib
 import matplotlib.pyplot as pyplot
 import mpl_utils
 
-LabelFactory=mk_LF_()
+LabelFactory=plotIff.mk_LF_()
 LF = LabelFactory
-ColorMaps = mk_CM_()
+ColorMaps = plotIff.mk_CM_()
 CM = ColorMaps
 
 mastersize = mpl_utils.a4size
@@ -58,7 +58,7 @@ a4size = mpl_utils.a4size
 gridcolor = (0.7,0.7,0.7)
 f2s = lambda x: myutils.f2s(x, latex=True)
 
-from . import extractVtkFields, plotVessels
+import extractVtkFields, plotVessels
 
 bins_rad = np.arange(0, 20000, 30.)
 bins_dist = np.arange(-10000., 10000., 30.)
@@ -458,6 +458,6 @@ if __name__ == '__main__':
                     'subplot.top' : 1.-0.1,
                     'subplot.wspace' : 0.2,
                     'subplot.hspace' : 0.2})
-    fnmeasure = commonOutputName(filenames)
+    fnmeasure = plotBulkTissue.commonOutputName(filenames)
     with mpl_utils.PdfWriter(fnmeasure+'.pdf') as pdfpages:
       plot_many(filenames, pdfpages)

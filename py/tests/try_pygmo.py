@@ -7,7 +7,7 @@ import sys
   
 import identifycluster
 if identifycluster.name == 'snowden':
-  from . import matplotlib
+  import matplotlib
   matplotlib.use('Agg') 
 #import qsub
 #import dicttoinfo

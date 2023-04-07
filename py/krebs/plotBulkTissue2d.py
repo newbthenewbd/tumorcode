@@ -31,6 +31,8 @@ import h5py
 import os,sys
 import numpy as np
 import collections
+import io
+import PIL.Image as Image
 from mystruct import Struct
 import extensions # for hdf5 support in np.asarray
 import myutils
@@ -42,16 +44,18 @@ from myutils import f2s, f2l
 import random
 
 
-from .plotBulkTissue import commonOutputName, colorbar, contour, imslice, imshow, with_contour_factory, with_cb
-from .analyzeGeneral import DataBasicVessel, DataVesselSamples, DataVesselRadial, DataTumorTissueSingle, DataDistanceFromCenter, BinsSpecRange
-from .plotVessels import PlotRadiusHistogram
-from .quantities import Prettyfier
+from plotBulkTissue import commonOutputName, colorbar, contour, imslice, imshow, with_contour_factory, with_cb
+from analyzeGeneral import DataBasicVessel, DataVesselSamples, DataVesselRadial, DataTumorTissueSingle, DataDistanceFromCenter, BinsSpecRange
+from plotVessels import PlotRadiusHistogram
+from quantities import Prettyfier
 
 import matplotlib
 import matplotlib.pyplot as pyplot
 import mpl_utils
 
-from . import analyzeGeneral
+import analyzeGeneral
+import povrayRenderTumor
+from scipy.optimize import leastsq
 
 
 class DataTumor3dRendering(object):
@@ -59,10 +63,6 @@ class DataTumor3dRendering(object):
 
   def obtain_data(self, dataman, dataname, *args):
     if dataname == '3drendering':
-      import io
-      from . import povrayRenderTumor
-      import PIL.Image as Image
-
       f, group, showVessels, showTumor = args[0], args[1], args[2], args[3]
 
       ld = dataman.obtain_data('ld', f)
@@ -490,7 +490,6 @@ def plotSnapshots(resultfile, pdfpages):
 def linearFit(x, y):
   x = np.asarray(x)
   y = np.asarray(y)
-  from scipy.optimize import leastsq
   func = lambda p, x, y: (x*p[0]+p[1]-y)
   p, success = leastsq(func, (1, 0), args=(x, y))
   return p

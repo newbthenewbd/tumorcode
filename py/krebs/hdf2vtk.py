@@ -27,7 +27,7 @@ if __name__ == '__main__':
 import os, sys
 from os.path import join, basename, dirname, splitext
 import krebsutils
-from . import extractVtkFields
+import extractVtkFields
 import pprint
 import numpy as np
 import h5py
@@ -38,7 +38,7 @@ if identifycluster.getname()=='snowden':
 else:
   from vtk import *
 #from vtk import *
-from .vtkcommon import *
+from vtkcommon import *
 import extensions
 import itertools
 import myutils

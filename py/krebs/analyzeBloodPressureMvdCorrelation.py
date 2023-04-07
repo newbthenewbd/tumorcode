@@ -43,7 +43,7 @@ import scipy.stats
 
 import myutils
 import mpl_utils
-from . import analyzeGeneral
+import analyzeGeneral
 
 import matplotlib
 import matplotlib.pyplot as pyplot

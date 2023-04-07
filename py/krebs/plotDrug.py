@@ -48,12 +48,12 @@ import krebsutils
 from mystruct import Struct
 import myutils
 
-from .plotBulkTissue import commonOutputName, contour, imslice, imshow, colorbar
+from plotBulkTissue import commonOutputName, contour, imslice, imshow, colorbar
 from mpl_utils import PageWriter
-from .plotIff import LabelFactory, ColorMaps, fig_numbering
-from . import analyzeGeneral
+from plotIff import LabelFactory, ColorMaps, fig_numbering
+import analyzeGeneral
 
-from . import plotIff
+import plotIff
 
 
 import matplotlib

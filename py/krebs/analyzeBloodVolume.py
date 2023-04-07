@@ -43,7 +43,7 @@ import mpl_utils
 
 import myutils
 
-from .analyzeGeneral import DataTumorTissueSingle, BinsSpecArray, DataVesselRadial, DataVesselSamples, DataBasicVessel, DataDistanceFromCenter
+import analyzeGeneral
 
 
 
@@ -152,8 +152,8 @@ def plot_data(ax, bins, data, std, color, label):
 def plot_mvd_in_large_bins1(pdfpages, groupslist):
   distancemap_spec = 'levelset'
   for bin_spec in [
-      BinsSpecArray([-1.e5, -200, 0., 200., 1.e6]),
-      BinsSpecArray([-1.e5, 0., 1.e6])
+      analyzeGeneral.BinsSpecArray([-1.e5, -200, 0., 200., 1.e6]),
+      analyzeGeneral.BinsSpecArray([-1.e5, 0., 1.e6])
     ]:
     fig, axes = pyplot.subplots(2,1, figsize = (8,6))
     realbins = {}
@@ -196,8 +196,8 @@ def plot_mvd_in_large_bins2(pdfpages, groupslist):
     time  = dataman.obtain_data('time', groups[0])
     rtumor = tumorradi[groupkey]
     for j, bin_spec in enumerate([
-        BinsSpecArray([-1.e5, rtumor-200, rtumor, rtumor+200., 1.e6]),
-        BinsSpecArray([-1.e5, 200+rtumor, 1.e6])
+        analyzeGeneral.BinsSpecArray([-1.e5, rtumor-200, rtumor, rtumor+200., 1.e6]),
+        analyzeGeneral.BinsSpecArray([-1.e5, 200+rtumor, 1.e6])
       ]):
       distances = obtain_average_radial_distance(dataman, fmeasure, groups, bin_spec, distancemap_spec)
 
@@ -232,11 +232,11 @@ if __name__ == '__main__':
   filenames = sys.argv[1:]
   files = [ h5py.File(fn, 'r') for fn in filenames ]
   fmeasure = h5py.File('analyzeBloodVolumeMeasurements.h5', 'a')
-  dataman = myutils.DataManager(10, [DataTumorTissueSingle(),
-                                      DataVesselRadial(),
-                                      DataVesselSamples(),
-                                      DataBasicVessel(),
-                                      DataDistanceFromCenter()])
+  dataman = myutils.DataManager(10, [analyzeGeneral.DataTumorTissueSingle(),
+                                      analyzeGeneral.DataVesselRadial(),
+                                      analyzeGeneral.DataVesselSamples(),
+                                      analyzeGeneral.DataBasicVessel(),
+                                      analyzeGeneral.DataDistanceFromCenter()])
 
   #allgroups = sorted(filter(lambda k: k.startswith('out'), files[0].keys()))
   allgroups = defaultdict(list)
