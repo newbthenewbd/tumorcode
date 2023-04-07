@@ -40,13 +40,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # THE SOFTWARE.
 
 
-from operator import isNumberType
-from operator import isSequenceType
+import numbers
+import collections.abc
 from math import hypot,sqrt, sin, cos, atan2
 getattr = getattr  # copy builtin to global for speed
 
 
 __all__ = ["Vec2","Vec3"]
+
+
+def isNumberType(obj):
+    return isinstance(obj, numbers.Number)
+
+def isSequenceType(obj):
+    return isinstance(obj, collections.abc.Sequence)
 
 
 class Vec2(object):
