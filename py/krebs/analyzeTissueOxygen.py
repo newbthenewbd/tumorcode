@@ -67,7 +67,7 @@ def analyzeO2_with_tumor(f):
       tumoravg = (np.average(tumor), np.std(tumor))
       return tissueavg, tumoravg
     print("Analyzing")
-    print(f['parameters'].attrs)
+    print(f['parameters'].attrs.keys())
     cons_rate_normal = float(f['parameters'].attrs['o2_cons_coeff_normal'])
     cons_rate_tumor  = float(f['parameters'].attrs['o2_cons_coeff_tumor'])
     consumption = (theta_tumor * cons_rate_tumor + (1. - theta_tumor)*cons_rate_normal)*o2
