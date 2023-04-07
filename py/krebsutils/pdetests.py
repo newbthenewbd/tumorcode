@@ -79,7 +79,7 @@ def make_ld(params):
 class Results(object):
   def __init__(self, name):
     f = h5py.File(name+'.h5','r')
-    self.ld = ld = krebsutils.read_lattice_data_from_hdf(f['field_ld'])
+    self.ld = ld = krebsutils.read_lattice_data_from_hdf_by_filename(str(f.filename), '/field_ld')
     self.groups = myutils.getTimeSortedGroups(f['.'], 'out')
     self.f = f
   def __len__(self):
@@ -542,8 +542,8 @@ def runSTFTest():
     rc('savefig', facecolor = 'white')
     dpi = 100.
     results = Results('sfttest')
-    ldface = (krebsutils.read_lattice_data_from_hdf(results.f['face_ld_0']),
-              krebsutils.read_lattice_data_from_hdf(results.f['face_ld_1']))
+    ldface = (krebsutils.read_lattice_data_from_hdf_by_filename(str(results.f.filename), '/face_ld_0'),
+              krebsutils.read_lattice_data_from_hdf_by_filename(str(results.f.filename), '/face_ld_1'))
     extface = tuple(q.worldBox[:4] for q in ldface)
     data = collections.defaultdict(list)
     for idx, group in enumerate(results):
@@ -640,11 +640,11 @@ def runSTFStabilityTest():
       rc('savefig', facecolor = 'white')
       dpi = 100.
       results = Results(filename)
-      ld = krebsutils.read_lattice_data_from_hdf(results.f['field_ld'])
+	  ld = krebsutils.read_lattice_data_from_hdf_by_filename(str(results.f.filename), '/field_ld')
       size = ld.shape
       extent = ld.worldBox[:4]
-      ldface = (krebsutils.read_lattice_data_from_hdf(results.f['face_ld_0']),
-                krebsutils.read_lattice_data_from_hdf(results.f['face_ld_1']))
+      ldface = (krebsutils.read_lattice_data_from_hdf_by_filename(str(results.f.filename), '/face_ld_0'),
+                krebsutils.read_lattice_data_from_hdf_by_filename(str(results.f.filename), '/face_ld_1'))
       extface = tuple(q.worldBox[:4] for q in ldface)
       data = collections.defaultdict(list)
       for idx, group in enumerate(results):
