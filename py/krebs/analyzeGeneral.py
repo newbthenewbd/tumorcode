@@ -531,6 +531,8 @@ class DataVesselSamples(object):
         else:
           data, association = dataman.obtain_data('vessel_graph_property', vesselgroup, 'auto', property_name)
           data = data[:,0]
+          if data.ndim < 2:
+            data = data.reshape(data.shape + (1,) * (2 - data.ndim))
           smpl = generate_samples(graph, data, association, sample_length)
         return smpl
 

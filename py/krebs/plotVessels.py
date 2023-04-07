@@ -304,8 +304,6 @@ def PlotRadiusHistogram(ax, dataman, vesselgroups, filterflags=None):
     if w.ndim < 2:
       w = w.reshape(w.shape + (1,) * (2 - w.ndim))
     f = dataman.obtain_data('basic_vessel_samples', 'flags', g, 30.)
-    if f.ndim < 2:
-      f = f.reshape(f.shape + (1,) * (2 - f.ndim))
     i = myutils.bbitwise_and(f, krebsutils.CIRCULATED)
     if filterflags is not None:
       i &= myutils.bbitwise_and(f, filterflags)
@@ -552,10 +550,7 @@ def PrintGlobalData(pdfpages, vesselgroups, f_measure, dataman):
   for name in prop_list2:
     data = []
     for gvessels in vesselgroups:
-      datatemp = dataman.obtain_data('basic_vessel_global', name, gvessels, cachelocation(gvessels))
-      if datatemp.ndim < 2:
-        datatemp = datatemp.reshape(datatemp.shape + (1,) * (2 - datatemp.ndim));
-      data.append(datatemp)
+      data.append(dataman.obtain_data('basic_vessel_global', name, gvessels, cachelocation(gvessels)))
       ld_vessels = krebsutils.read_lattice_data_from_hdf_by_filename(str(gvessels.file.filename),str('vessels/lattice'))
       bbox_vessels.append(ld_vessels.worldBox)
     result_string.append(r'$<%s>$ = $%s$%s' %
