@@ -67,7 +67,8 @@ bins_dist = np.arange(-10000., 10000., 30.)
 
 def get_tumld(tumorgroup):
   p = tumorgroup['ptc'].attrs['LATTICE_PATH']
-  tum_ld = krebsutils.read_lattice_data_from_hdf(tumorgroup.file[p])
+  #tum_ld = krebsutils.read_lattice_data_from_hdf(tumorgroup.file[p])
+  tum_ld = krebsutils.read_lattice_data_from_hdf_by_filename(str(tumorgroup.file.filename), str(p))
   #field_ld is in root
   #tum_ld = krebsutils.read_lattice_data_from_hdf(tumorgroup.parent.parent['field_ld'])
   #tum_ld = krebsutils.read_lattice_data_from_hdf(tumorgroup.file[tumorgroup['conc'].attrs['LATTICE_PATH']])  

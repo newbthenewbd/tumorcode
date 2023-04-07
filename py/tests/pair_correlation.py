@@ -81,7 +81,8 @@ def from_vessel_file(filenames,grp_pattern):
       dirs =set.union(dirs, d)
       for group_path in dirs:
         vesselgroup = f[group_path]
-        ldvessels = ku.read_lattice_data_from_hdf(vesselgroup['lattice'])
+        #ldvessels = ku.read_lattice_data_from_hdf(vesselgroup['lattice'])
+        ldvessels = ku.read_lattice_data_from_hdf_by_filename(str(vesselgroup.file.filename), str(vesselgroup.name)+'/lattice')
         fieldld = ku.SetupFieldLattice(ldvessels.worldBox, 3, 10, 0.)        
         #fieldldFine = ku.SetupFieldLattice(fieldld.worldBox, 3, 50 / 10, 0.)        
         phi_vessels = krebs.analyzeGeneral.CalcPhiVessels(dataman, f['iff/vessels'], fieldld, scaling = 1., samples_per_cell = 5)        

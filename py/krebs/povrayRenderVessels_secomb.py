@@ -251,7 +251,14 @@ def renderScene(vesselgroup, imagefn, **kwargs):
     colorfactory = kwargs.pop('colorfactory', make_pressure_color_arrays)
     colorfactory(graph)
 
-    wbbox = krebsutils.read_lattice_data_from_hdf(vess_ldgroup).worldBox
+    #wbbox = krebsutils.read_lattice_data_from_hdf(vess_ldgroup).worldBox
+    
+    fn=str(vess_ldgroup.file.filename)
+    path=str(vess_ldgroup.name)
+    Pyld = krebsutils.read_lattice_data_from_hdf_by_filename(fn, path)
+    wbbox = Pyld.worldBox
+    del(Pyld)
+    
     trafo = calc_centering_normalization_trafo(wbbox)
     zsize = (wbbox[5]-wbbox[4])
 
@@ -343,7 +350,9 @@ if (__name__ == '__main__'):
         filenamepostfix = ''
         vesselgroup = f[d]
         if( vesselgroup.attrs['CLASS'] == 'GRAPH' ):
-          worldbox = krebsutils.read_lattice_data_from_hdf(vesselgroup['lattice']).GetWorldBox()
+          ld = krebsutils.read_lattice_data_from_hdf_by_filename(str(vesselgroup.file.filename),str(vesselgroup.name)+'/lattice')
+          #worldbox = krebsutils.read_lattice_data_from_hdf(vesselgroup['lattice']).GetWorldBox()
+          worldBox = ld.GetWorldBox()
         if( vesselgroup.attrs['CLASS'] == 'REALWORLD'):
           pos=vesselgroup['nodes/world_pos']
           x_min = np.min(pos[:,0])

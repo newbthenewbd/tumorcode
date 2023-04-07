@@ -993,7 +993,7 @@ def GetWorldBox(vesselgroup):
       #ld = read_lattice_data_from_hdf(vesselgroup['lattice'])
       fn=str(vesselgroup.file.filename)
       path=str(vesselgroup.name)
-      #ld = read_lattice_data_from_hdf_by_filename(fn, path)
+      ld = read_lattice_data_from_hdf_by_filename(fn, path)
       worldbox = ld.worldBox
       #worldbox = read_lattice_data_from_hdf(vesselgroup['lattice']).GetWorldBox()
     if( vesselgroup.attrs['CLASS'] == 'REALWORLD'):

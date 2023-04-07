@@ -82,7 +82,9 @@ cm_gf = matplotlib.colors.LinearSegmentedColormap('', {
 
 
 def renderSliceWithDistribution(vesselgroup, imagefn, options):
-  vessel_ld = krebsutils.read_lattice_data_from_hdf(vesselgroup['vessels/lattice'])
+  #vessel_ld = krebsutils.read_lattice_data_from_hdf(vesselgroup['vessels/lattice'])
+  vgrp = vesselgroup['vessels/lattice']
+  vessel_ld = krebsutils.read_lattice_data_from_hdf_by_filename(str(vgrp.file.filename), str(vgrp.name))
   vessel_graph = krebsutils.read_vessels_from_hdf(vesselgroup['vessels'], ['position', 'flags', 'radius', 'pressure', 'shearforce', 'nodeflags'], return_graph=True)
   vessel_graph.edges['radius'] *= 4.
 
@@ -98,7 +100,8 @@ def renderSliceWithDistribution(vesselgroup, imagefn, options):
   hasGfField = 'field_ld' in vesselgroup and vessel_ld.shape[2] == 1
   #hasGfField = False
   if hasGfField:
-    volume_ld = krebsutils.read_lattice_data_from_hdf(vesselgroup['field_ld'])
+    #volume_ld = krebsutils.read_lattice_data_from_hdf(vesselgroup['field_ld'])
+    volume_ld = krebsutils.read_lattice_data_from_hdf_by_filename(str(vesselgroup.file.filename), '/field_ld')
     print ('Volume BBox:' + str(volume_ld.worldBox))
     print (volume_ld)
     volumedata = np.asarray(vesselgroup['gf'])

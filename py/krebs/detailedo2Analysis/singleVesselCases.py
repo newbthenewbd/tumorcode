@@ -68,7 +68,10 @@ def CenterLattice(g):
   '''needs h5 goup g, which is deleted and rewritten where the new lattice is centered
   '''
   print('------',g.name+'--------')
-  ld = krebsutils.read_lattice_data_from_hdf(g)
+  parent = g.parent
+  fn=str(parent.file.filename)
+  #ld = krebsutils.read_lattice_data_from_hdf(g)
+  ld = krebsutils.read_lattice_data_from_hdf_by_filename(fn, str(g.name))
   #meanwhile worldBox is 3D
   thisBox=ld.worldBox
   bmin, bmax = thisBox[0:2]
@@ -77,12 +80,10 @@ def CenterLattice(g):
   orig = ld.GetOriginPosition()
   orig += offset
   ld.SetOriginPosition(orig)
-  parent = g.parent
   name   = str(g.name)
   del g
   del parent[name]
   #krebsutils.write_lattice_data_to_hdf(parent, name, ld)
-  fn=str(parent.file.filename)
   #path=str(vesselgroup.name)
   krebsutils.write_lattice_data_to_hdf_by_filename(fn, name, ld)
   return offset
@@ -213,7 +214,8 @@ class Plotty(object):
     self.po2group, self.vesselgroup = group['po2'], group['vessels']
 
     #self.po2vessels, self.po2fieldld, self.po2field, _ = dataman.obtain_data('detailedPO2', self.po2group)
-    self.po2fieldld = krebsutils.read_lattice_data_from_hdf(self.po2group['field_ld'])
+    #self.po2fieldld = krebsutils.read_lattice_data_from_hdf(self.po2group['field_ld'])
+    self.po2fieldld = ld=krebsutils.read_lattice_data_from_hdf_by_filename(str(self.po2group.file.filename),str(self.po2group.name)+'/field_ld')
     self.po2vessels = self.po2group['po2vessels']
     self.po2field   = self.po2group['po2field']
     self.worldbb = self.po2fieldld.worldBox

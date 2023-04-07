@@ -393,13 +393,17 @@ def PrintGlobalDataWithOxygen(pdfpages, po2groups, vesselgroups, f_measure, data
     for prop in O2_prop_list:
       data = dataman.obtain_data('detailedPO2_global', prop, po2group, sample_length, cachelocation(po2group))
       data_by_name[prop].append(data)
-    ld = krebsutils.read_lattice_data_from_hdf(po2group['field_ld'])
+    #ld = krebsutils.read_lattice_data_from_hdf(po2group['field_ld'])
+    #ld = krebsutils.read_lattice_data_from_hdf_by_filename(str(po2group.filename), '/field_ld')
+    ld=krebsutils.read_lattice_data_from_hdf_by_filename(str(po2group.file.filename),str(po2group.name)+'/field_ld')
     bbox_field.append(ld.worldBox)
     gvessels, _ = detailedo2.OpenVesselAndTumorGroups(po2group)
 #    for prop in prop_list2:
 #      data = dataman.obtain_data('basic_vessel_global', prop, gvessels, cachelocation(gvessels))
 #      data_by_name[prop].append(data)
-    ld = krebsutils.read_lattice_data_from_hdf(gvessels['lattice'])
+    #ld = krebsutils.read_lattice_data_from_hdf(gvessels['lattice'])
+    #ld = krebsutils.read_lattice_data_from_hdf_by_filename(str(gvessels.filename), str('vessels/lattice'))
+    ld = krebsutils.read_lattice_data_from_hdf_by_filename(str(gvessels.file.filename),str(gvessels.name)+'/lattice')
     bbox_vessels.append(ld.worldBox)
     rbv, a, v, c = cylinderCollectionVolumeDensity(gvessels)
     sa, sv, sc = data_by_name['sat_art'][-1], data_by_name['sat_vein'][-1], data_by_name['sat_capi'][-1]

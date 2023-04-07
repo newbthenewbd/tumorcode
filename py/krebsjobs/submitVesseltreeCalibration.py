@@ -53,7 +53,8 @@ def ObtainDataOfVesselFile(f):
                                       krebs.analyzeGeneral.DataVesselSamples(),
                                       ])
   vesselgroup = f['vessels'] 
-  ld = krebsutils.read_lattice_data_from_hdf(f['field_ld'])
+  #ld = krebsutils.read_lattice_data_from_hdf(f['field_ld'])
+  ld = ku.read_lattice_data_from_hdf_by_filename(str(vesselgroup.file.filename), '/field_ld')
   #print 'field_box = ', ld.worldBox
   #bins_spec   = krebs.analyzeGeneral.BinsSpecRange(100., 1000., 100.)
   bins_spec   = krebs.analyzeGeneral.BinsSpecRange(100., 1000., 100.)
@@ -73,10 +74,11 @@ def CenterTheLattice(f, h5_path):
       Therefore it is convenient to first move the system
       so that it is centered at the coordinate origin.
     """
-    ld = krebsutils.read_lattice_data_from_hdf(f[h5_path])   
+    fn=str(f.file.filename)
+    #ld = krebsutils.read_lattice_data_from_hdf(f[h5_path])
+    ld = krebsutils.read_lattice_data_from_hdf_by_filename(fn, h5_path);
     del f[h5_path]
     ld = ld.GetCentered()
-    fn=str(f.file.filename)
     krebsutils.write_lattice_data_to_hdf_by_filename(fn, h5_path, ld)
     
 

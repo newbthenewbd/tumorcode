@@ -155,7 +155,12 @@ class Extractor(object):
           result[g.name] = ds
       else:
         #ds = vtkcommon.vtkImageDataFromLd(self.file[k].attrs)
-        ld = krebsutils.read_lattice_data_from_hdf(self.file[k])
+        #ld = krebsutils.read_lattice_data_from_hdf(self.file[k])
+        
+        fn=str(self.file[k].file.filename)
+        path=str(self.file[k].name)
+        ld = ku.read_lattice_data_from_hdf_by_filename(fn, path)
+        
         ds= vtkcommon.vtkImageDataFromLd(ld)
         name = posixpath.commonprefix([q.name for q in gg])
         for q in gg:

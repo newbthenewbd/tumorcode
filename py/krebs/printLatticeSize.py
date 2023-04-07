@@ -32,7 +32,8 @@ import krebsutils
 fn = sys.argv[1]
 path = sys.argv[2]
 
-with h5py.File(fn, 'r') as f:
-  ld = krebsutils.read_lattice_data_from_hdf(f[path])
+#with h5py.File(fn, 'r') as f:
+  #ld = krebsutils.read_lattice_data_from_hdf(f[path])
+ld = ku.read_lattice_data_from_hdf_by_filename(fn, path)
 print('size [um]', ld.GetWorldSize())
 print('shape    ', ld.shape)

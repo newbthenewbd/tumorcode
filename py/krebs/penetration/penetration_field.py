@@ -55,7 +55,8 @@ def sample_vessel_system(goodArguments):
         vesselgroup = file[grouppath+'/vessels']
       else:
         print("unknown data structure!")
-    ldvessels = krebsutils.read_lattice_data_from_hdf(vesselgroup['lattice'])
+    #ldvessels = krebsutils.read_lattice_data_from_hdf(vesselgroup['lattice'])
+    ldvessels = ku.read_lattice_data_from_hdf_by_filename(str(vesselgroup.file.filename), str(vesselgroup.name)+'/lattice')
     wbbox     = ldvessels.worldBox
     
     graph = krebsutils.read_vesselgraph(vesselgroup, ['position', 'flags'])

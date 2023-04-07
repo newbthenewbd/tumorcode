@@ -184,7 +184,8 @@ class DataDetailedPO2(object):
           rad  = dataman.obtain_data('basic_vessel_samples', 'radius', gvessels, sample_length)[mask]
           weight = weight[mask]
           hbvolume = weight*rad*rad*math.pi*hema
-          ld = krebsutils.read_lattice_data_from_hdf(po2group['field_ld'])
+          #ld = krebsutils.read_lattice_data_from_hdf(po2group['field_ld'])
+          ld=krebsutils.read_lattice_data_from_hdf_by_filename(str(po2group.file.filename),str(po2group.name)+'/field_ld')
           volume = np.product(ld.GetWorldSize())
           if prop == 'sat_via_hb_ratio':
             result = np.sum(hbvolume*sat) / np.sum(hbvolume)
@@ -202,7 +203,8 @@ class DataDetailedPO2(object):
           gmeasure.create_dataset(prop, data = [result, 0.])
         elif prop == 'mro2_by_j':
           fluxes = dataman.obtain_data('detailedPO2_total_fluxes', prop, po2group, sample_length, 1)
-          ld = krebsutils.read_lattice_data_from_hdf(po2group['field_ld'])
+          #ld = krebsutils.read_lattice_data_from_hdf(po2group['field_ld'])
+          ld=krebsutils.read_lattice_data_from_hdf_by_filename(str(po2group.file.filename),str(po2group.name)+'/field_ld')
           worldbb = ld.worldBox
           result = fluxes['Jout_tv']/np.prod(worldbb[1]-worldbb[0])*1.e12
           gmeasure.create_dataset(prop, data = [result, 0.])

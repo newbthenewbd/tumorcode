@@ -56,7 +56,8 @@ class DataPressureMvdCorrelation(object):
     ]
 
     def makeLD(self, vesselgroup):
-      ldvessels = krebsutils.read_lattice_data_from_hdf_by_filename(str(vesselgroup.file.filename),str('vessels/lattice'))
+      #ldvessels = krebsutils.read_lattice_data_from_hdf_by_filename(str(vesselgroup.file.filename),str('vessels/lattice'))
+      ldvessels = ku.read_lattice_data_from_hdf_by_filename(str(vesselgroup.file.filename), str(vesselgroup.name)+'/lattice')
       fieldld = krebsutils.SetupFieldLattice(ldvessels.worldBox, 3, self.bin_size, 0.)
       fieldldFine = krebsutils.SetupFieldLattice(fieldld.worldBox, 3, self.bin_size / self.fine_bin_subdivision, 0.)
       return fieldld, fieldldFine

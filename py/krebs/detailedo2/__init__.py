@@ -188,7 +188,8 @@ def sampleVessels(po2group, vesselgroup, tumorgroup, sample_length):
   po2vessels  = np.asarray(po2group['po2vessels'])
   if po2vessels.shape[0] != 2: po2vessels = np.transpose(po2vessels)
   po2field  = np.asarray(po2group['po2field'])
-  ld = krebsutils.read_lattice_data_from_hdf(po2group['field_ld'])
+  #ld = krebsutils.read_lattice_data_from_hdf(po2group['field_ld'])
+  ld=krebsutils.read_lattice_data_from_hdf_by_filename(str(po2group.file.filename),str(po2group.name)+'/field_ld')
   parameters = readParameters(po2group)
   # call thee c++ stuff
   samples, fluxes = pickDetailedO2Library(parameters).sampleVessels(vesselgroup, tumorgroup, parameters, po2vessels, po2field, ld, sample_length)
@@ -205,7 +206,8 @@ def sampleVessels(po2group, vesselgroup, tumorgroup, sample_length):
 
 def computeO2Uptake(po2group, tumorgroup):
   po2field  = np.asarray(po2group['po2field'])
-  po2ld = krebsutils.read_lattice_data_from_hdf(po2group['field_ld'])
+  #po2ld = krebsutils.read_lattice_data_from_hdf(po2group['field_ld'])
+  po2ld=krebsutils.read_lattice_data_from_hdf_by_filename(str(po2group.file.filename),str(po2group.name)+'/field_ld')
   parameters = readParameters(po2group)
   uptake = pickDetailedO2Library(parameters).computeO2Uptake(po2field, po2ld, tumorgroup, parameters)
   uptake *= 60. # 1/s -> 1/min

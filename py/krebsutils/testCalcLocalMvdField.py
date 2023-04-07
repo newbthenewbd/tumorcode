@@ -43,7 +43,8 @@ if __name__ == '__main__':
   
   with h5py.File(filename, 'r') as file:
     vesselgroup = file[grouppath]
-    ldvessels = krebsutils.read_lattice_data_from_hdf_by_filename(str(vesselgroup.file.filename),str('vessels/lattice'))
+    #ldvessels = krebsutils.read_lattice_data_from_hdf_by_filename(str(vesselgroup.file.filename),str('vessels/lattice'))
+    ldvessels = ku.read_lattice_data_from_hdf_by_filename(str(vesselgroup.file.filename), str(vesselgroup.name)+'/lattice')
     wbbox     = ldvessels.worldBox
     
     graph = krebsutils.read_vesselgraph(vesselgroup, ['position', 'flags'])

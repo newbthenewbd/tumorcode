@@ -97,7 +97,8 @@ def renderScene(vesselgroup, tumorgroup, imagefn, options):
       vgrp = vesselgroup['lattice']
       wbbox = krebsutils.read_lattice_data_from_hdf_by_filename(str(vgrp.file.filename), str(vgrp.name)).worldBox
     else:
-      wbbox = krebsutils.read_lattice_data_from_hdf(tumorgroup.file['field_ld']).worldBox
+      #wbbox = krebsutils.read_lattice_data_from_hdf(tumorgroup.file['field_ld']).worldBox
+      wbbox = krebsutils.read_lattice_data_from_hdf_by_filename(str(tumorgroup.file.filename), '/field_ld').worldBox
     trafo = calc_centering_normalization_trafo(wbbox)
     zsize = (wbbox[5]-wbbox[4])
     

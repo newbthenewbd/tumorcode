@@ -698,7 +698,8 @@ def ComputeIfpVsIffCorrelationDataLocal(dataman, iff_file):
 
   def write(gmeasure, gname):
     print(('compute Ifp vs Iff correlation for %s' % iff_file))
-    ld = krebsutils.read_lattice_data_from_hdf(iff_file['field_ld'])
+    #ld = krebsutils.read_lattice_data_from_hdf(iff_file['field_ld'])
+    ld = krebsutils.read_lattice_data_from_hdf_by_filename(str(iff_file.filename), '/field_ld')
 
     iff_radial_field = dataman.obtain_data('iffvelocity_outward', iff_file)
     iff_radial_field = np.asarray(iff_radial_field).ravel()  # because masking works only (?) with 1d arrays

@@ -929,7 +929,8 @@ class ComputesRegionalHistograms(object):
 @myutils.UsesDataManager
 def GetComputesRegionalHistograms(dataman, po2group):
   vesselgroup, tumorgroup = detailedo2.OpenVesselAndTumorGroups(po2group)
-  ld = krebsutils.read_lattice_data_from_hdf(po2group['field_ld'])
+  #ld = krebsutils.read_lattice_data_from_hdf(po2group['field_ld'])
+  ld=krebsutils.read_lattice_data_from_hdf_by_filename(str(po2group.file.filename),str(po2group.name)+'/field_ld')
   computesRegionalHistograms = ComputesRegionalHistograms(dataman, vesselgroup, tumorgroup, sample_length, ld)
   return computesRegionalHistograms
 
