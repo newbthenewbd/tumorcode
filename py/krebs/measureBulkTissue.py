@@ -446,7 +446,7 @@ if __name__ == '__main__':
   if not myutils.is_measurement_file(filenames[0]):
     for fn in filenames:
       with h5py.File(fn, 'r') as f:
-        with myutils.MeasurementFile(f, h5files) as fdst:
+        with myutils.MeasurementFile(f) as fdst:
           grps = myutils.getTimeSortedGroups(f['.'], "out")
           for grp in grps:
             dstgroup = myutils.require_snapshot_group_(fdst, grp)

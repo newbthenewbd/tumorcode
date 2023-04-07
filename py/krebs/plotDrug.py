@@ -233,7 +233,7 @@ class DataDrugSingle(object):
 
       group, = args # time group
 
-      fm = myutils.MeasurementFile(f, h5files)
+      fm = myutils.MeasurementFile(f)
       return myutils.hdf_data_caching(read, write, fm, ('measurements', dataname, group), (0,4,0))
 
     ######
@@ -260,7 +260,7 @@ class DataDrugSingle(object):
 
       group, name, = args # time group
 
-      fm = myutils.MeasurementFile(f, h5files)
+      fm = myutils.MeasurementFile(f)
       return myutils.hdf_data_caching(read, write, fm, ('measurements', dataname, group, name), (0,9,0,0))
     if dataname == 'drug_vs_vessel_distance':
       def read(gmeasure, dsname):
@@ -285,7 +285,7 @@ class DataDrugSingle(object):
 
       group, name, = args # time group
 
-      fm = myutils.MeasurementFile(f, h5files)
+      fm = myutils.MeasurementFile(f)
       return myutils.hdf_data_caching(read, write, fm, ('measurements', dataname, group, name), (0,9,0,0))
 
     if dataname[0] == 'radial':
@@ -327,7 +327,7 @@ class DataDrugSingle(object):
         r = np.average((bins[1:], bins[:-1]), axis=0)
         gmeasure[group].create_dataset('r', data = r)
 
-      fm = myutils.MeasurementFile(f, h5files)
+      fm = myutils.MeasurementFile(f)
       return myutils.hdf_data_caching(read, write, fm, ('measurements', name_combined), (0,8))
 
     ######
@@ -347,7 +347,7 @@ class DataDrugSingle(object):
           gmeasure.create_dataset('dx', data = bin_centers)
 
       group, name = args # time group
-      fm = myutils.MeasurementFile(f, h5files)
+      fm = myutils.MeasurementFile(f)
       return myutils.hdf_data_caching(read, write, fm, ('measurements', 'drug_radial', group, name), (0, 3, 0, 0))
 
     #####
@@ -386,7 +386,7 @@ class DataDrugSingle(object):
 
       group, = args # time group
 
-      fm = myutils.MeasurementFile(f, h5files)
+      fm = myutils.MeasurementFile(f)
       return myutils.hdf_data_caching(read, write, fm, ('measurements', 'drug_global', group), (0,4,0))
 
     ####
@@ -405,7 +405,7 @@ class DataDrugSingle(object):
         for k, v in l.items():
           g.create_dataset(k, data = v)
 
-      fm = myutils.MeasurementFile(f, h5files)
+      fm = myutils.MeasurementFile(f)
       l = myutils.hdf_data_caching(read, write, fm, ('measurements', 'drug_global_series'), (0, 1))
       for k, v in l.items():
         l[k] = myutils.MeanValueArray(np.ones_like(v), v, v*v)

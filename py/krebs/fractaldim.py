@@ -214,7 +214,7 @@ def boxcountTumorVessels(fn, opts):
       for item_to_analyze in items_to_analyze:
         calcBoxCounts(data, g['vessels'], item_to_analyze, opts)
 
-      with myutils.MeasurementFile(fn, h5files, opts.prefix) as fdst:
+      with myutils.MeasurementFile(fn, opts.prefix) as fdst:
         dstgroup = myutils.require_snapshot_group_(fdst,g)
         fdst.attrs.create('tumorcode_file_type', data='fractaldim_analyze_bulktum')
         #gdst = fdst.require_snapshot_group_(g)
@@ -232,7 +232,7 @@ def boxcountInitialVessels(fn, opts):
     for item_to_analyze in items_to_analyze:
       calcBoxCounts(data, f['vessels'], item_to_analyze, opts)
 
-    with myutils.MeasurementFile(fn, h5files, opts.prefix) as fdst:
+    with myutils.MeasurementFile(fn, opts.prefix) as fdst:
       gdst = fdst.recreate_group('fractaldim')
       myutils.hdf_write_dict_hierarchy(gdst, '.', data)
 

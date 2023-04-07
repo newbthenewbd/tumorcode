@@ -96,7 +96,7 @@ class DataTumor3dRendering(object):
         gmeasure.create_dataset(groupname, (len(bytestream),), data = bytestream)
 
       dataname = '3drendering' + ('_w_vessels' if showVessels else '') + ('' if showTumor else '_notum')
-      fm = myutils.MeasurementFile(f, h5files)
+      fm = myutils.MeasurementFile(f)
       ret = myutils.hdf_data_caching(read, write, fm, (group,dataname), (0, 11))
       return ret
 
@@ -175,7 +175,7 @@ class DataTumorMeasureCurvature(object):
         for k,v in res.items():
           g.create_dataset(k, data = v)
         gmeasure.file.flush()
-      fm = myutils.MeasurementFile(f, h5files)
+      fm = myutils.MeasurementFile(f)
       ret = myutils.hdf_data_caching(read, write, fm, (group,'shape_metrics'), (0,1))
       return ret
     ###
@@ -285,7 +285,7 @@ def PlotRadial(pdfwriter, dataman, resultfiles, distance_distribution_name):
   binspec = BinsSpecRange(-10000., 10000., 100.)
   curves_by_path_and_name = myutils.MultiDict(list)
   for f in files:
-    fm = myutils.MeasurementFile(f.f, h5files)
+    fm = myutils.MeasurementFile(f.f)
     for outgroup_name in f.groupnames:
       gvessels = f.f[outgroup_name]['vessels']
       gtumor   = f.f[outgroup_name]['tumor']

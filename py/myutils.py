@@ -316,7 +316,7 @@ def require_snapshot_group_(fmeasure, *args):
 
 
 
-def MeasurementFile(f, h5files, prefix='measure_'):
+def MeasurementFile(f, prefix='measure_'):
   if not isinstance(f, str):
     fn = f.filename
   else:
@@ -326,7 +326,8 @@ def MeasurementFile(f, h5files, prefix='measure_'):
   fnmeasure = join(fnpath, prefix+fnbase+'.h5')
 
   existed = os.path.isfile(fnmeasure)
-  fm = h5files.open(fnmeasure, 'a')
+  #fm = h5files.open(fnmeasure, 'a')
+  fm = h5py.File(fnmeasure, 'a', driver = 'core', backing_store = False)
 
   if not existed:
     fm.attrs['TYPE'] = 'MEASUREMENT'

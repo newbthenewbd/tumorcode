@@ -432,7 +432,7 @@ class DataGlobalIff(object):
 ##        ax.plot(loc_out[:,0], loc_out[:,1], lw = 0, ms=3, marker = 'x', color = 'b')
 ##        pyplot.show()
 #
-#      fm = myutils.MeasurementFile(f, h5files)
+#      fm = myutils.MeasurementFile(f)
 #      ret = myutils.hdf_data_caching(read, write, fm, ('tumor_blood_flow',), (2,))
 #      return ret
 

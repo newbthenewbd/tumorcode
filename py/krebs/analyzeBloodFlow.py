@@ -293,7 +293,7 @@ class DataTumorBloodFlow(object):
         for k,v in res.items():
           g.create_dataset(k, data = v)
 
-      #fm = myutils.MeasurementFile(f, h5files)
+      #fm = myutils.MeasurementFile(f)
       ret = myutils.hdf_data_caching(read, write, cachelocation[0], ('global', cachelocation[1], 'tissue', 'blood_flow'), (1, 1, 1, 3))
       return ret
 

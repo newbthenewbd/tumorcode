@@ -73,7 +73,7 @@ class DataHematocritSolver(object):
         egrp.create_dataset('h_hema', data = hema, compression = 9)
         egrp.create_dataset('h_force', data = force, compression = 9)
 
-      fm = myutils.MeasurementFile(f, h5files ,prefix='hematocrit_')
+      fm = myutils.MeasurementFile(f ,prefix='hematocrit_')
       ret = myutils.hdf_data_caching(read, write, fm, args[0].split(posixpath.pathsep), (1,))
       return ret
 

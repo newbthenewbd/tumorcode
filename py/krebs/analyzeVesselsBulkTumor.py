@@ -98,7 +98,8 @@ class EnsembleFiles(object):
     self.items = items
     self.tumor_snapshots = tumor_snapshots # list of tuple(items, path, time)
     self.has_tumor = has_tumor
-    ld = krebsutils.read_lattice_data_from_hdf(items[0].gvessels['lattice'])
+    #ld = krebsutils.read_lattice_data_from_hdf(items[0].gvessels['lattice'])
+    ld = krebsutils.read_lattice_data_from_hdf_by_filename(str(items[0].gvessels.file.filename),str('vessels/lattice'))
     self.world_size = ld.GetWorldSize()
 
 
