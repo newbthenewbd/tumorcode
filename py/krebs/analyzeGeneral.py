@@ -33,6 +33,10 @@ import posixpath
 import math
 import collections
 
+import analyzeBloodVolumeSimple as anaBloodV
+from analyzeBloodVolumeSimple import cylinderCollectionVolumeDensity
+import plotBulkTissue
+
 """ for bin ing the MVD experimental calculation """
 def suggest_bins_from_world(ld):
     avg_size=np.average(ld.GetWorldSize())
@@ -107,7 +111,6 @@ def getTotalPerfusion(vesselgroups):
      Returns list of perfusion values in units of blood volume per volume and sec'''
   And = myutils.bbitwise_and
   data = []
-  from . import analyzeBloodVolumeSimple as anaBloodV
 #  if 'edges' in vesselgroups.keys():
 #    g = vesselgroups # only a single group there
 #    graph = read_vessels_data(g, ['flow', 'flags'])
@@ -717,7 +720,6 @@ class DataVesselGlobal(object):
           data  = (np.sum(l) / volume, 0.)
           data  = [d*1e6 for d in data] #from 1/mum^2 to 1/mm^2
         elif property_name in 'phi_vessels phi_a phi_v phi_c'.split():
-          from .analyzeBloodVolumeSimple import cylinderCollectionVolumeDensity
           phi_vessels, phi_a, phi_v, phi_c = cylinderCollectionVolumeDensity(vesselgroup)
           if property_name == 'phi_vessels':
             data = [phi_vessels, 0.]
@@ -728,7 +730,6 @@ class DataVesselGlobal(object):
           if property_name == 'phi_c':
             data = [phi_c, 0.]
         elif property_name in 'mvd mvd_a mvd_v mvd_c'.split():
-          from .analyzeBloodVolumeSimple import cylinderCollectionLineDensity
           mvd, mvd_a, mvd_v, mvd_c = cylinderCollectionLineDensity(vesselgroup)
           if property_name == 'mvd':
             data = [mvd, 0.]
@@ -900,7 +901,6 @@ class DataTumorTissueSingle(object):
         raise RuntimeError('unkown field %s' % fieldname)
 
       if len(args)>3 and args[3] == 'imslice':
-        from . import plotBulkTissue
         return plotBulkTissue.imslice(data)
       else:
         return np.asarray(data)
