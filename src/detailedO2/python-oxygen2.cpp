@@ -1132,7 +1132,7 @@ BOOST_PYTHON_MODULE(libdetailedo2_)
 #endif
   PyEval_InitThreads();
   my::checkAbort = PyCheckAbort; // since this is the python module, this is set to use the python signal check function
-  DetailedPO2::export_oxygen_computation();
   DetailedPO2::export_parameter_converters();
+  DetailedPO2::export_oxygen_computation();
   //bla
 }
