@@ -173,7 +173,7 @@ class DataTissue(object):
 
     if dataname == 'ld':
       #ld = krebsutils.read_lattice_data_from_hdf(f['field_ld'])
-      ld = krebsutils.read_lattice_data_from_hdf_by_filename(str(f.filename), '/field_ld')
+      ld = krebsutils.read_lattice_data_from_hdf_by_filename(str(f.file.filename), '/field_ld')
       print('lattice data:')
       print(ld)
       return ld
