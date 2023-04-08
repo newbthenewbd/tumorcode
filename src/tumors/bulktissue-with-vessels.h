@@ -71,9 +71,9 @@ struct Params
   BloodFlowParameters bfparams;
   O2Model::SimpleO2Params o2Params;
    double
-          reference_intercapillary_distance;
+          reference_intercapillary_distance,
           o2_range[3],
-          o2_cons_coeff[3]
+          o2_cons_coeff[3],
           capillary_wall_permeability,
           o2_level_normal,
           hematocrit_init;
