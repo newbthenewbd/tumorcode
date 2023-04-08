@@ -617,14 +617,14 @@ double compute_vessel_boxcounts(np::ndarray pypos, np::ndarray pyedges, np::ndar
   }
 
   int64 boxcount = 0;
-  #pragma omp parallel
+  //#pragma omp parallel
   {
     CylinderNetworkSampler sampler;
     sampler.Init(ld.Scale(), make_ptree("samples_per_cell", 10));
     Array3d<float> buffer;
     my::Time t_;
 
-    #pragma omp for nowait schedule(dynamic, 1) reduction(+:boxcount)
+    //#pragma omp for nowait schedule(dynamic, 1) reduction(+:boxcount)
     for (int ibox=0; ibox<boxes.size(); ++ibox)
     {
       t_ = my::Time();
@@ -643,28 +643,28 @@ double compute_vessel_boxcounts(np::ndarray pypos, np::ndarray pyedges, np::ndar
 //           p0[j] = pos(edges(i,0), j);
 //           p1[j] = pos(edges(i,1), j);
         }
-		std::cout << "Before sampler set" << std::endl;
+		//std::cout << "Before sampler set" << std::endl;
         sampler.Set(p0, p1, (float) (py::extract<float>(pyradius[i])));
-		std::cout << "After sampler set" << std::endl;
+		//std::cout << "After sampler set" << std::endl;
         int num_samples = sampler.GenerateVolumeSamples();
-		std::cout << "After gen samples" << std::endl;
+		//std::cout << "After gen samples" << std::endl;
         for (int k=0; k<num_samples; ++k)
         {
           AddSmoothDelta(buffer, boxes[ibox], ld, 3, sampler.GetSample(k).wpos, sampler.weight_per_volume);
-		  std::cout << "After one smooth delta" << std::endl;
+		  //std::cout << "After one smooth delta" << std::endl;
         }
-		std::cout << "After smooth delta" << std::endl;
+		//std::cout << "After smooth delta" << std::endl;
         box_num_samples += num_samples;
       }      
-	  std::cout << "After ibox loop" << std::endl;
+	  //std::cout << "After ibox loop" << std::endl;
       FOR_BBOX3(p, boxes[ibox])
       {
         if (buffer(p)*volume_scaling > volume_threshold) {
           ++boxcount;
         }
-		std::cout << "After one buffer check" << std::endl;
+		//std::cout << "After one buffer check" << std::endl;
       }
-	  std::cout << "After all buffer checks" << std::endl;
+	  //std::cout << "After all buffer checks" << std::endl;
     }
   }
   return boxcount;
