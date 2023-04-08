@@ -643,7 +643,8 @@ double compute_vessel_boxcounts(np::ndarray pypos, np::ndarray pyedges, np::ndar
 //           p0[j] = pos(edges(i,0), j);
 //           p1[j] = pos(edges(i,1), j);
         }
-        sampler.Set(p0, p1, py::extract<float>(pyradius[i]));
+		std::cout << "Before sampler set" << std::endl;
+        sampler.Set(p0, p1, (float) (py::extract<float>(pyradius[i])));
 		std::cout << "After sampler set" << std::endl;
         int num_samples = sampler.GenerateVolumeSamples();
 		std::cout << "After gen samples" << std::endl;
