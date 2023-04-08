@@ -85,7 +85,7 @@ def imshow(axes, a, ld, **kwargs):
 
 def imslice(a):
   if len(a.shape)==3:
-    a = a[:,:,a.shape[2]/2]
+    a = a[:,:,a.shape[2]//2]
   return np.asarray(a).transpose()
 
 

@@ -111,8 +111,7 @@ ptree BulkTissue::Params::as_ptree() const
      DOPT(reference_intercapillary_distance);
      DOPT(o2_level_normal);
      DOPT(capillary_wall_permeability);
-     //#define DOPT2(name, i) pt.put(#name"_"+tissue_name[i], name[i])
-	 #define DOPT2(name, i) pt.put(#name"_"+tissue_name[i], name[i])
+     #define DOPT2(name, i) pt.put(#name"_"+tissue_name[i], name[i])
      for (int i=0; i<3; ++i)
      {
        DOPT2(o2_range, i);
