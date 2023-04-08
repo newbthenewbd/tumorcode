@@ -50,7 +50,7 @@ if (identifycluster.getname()=='snowden' or identifycluster.getname()=='durga'):
 import myutils
 
 #from plotBulkTissue2d import DataTumorTissueSingle
-from analyzeBloodFlow import DataTumorBloodFlow, obtain_averaged_blood_flow
+from krebs.analyzeBloodFlow import DataTumorBloodFlow, obtain_averaged_blood_flow
 import analyzeGeneral
 
 
