@@ -327,7 +327,7 @@ def MeasurementFile(f, prefix='measure_'):
 
   existed = os.path.isfile(fnmeasure)
   #fm = h5files.open(fnmeasure, 'a')
-  fm = h5py.File(fnmeasure, 'a', driver = 'core', backing_store = False)
+  fm = h5py.File(fnmeasure, 'a')
 
   if not existed:
     fm.attrs['TYPE'] = 'MEASUREMENT'
