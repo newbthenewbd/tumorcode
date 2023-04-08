@@ -304,7 +304,7 @@ H5FileReference = collections.namedtuple('H5FileReference', ['fn','path'])
 
 
 def require_snapshot_group_(fmeasure, *args):
-  if len(args)==1 and isinstance(args[0], h5py.highlevel.Group):
+  if len(args)==1 and isinstance(args[0], h5py.Group):
     h, = args
     return require_snapshot_group_(fmeasure, h.name, h.attrs['time'])
   else:
