@@ -609,14 +609,13 @@ double compute_vessel_boxcounts(np::ndarray pypos, np::ndarray pyedges, np::ndar
     
     FloatBBox3 vwbb = FloatBBox3().Add(wp[0]).Add(wp[1]);
     vwbb.Extend(py::extract<float>(pyradius[vi]));
-	std::cout << "Survived this" << endl;
     for (int i=0; i<boxes.size(); ++i)
     {
       if (!(vwbb.Overlaps(wboxes[i]))) continue;
       vesselgrid[i].push_back(vi);
     }
   }
-  std::cout << "And this too, it's further down" << endl;
+
   int64 boxcount = 0;
   #pragma omp parallel
   {
@@ -637,12 +636,14 @@ double compute_vessel_boxcounts(np::ndarray pypos, np::ndarray pyedges, np::ndar
         Float3 p0, p1;
         for (int j=0; j<3; ++j)
         {
+		  std::cout << "Before extract" << std::endl;
           int a = py::extract<int>(pyedges[i][0]);
           int b = py::extract<int>(pyedges[i][1]);
           p0[j] = py::extract<float>(pypos[a][j]);
           p1[j] = py::extract<float>(pypos[b][j]);
 //           p0[j] = pos(edges(i,0), j);
 //           p1[j] = pos(edges(i,1), j);
+          std::cout << "After extract" << std::endl;
         }
         sampler.Set(p0, p1, py::extract<float>(pyradius[i]));
         int num_samples = sampler.GenerateVolumeSamples();
