@@ -338,7 +338,7 @@ LatticeData.GetCentered = LatticeDataGetCentered
 LatticeData.__eq__ = LatticeDataEqual
 #LatticeData.__hash__ = LatticeDataHash
 
-LatticeDataQuad3d = lambda *args : LatticeData('QUAD3D',*args)
+LatticeDataQuad3d = lambda *args : LatticeData('QUAD3D',int(*args))
 LatticeDataFCC    = lambda *args : LatticeData('FCC',*args)
 
 
