@@ -608,7 +608,7 @@ double compute_vessel_boxcounts(np::ndarray pypos, np::ndarray pyedges, np::ndar
         wp[i][dim] = py::extract<float>(pypos[(int) (py::extract<int>(pyedges[vi][i]))][ dim]);
     
     FloatBBox3 vwbb = FloatBBox3().Add(wp[0]).Add(wp[1]);
-    vwbb.Extend(py::extract<float>(pyradius[vi]));
+    vwbb.Extend(py::extract<float>(pyradius[vi][0]));
     for (int i=0; i<boxes.size(); ++i)
     {
       if (!(vwbb.Overlaps(wboxes[i]))) continue;
