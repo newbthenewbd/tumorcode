@@ -197,8 +197,8 @@ def calcBoxCounts(data, vesselgroup, dataId, opts):
           #krebsutils.set_num_threads(opts.num_threads)
           #do boxcounting
           spacing = opts.spacing
-          if isinstance(spacing, numpy.generic):
-            spacing = numpy.asscalar(spacing)
+          if isinstance(spacing, np.generic):
+            spacing = np.asscalar(spacing)
           max_spacing = max(krebsutils.LatticeDataGetWorldSize(makeLd(graph, spacing, 0.)))
           bs, bc = calcVesselBoxCounts(subgraph, spacing, max_spacing)
           data[dataId] = dict(bs = bs, bc = bc)
