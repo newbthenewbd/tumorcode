@@ -50,7 +50,7 @@ import krebs.quantities
 import myutils
 import krebs.analyzeGeneral
 
-import detailedo2Analysis
+import krebs.detailedo2Analysis
 
 
 def ComputeIsosurfaceBloodFlow(dataman, vesselgroup, nodalLevel, level):
