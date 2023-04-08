@@ -33,7 +33,6 @@ import posixpath
 import math
 import glob
 import time
-import md5
 import re
 import pickle
 from collections import defaultdict
