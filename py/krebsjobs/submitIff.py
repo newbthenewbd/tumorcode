@@ -80,7 +80,7 @@ class Measure(object):
     dt = t - self.lastt
     self.lastt = t
     print(("try to open: %s" % self.outfilename))
-    with h5py.File(self.outfilename, 'a+') as f:
+    with h5py.File(self.outfilename, 'a') as f:
       shape = conc[0].shape
       g = f.require_group('measurements').require_group('drug_local_integral')
       for i, in_ex in enumerate(['ex','in']):
