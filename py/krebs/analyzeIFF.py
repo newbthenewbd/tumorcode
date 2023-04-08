@@ -40,7 +40,7 @@ from os.path import basename
 
 import mpl_utils
 
-import plotIff
+import krebs.plotIff
 
 if __name__ == '__main__':
   

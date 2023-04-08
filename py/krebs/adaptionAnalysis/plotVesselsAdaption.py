@@ -54,14 +54,14 @@ from matplotlib.colors import LogNorm
 from matplotlib.font_manager import FontProperties
 
 
-from quantities import Prettyfier
+from krebs.quantities import Prettyfier
 
-from plotVessels import *
-from analyzeMurray import *
-from adaption import getVesselTypes
-from analyzeGeneral import getGeometricData,getTotalPerfusion,generate_adaption_data_average_rBV
+from krebs.plotVessels import *
+from krebs.analyzeMurray import *
+from krebs.adaption import getVesselTypes
+from krebs.analyzeGeneral import getGeometricData,getTotalPerfusion,generate_adaption_data_average_rBV
 
-import adaption 
+import krebs.adaption 
 from scipy.optimize import fsolve
 from scipy.optimize import minimize_scalar
 
@@ -1000,7 +1000,7 @@ def DoIt(filenames, options):
   groups_without_adaption = [f['vessels'] for f in files_without_adaption]
 
   with mpl_utils.PdfWriter('adaption_' + fn_measure+'.pdf') as pdfpages:
-    import analyzeGeneral
+    import krebs.analyzeGeneral
     dataman = myutils.DataManager(20, [ analyzeGeneral.DataBasicVessel(), analyzeGeneral.DataVesselSamples(), analyzeGeneral.DataVesselGlobal()])
 #    vesselgroups_without = groups_without_adaption
 #    vesselgroups_with = groups_with_adaption

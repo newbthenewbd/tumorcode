@@ -38,7 +38,7 @@ from pprint import pprint
 
 import myutils
 
-import analyzeGeneral
+import krebs.analyzeGeneral
 
 def ComputeVascularTreeBloodFlowResistances(vessels):
   edgelist, flags, pressure, flow, nodeflags = vessels.edgelist, vessels['flags'], vessels['pressure'], vessels['flow'], vessels['nodeflags']

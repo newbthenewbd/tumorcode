@@ -45,14 +45,14 @@ from mystruct import Struct
 import myutils
 import krebs
 from krebs import plotBulkTissue
-from plotBulkTissue import commonOutputName, colorbar, contour, imslice, imshow
+from krebs.plotBulkTissue import commonOutputName, colorbar, contour, imslice, imshow
 from krebs.analyzeGeneral import calc_distmap, CalcPhiVessels, DataDistanceFromCenter, DataBasicVessel
 
 import matplotlib
 import matplotlib.pyplot as pyplot
 import mpl_utils
 
-import plotVessels
+import krebs.plotVessels
 
 
 ##############################################################################

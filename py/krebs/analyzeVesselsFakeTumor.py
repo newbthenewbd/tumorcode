@@ -38,7 +38,7 @@ import matplotlib.pyplot as plt
 from collections import defaultdict
 from pprint import pprint
 
-import analyzeGeneral
+import krebs.analyzeGeneral
 
 import mpl_utils
 

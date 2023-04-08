@@ -25,7 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import sys, os
 import numpy as np
 from vtk import *
-from vtkcommon import *
+from krebs.vtkcommon import *
 import time
 
 # render vessels with tube filter

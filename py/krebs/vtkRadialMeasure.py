@@ -31,7 +31,7 @@ Meant for stuff i did with the deal.ii lib!
 import sys, os
 import numpy as np
 from vtk import *
-from vtkcommon import *
+from krebs.vtkcommon import *
 from hdfvessels2vtk import removeUncirculatedVessels
 import math
 

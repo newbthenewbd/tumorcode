@@ -27,7 +27,7 @@ if __name__ == '__main__':
 import os, sys
 from os.path import join, basename, dirname, splitext
 import krebsutils
-import extractVtkFields
+import krebs.extractVtkFields
 import pprint
 import numpy as np
 import h5py
@@ -40,7 +40,7 @@ import identifycluster
 #  from vtk import *
   
 from vtk import *
-from vtkcommon import *
+from krebs.vtkcommon import *
 import extensions
 import itertools
 import myutils

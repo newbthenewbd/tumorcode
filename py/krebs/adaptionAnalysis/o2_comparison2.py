@@ -41,16 +41,16 @@ import math
 import collections
 import itertools
 
-import detailedo2
-import detailedo2Analysis
-import analyzeGeneral
-import analyzeBloodFlow
+import krebs.detailedo2
+import krebs.detailedo2Analysis
+import krebs.analyzeGeneral
+import krebs.analyzeBloodFlow
 import qsub
 
 import matplotlib.pyplot
 import mpl_utils
 
-from detailedo2Analysis.plotsForPaper import ComputeRegionalHistogramsOfPo2Group
+from krebs.detailedo2Analysis.plotsForPaper import ComputeRegionalHistogramsOfPo2Group
 
 def PlotHistograms(pdfwriter, mainCombinedHistogramGroup, region, title):
   names = ['sat', 'po2_tissue', 'radius', 'velocity']

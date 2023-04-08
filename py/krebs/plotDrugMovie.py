@@ -24,7 +24,7 @@ if __name__ == '__main__':
   import os.path, sys
   sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),'..'))
 
-from plotDrug import *
+from krebs.plotDrug import *
 import make_video
 
 def generate_frames(filename, outfilename):

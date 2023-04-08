@@ -47,11 +47,12 @@ from matplotlib.colors import LogNorm
 from matplotlib.font_manager import FontProperties
 #pyplot.style.use('ggplot')
 
-from quantities import Prettyfier
+from krebs.quantities import Prettyfier
 
-from plotVessels import *
-from plotVesselsAdaption import getVesselTypes
-from analyzeMurray import *
+from krebs.plotVessels import *
+from krebs.plotVesselsAdaption import getVesselTypes
+from krebs.analyzeMurray import *
+import krebs.analyzeGeneral
 
 from scipy.optimize import fsolve
 from scipy.optimize import minimize_scalar
@@ -554,7 +555,6 @@ def DoIt(filenames, options):
 
 
   with mpl_utils.PdfWriter(fn_measure+'caps.pdf') as pdfpages:
-    import analyzeGeneral
     dataman = myutils.DataManager(20, [ analyzeGeneral.DataBasicVessel(), analyzeGeneral.DataVesselSamples(), analyzeGeneral.DataVesselGlobal()])
 #    vesselgroups_without = groups_without_adaption
 #    vesselgroups_with = groups_with_adaption
@@ -588,7 +588,7 @@ def DoIt_single(filenames, options):
   
   groups_with_adaption = [f['/adaption/vessels_after_adaption'] for f in files]
 
-  import analyzeGeneral
+  import krebs.analyzeGeneral
   dataman = myutils.DataManager(20, [ analyzeGeneral.DataBasicVessel(), analyzeGeneral.DataVesselSamples(), analyzeGeneral.DataVesselGlobal()])
   with mpl_utils.PdfWriter(fn_measure+'flow_hist.pdf') as pdfpages:
     if 1:

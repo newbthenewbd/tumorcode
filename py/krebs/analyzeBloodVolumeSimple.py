@@ -51,7 +51,7 @@ import myutils
 
 #from plotBulkTissue2d import DataTumorTissueSingle
 from krebs.analyzeBloodFlow import DataTumorBloodFlow, obtain_averaged_blood_flow
-import analyzeGeneral
+import krebs.analyzeGeneral
 
 
 ## ---------------- ------- ----------------------------------------

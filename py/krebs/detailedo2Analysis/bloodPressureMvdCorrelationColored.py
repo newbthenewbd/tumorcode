@@ -48,8 +48,8 @@ import mpl_utils
 import matplotlib
 import matplotlib.pyplot as pyplot
 
-from analyzeBloodPressureMvdCorrelation import DataPressureMvdCorrelation
-from detailedo2Analysis.plotsForPaper import GetVesselTypeLabel, RewriteVesselLabel, vesselTypeColors, vesselTypeMarkers
+from krebs.analyzeBloodPressureMvdCorrelation import DataPressureMvdCorrelation
+from krebs.detailedo2Analysis.plotsForPaper import GetVesselTypeLabel, RewriteVesselLabel, vesselTypeColors, vesselTypeMarkers
 
 
 if __name__ == '__main__':

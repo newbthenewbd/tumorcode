@@ -44,18 +44,18 @@ from myutils import f2l
 
 import matplotlib
 
-from quantities import Prettyfier
-import analyzeGeneral
-import analyzeBloodFlow
+from krebs.quantities import Prettyfier
+import krebs.analyzeGeneral
+import krebs.analyzeBloodFlow
 
 import krebsjobs.submitVesseltreeCalibration
 
 from collections import defaultdict as ddict
 
-from analyzeBloodVolumeSimple import cylinderCollectionVolumeDensity
-import detailedo2Analysis as o2analysis
-import detailedo2Analysis.plotsForPaper
-import detailedo2
+from krebs.analyzeBloodVolumeSimple import cylinderCollectionVolumeDensity
+import krebs.detailedo2Analysis as o2analysis
+import krebs.detailedo2Analysis.plotsForPaper
+import krebs.detailedo2
 
 import argparse
 

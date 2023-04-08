@@ -29,7 +29,7 @@ if identifycluster.name == 'snowden':
   import matplotlib
   matplotlib.use('Agg') 
 
-import adaption
+import krebs.adaption
 import krebsjobs.parameters.parameterSetsAdaption as parameterSetsAdaption
 
 import operator

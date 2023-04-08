@@ -43,7 +43,7 @@ import scipy.stats
 
 import myutils
 import mpl_utils
-import analyzeGeneral
+import krebs.analyzeGeneral
 
 import matplotlib
 import matplotlib.pyplot as pyplot

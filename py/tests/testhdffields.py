@@ -23,9 +23,9 @@ import os,sys
 import h5py
 import numpy as np
 import vtk
-import vtkcommon
+import krebs.vtkcommon
 import extensions # for asarray with h5py support
-import extractVtkFields
+import krebs.extractVtkFields
 
 def print_array(g):
   print(g.shape)

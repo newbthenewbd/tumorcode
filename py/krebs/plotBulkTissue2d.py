@@ -44,17 +44,17 @@ from myutils import f2s, f2l
 import random
 
 
-from plotBulkTissue import commonOutputName, colorbar, contour, imslice, imshow, with_contour_factory, with_cb
-from analyzeGeneral import DataBasicVessel, DataVesselSamples, DataVesselRadial, DataTumorTissueSingle, DataDistanceFromCenter, BinsSpecRange
-from plotVessels import PlotRadiusHistogram
-from quantities import Prettyfier
+from krebs.plotBulkTissue import commonOutputName, colorbar, contour, imslice, imshow, with_contour_factory, with_cb
+from krebs.analyzeGeneral import DataBasicVessel, DataVesselSamples, DataVesselRadial, DataTumorTissueSingle, DataDistanceFromCenter, BinsSpecRange
+from krebs.plotVessels import PlotRadiusHistogram
+from krebs.quantities import Prettyfier
 
 import matplotlib
 import matplotlib.pyplot as pyplot
 import mpl_utils
 
-import analyzeGeneral
-import povrayRenderTumor
+import krebs.analyzeGeneral
+import krebs.povrayRenderTumor
 from scipy.optimize import leastsq
 
 

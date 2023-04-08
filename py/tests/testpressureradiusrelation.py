@@ -33,7 +33,7 @@ import extensions
 import mpl_utils
 import myutils
 import math
-import quantities
+import krebs.quantities
 
 from . import matplotlib
 from . import matplotlib.pyplot as pyplot

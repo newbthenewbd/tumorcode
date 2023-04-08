@@ -169,7 +169,7 @@ def add_contourlines_vtk(axes, dataset, **kwargs):
     dataset - a polydata with line segments
     kwargs are passed to add_collection
   """
-  import vtkcommon
+  import krebs.vtkcommon
   lines = vtkcommon.pyContourPolyLines(dataset)
   return add_contourlines(axes, lines, **kwargs)
 
@@ -449,7 +449,7 @@ def testplotexactimage_():
 
 
 def testVtkRenderPixelExact_():
-  import vtkcommon
+  import krebs.vtkcommon
   import vtk
   import matplotlib.pyplot as pyplot
 
