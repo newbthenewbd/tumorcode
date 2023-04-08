@@ -348,8 +348,7 @@ LatticeDataFCC    = lambda *args : LatticeData('FCC',*args)
 
 def filter_graph_byedge2( edges, edge_data, node_data, indices, return_indices=False):
     if isinstance(indices, tuple):
-      if len(indices)==1:
-        indices = indices[0]
+      indices = indices[0]
     else:
       assert len(indices.shape)==1
     tmpedges = edges[indices,...]
@@ -369,8 +368,8 @@ def filter_graph_byedge2( edges, edge_data, node_data, indices, return_indices=F
         new_node_data.append(q[map,:])
       else:
         print('dimension of data is to high')
-#    new_node_data=tuple(new_node_data)
-    new_node_data = tuple( q[map,...] for q in node_data )
+    new_node_data=tuple(new_node_data)
+#    new_node_data = tuple( q[map,...] for q in node_data )
     
     ret = (newedges, new_edge_data, new_node_data)
     if return_indices:
