@@ -347,9 +347,11 @@ LatticeDataFCC    = lambda *args : LatticeData('FCC',*args)
 #----------------------------------------------------------------------------------#
 
 def filter_graph_byedge2( edges, edge_data, node_data, indices, return_indices=False):
-    if isinstance(indices, tuple) and len(indices)==1:
-      indices = indices[0]
-    assert len(indices.shape)==1
+    if isinstance(indices, tuple):
+      if len(indices)==1:
+        indices = indices[0]
+    else:
+      assert len(indices.shape)==1
     tmpedges = edges[indices,...]
     n = np.amax(edges)+1
     u = np.zeros((n,),dtype=np.int)
