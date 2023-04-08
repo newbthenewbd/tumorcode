@@ -38,6 +38,8 @@ import extensions
 import krebsutils
 import qsub
 
+import faulthandler
+faulthandler.enable()
 
 def boxcountImage(arr, boxsize, max_boxsize):
     assert arr.max() == 1 and arr.min()==0
