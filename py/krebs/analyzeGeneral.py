@@ -33,8 +33,8 @@ import posixpath
 import math
 import collections
 
-from . import analyzeBloodVolumeSimple as anaBloodV
-from . import plotBulkTissue
+import .analyzeBloodVolumeSimple as anaBloodV
+import .plotBulkTissue
 
 """ for bin ing the MVD experimental calculation """
 def suggest_bins_from_world(ld):
