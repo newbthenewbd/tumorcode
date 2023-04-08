@@ -80,7 +80,7 @@ class Measure(object):
     dt = t - self.lastt
     self.lastt = t
     print(("try to open: %s" % self.outfilename))
-    with h5py.File(self.outfilename, 'a') as f:
+    with h5py.File(str(self.outfilename), 'a') as f:
       shape = conc[0].shape
       g = f.require_group('measurements').require_group('drug_local_integral')
       for i, in_ex in enumerate(['ex','in']):
@@ -98,7 +98,7 @@ class Measure(object):
     # this code is for recording slices through the conc. distributions at short intervalls
     if self.moviefilename and self.movieintervall and (t - self.nextmovie_t >=  -0.1*dt):
       self.nextmovie_t += self.movieintervall
-      with h5py.File(self.moviefilename, 'w' if self.movie_out_number==0 else 'r+') as f:
+      with h5py.File(str(self.moviefilename), 'w' if self.movie_out_number==0 else 'r+') as f:
         g = f.require_group('frames')
         idx = g.attrs.get('num_frames', 0)
         g.attrs.modify('num_frames', idx+1)
