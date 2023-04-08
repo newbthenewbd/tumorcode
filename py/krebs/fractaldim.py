@@ -115,7 +115,7 @@ def makeLd(graph, spacing, relative_offset):
     nc = np.maximum(1, np.asarray(s/spacing, dtype=np.int))
     nc = np.bitwise_and(np.bitwise_not(1), np.bitwise_or(2, nc)) # divisible by 2!
     bb = np.vstack(([0,0,0], nc+1)).T.reshape((6,))
-    ld = krebsutils.LatticeDataQuad3d(bb.item(), spacing)
+    ld = krebsutils.LatticeDataQuad3d(bb.tolist(), spacing)
     ld.SetCellCentering([True, True, True])
     ld.SetOriginPosition(pmin + spacing * relative_offset)
     return ld
