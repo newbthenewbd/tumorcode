@@ -115,7 +115,7 @@ def makeLd(graph, spacing, relative_offset):
     nc = np.maximum(1, np.asarray(s/spacing, dtype=np.int))
     nc = np.bitwise_and(np.bitwise_not(1), np.bitwise_or(2, nc)) # divisible by 2!
     bb = np.vstack(([0,0,0], nc+1)).T.reshape((6,))
-    ld = krebsutils.LatticeDataQuad3d(bb, spacing)
+    ld = krebsutils.LatticeDataQuad3d(bb.item(), spacing)
     ld.SetCellCentering([True, True, True])
     ld.SetOriginPosition(pmin + spacing * relative_offset)
     return ld
@@ -197,8 +197,6 @@ def calcBoxCounts(data, vesselgroup, dataId, opts):
           #krebsutils.set_num_threads(opts.num_threads)
           #do boxcounting
           spacing = opts.spacing
-          if isinstance(spacing, np.generic):
-            spacing = np.asscalar(spacing)
           max_spacing = max(krebsutils.LatticeDataGetWorldSize(makeLd(graph, spacing, 0.)))
           bs, bc = calcVesselBoxCounts(subgraph, spacing, max_spacing)
           data[dataId] = dict(bs = bs, bc = bc)
