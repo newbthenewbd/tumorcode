@@ -156,6 +156,8 @@ def calcVesselBoxCounts(graph, spacing, spacing_max):
       print('boxcounting spacing=%f, gridsize=%i, offset=%s' % (ld.scale, max(ld.GetBox()), str(offset)))
       volume_factor = (ld.scale**3) / (5.**2*ld.scale)
       volume_threshold = 1.
+      with np.printoptions(threshold=np.inf):
+        print(graph.edges['radius'])
       cnt += krebsutils.calc_vessel_boxcounts(graph.nodes['position'], graph.edgelist, graph.edges['radius'], ld, volume_factor, volume_threshold)
     res.append((ld.scale, cnt/len(offsets)))
     spacing *= math.sqrt(2.)
