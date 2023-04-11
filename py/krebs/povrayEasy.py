@@ -59,7 +59,7 @@ def getPovrayVersion():
   ''' err should look like
   POV-Ray 3.7.0.2.unofficial
   '''
-  label = 'POV-Ray '
+  label = b'POV-Ray '
   posOfLabel = err.find(label)
   #print("posOfLabel is: %s" % posOfLabel)
   major = err[len(label) + posOfLabel]
