@@ -270,7 +270,7 @@ class EasyPovRayRender(object):
     imgfn = imgfn.replace('=',r'-') # povray does not like = in filenames
     cmd = povray % ('%s +FN8 %s %s -D %s +O"%s" "%s"' % (res,alpha,num_threads,aa,imgfn, scenefilename))
     print(cmd)
-    #os.system("sh -c \"ls /tmp && cat /tmp/mwpov*.pov\"")
+    os.system("sh -c \"ls /tmp && cat /tmp/mwpov*.pov\"")
     os.system(cmd)
     self.clear()
     return imgfn
