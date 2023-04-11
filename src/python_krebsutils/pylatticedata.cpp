@@ -252,7 +252,7 @@ void write_lattice_data_to_hdf_by_filename(const string fn, const string path, c
 {
   try {
     H5::H5File *writeToFile = new H5::H5File(fn, H5F_ACC_RDWR);
-    H5::Group g = writeToFile->openGroup(path);
+    H5::Group g = writeToFile->createGroup(path);
     //cpp_py_ld->get().WriteHdf(g);
     cpp_py_ld->get().Lattice2Hdf(g);
     //h5cpp::Group g = PythonToCppGroup(py_h5grp);
