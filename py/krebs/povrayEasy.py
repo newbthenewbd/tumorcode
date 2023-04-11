@@ -282,7 +282,7 @@ class EasyPovRayRender(object):
     self.tempfiles = []
 
 
-  def setCamera(self, pos, lookat, fov, projection=b'perspective', **kwargs):
+  def setCamera(self, pos, lookat, fov, projection='perspective', **kwargs):
     W, H = self.params.res
     ratio = float(W)/float(H)
     a = dict(
@@ -461,8 +461,8 @@ class EasyPovRayRender(object):
     vd.name = os.path.splitext(os.path.basename(vd.filename))[0].upper()
     pv.Declare(vd.name, pv.Function(
         pv.Pattern(
-        b'density_file df3 "%s"' % vd.filename,
-        b'interpolate 1',
+        str.encode('density_file df3 "%s"' % vd.filename),
+        str.encode('interpolate 1'),
         ['scale', (wb[:,1]-wb[:,0])],
         ['translate', (wb[:,0])],
       )
