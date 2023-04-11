@@ -19,7 +19,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
-import sys, os, six
+import sys, os
 from math import *
 
 hasNumpy = True
@@ -52,8 +52,12 @@ class File:
       self.writeln( )
   def write(self,*items):
     for item in items:
-      if isinstance(item,six.string_types):
+      if isinstance(item,str):
         lines = item.splitlines()
+        for l in lines:
+            self.writeln(l)
+      elif isinstance(item,bytes):
+        lines = item.decode().splitlines()
         for l in lines:
             self.writeln(l)
       else:
