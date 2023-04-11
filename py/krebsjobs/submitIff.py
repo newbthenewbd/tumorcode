@@ -123,7 +123,8 @@ def runs_on_client(name,config):
   #set_num_treads is DEPRECATED we use the environment setting now
   #krebsutils.set_num_threads(params.pop('num_threads', 1))
   #krebsutils.run_iffsim(dicttoinfo.dicttoinfo(params), str(outfilename.encode('utf-8')), Measure(outfilename, measure_params))
-  iff_cpp.run_iffsim(dicttoinfo.dicttoinfo(params), str(outfilename.encode('utf-8')), Measure(outfilename, measure_params))
+  #iff_cpp.run_iffsim(dicttoinfo.dicttoinfo(params), str(outfilename.encode('utf-8')), Measure(outfilename, measure_params))
+  iff_cpp.run_iffsim(dicttoinfo.dicttoinfo(params), str(outfilename), Measure(outfilename, measure_params))
   if __debug__:
     print('iff_cpp returned')
 

@@ -64,7 +64,7 @@ class EnsembleItem(object):
 
 class EnsembleFiles(object):
   def __init__(self, dataman, filenames, pattern):
-    files     = [h5files.open(fn, 'r+') for fn in filenames]
+    files     = [h5py.File(fn, 'r+') for fn in filenames]
     items     = []
     has_tumor = True
     for f in files:
@@ -201,7 +201,7 @@ def doit(filenames, pattern):
   prefix, suffix = myutils.splitcommonpresuffix([basename(s) for s in filenames])
   outputbasename, _ = splitext(prefix+suffix)
   fn_measure = outputbasename+'-radial-cache.h5'
-  f_measure = h5files.open(fn_measure, 'a')
+  f_measure = h5py.File(fn_measure, 'a')
   def cachelocation(g):
     path = posixpath.join('FileCS_'+myutils.checksum(basename(g.file.filename)), g.name.strip(posixpath.sep))
     return (f_measure, path)
