@@ -174,10 +174,10 @@ def make_any_color_arrays(vesselgraph, data_name,options):
       print((options.vesselsColorLimits[1]))
       cm.set_clim(vmin=options.vesselsColorLimits[0], vmax=options.vesselsColorLimits[1])
     
-    edgecolors[mask[:,0]] = colors(edgedata[mask])
-    nodecolors[nmask[:,0]] = colors(nodedata[nmask])
-    #edgecolors[mask] = colors(edgedata[mask])
-    #nodecolors[nmask] = colors(nodedata[nmask])
+    #edgecolors[mask[:,0]] = colors(edgedata[mask])
+    #nodecolors[nmask[:,0]] = colors(nodedata[nmask])
+    edgecolors[mask] = colors(edgedata[mask])
+    nodecolors[nmask] = colors(nodedata[nmask])
   elif data_name == 'shearforce':
     mask = mask & (edgedata>0)
     nmask = nmask & (nodedata>0)
