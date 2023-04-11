@@ -27,9 +27,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   FCC lattice representation (LatticeDataFCC)
 """
 
+import os,sys
+from os.path import join, basename, dirname, splitext
+if __name__ == '__main__':
+  sys.path.append(join(dirname(__file__),'..'))
 
 import numpy as np
-import ..krebsutils as krebs
+import krebsutils as krebs
 import math
 import collections
 
