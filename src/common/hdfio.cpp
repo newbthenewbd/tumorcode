@@ -103,7 +103,7 @@ H5::DataType getH5TypeFromCpp()
   return thisWritingType;
 }
 
-//#if H5_VERS_MINOR < 9
+#if H5_VERS_MINOR < 9
 template<class T>
 void readAttrFromH5(const H5::H5Object &g, const string &attr_name, T &output_buffer)
 {
@@ -120,18 +120,16 @@ void readAttrFromH5(const H5::H5Object &g, const string &attr_name, T &output_bu
     std::cout << "unable for read: " << attr_name << std::endl;
     std::cout.flush();
     e.printErrorStack();
-  }catch(std::exception &ex)
-  {
-    std::cout << ex.what();
   }
 }
+#endif
 /** especially strings work differently
  */
 template<>
 void readAttrFromH5<string>(const H5::H5Object &g, const string &attr_name, string &output_buffer)
-{ 
+{ std::cout << "before open" << std::endl;
   H5::Attribute att_to_read = g.openAttribute(attr_name);
-  
+  std::cout << "after open" << std::endl;
   // Create new dataspace for attribute
   H5::DataSpace attr_dataspace = H5::DataSpace(H5S_SCALAR);
 
@@ -150,6 +148,9 @@ void readAttrFromH5<string>(const H5::H5Object &g, const string &attr_name, stri
   {
     std::cout << "unable for read: " << attr_name << std::endl;
     e.printErrorStack();
+  }catch(std::exception &ex)
+  {
+    std::cout << ex.what();
   }
   output_buffer = strreadbuf;
 }
