@@ -20,6 +20,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 import os,sys
+from os.path import basename, dirname, join, splitext, commonprefix
+if __name__=='__main__': sys.path.append(join(dirname(__file__),'..'))
 import h5py
 import numpy as np
 import krebs.vtkcommon as vtkcommon
