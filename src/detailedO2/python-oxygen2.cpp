@@ -142,6 +142,9 @@ static void PyComputePO2(py::dict &py_parameters, py::object &py_bfparams)
   
   //h5cpp::Group vesselgroup = PythonToCppGroup(py_vesselgroup);
   // this was fn
+  
+  std::cout << "before extracts" << std::endl;
+  
   s.params.input_file_name = py::extract<string>(py_parameters.get("input_file_name", "none"));
   s.params.input_group_path = py::extract<string>(py_parameters.get("input_group_path", "none")); 
   s.params.vessel_group_path = py::extract<string>(py_parameters.get("vessel_group_path", "none"));
@@ -150,6 +153,9 @@ static void PyComputePO2(py::dict &py_parameters, py::object &py_bfparams)
   const string tumor_group_path = py::extract<string>(py_parameters.get("tumor_group_path", "none"));
   const string out_grp_path = py::extract<string>(py_parameters.get("output_group_path", "none"));
   string vesselgroup_path = py::extract<string>(py_parameters.get("vessel_group_path", "none"));
+  
+  std::cout << "after extracts" << std::endl;
+  
   //vesselgroup_path = "/" + vesselgroup_path;
   //input_group_path = "/" + input_group_path;
   //h5cpp::File *o2File = new h5cpp::File(fn,"a");
@@ -174,9 +180,6 @@ static void PyComputePO2(py::dict &py_parameters, py::object &py_bfparams)
   catch( H5::FileIException &error )
   {
     error.printErrorStack();
-  }catch(std::exception &ex)
-  {
-    std::cout << ex.what();
   }
     
   // THIIIIRYYYYY, filter muss = false sein sonst stimmt in der Ausgabe in der Hdf5 Datei die Anzahl der Vessels nicht mehr mit den daten im recomputed_flow Verzeichnis ueberein!
@@ -196,9 +199,6 @@ static void PyComputePO2(py::dict &py_parameters, py::object &py_bfparams)
   {
     e.printErrorStack();
     cerr << "could not extract blood flow parameters from python... using default values from constructor" << endl;
-  }catch(std::exception &ex)
-  {
-    std::cout << ex.what();
   }
 #ifdef EPETRA_MPI
     std::cout << "EPETRA_MPI flag is set!\n" << std::endl;
@@ -228,9 +228,6 @@ static void PyComputePO2(py::dict &py_parameters, py::object &py_bfparams)
   {
     e.printErrorStack();
     cerr << "could not create vess_recomp " << endl;
-  }catch(std::exception &ex)
-  {
-    std::cout << ex.what();
   }
   
   
@@ -296,7 +293,7 @@ static void PyComputePO2(py::dict &py_parameters, py::object &py_bfparams)
   {
     std::cout << "maybe here" << std::endl;
   }
-    std::cout << "got here" << std::endl;
+    
     /* OUTPUT */
     
   H5::Group po2_out_group = o2File.createGroup(string("/po2"));
