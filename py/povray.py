@@ -60,7 +60,7 @@ class File:
         item.write(self)
   def writeln(self,s=""):
     #print "  "*self.__indent+s
-    self.file.write("  "*self.__indent+s.encode()+'\n')
+    self.file.write(str.encode("  "*self.__indent)+s.encode()+str.encode('\n'))
 
 class Vector:
   def __init__(self,*args):
