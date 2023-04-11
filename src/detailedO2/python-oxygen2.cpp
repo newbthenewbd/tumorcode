@@ -296,7 +296,7 @@ static void PyComputePO2(py::dict &py_parameters, py::object &py_bfparams)
   {
     std::cout << "maybe here" << std::endl;
   }
-    
+    std::cout << "got here" << std::endl;
     /* OUTPUT */
     
   H5::Group po2_out_group = o2File.createGroup(string("/po2"));
