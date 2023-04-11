@@ -883,11 +883,11 @@ struct DetailedO2ParamsFromPy
         *buffer = py::extract<std::string>(o["max_iter"]);
         isEverythingInDictAString = true;
       }
-//       catch(std::exception &e)
-//       {
-//         isEverythingInDictAString = false;
-//         //e.what();
-//       }
+       catch(std::exception &e)
+       {
+         isEverythingInDictAString = false;
+         //e.what();
+       }
       catch (const py::error_already_set&)
       {
           isEverythingInDictAString = false;
