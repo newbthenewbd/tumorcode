@@ -32,7 +32,7 @@ import numpy as np
 import krebs.povrayRenderVessels as povrayRenderVessels
 import krebs.povrayRenderCells as povrayRenderCells
 #from povrayRenderVessels import *
-import krebs.povrayEasy
+import krebs.povrayEasy as povrayEasy
 import myutils
 import math
 import copy
