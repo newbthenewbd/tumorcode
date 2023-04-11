@@ -55,7 +55,8 @@ class File:
       if isinstance(item,str):
         lines = item.splitlines()
         for l in lines:
-            self.writeln(str(l))
+            print(l)
+            self.writeln(l)
       else:
         item.write(self)
   def writeln(self,s=""):
