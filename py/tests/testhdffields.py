@@ -22,7 +22,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import os,sys
 import h5py
 import numpy as np
-import vtk
 import krebs.vtkcommon as vtkcommon
 import extensions # for asarray with h5py support
 import krebs.extractVtkFields as extractVtkFields
