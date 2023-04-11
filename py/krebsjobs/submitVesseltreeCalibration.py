@@ -79,6 +79,7 @@ def CenterTheLattice(f, h5_path):
     ld = krebsutils.read_lattice_data_from_hdf_by_filename(fn, h5_path);
     del f[h5_path]
     ld = ld.GetCentered()
+	print(fn, h5_path, ld)
     krebsutils.write_lattice_data_to_hdf_by_filename(fn, h5_path, ld)
     
 
