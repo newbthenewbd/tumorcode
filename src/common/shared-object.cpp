@@ -498,32 +498,35 @@ std::shared_ptr<VesselList3d> ReadVesselList3d(const H5::Group &vesselgroup, con
       e.printErrorStack();
       cout << "could not find lattice group in ReadVesselList3d" << endl;
     }
-std::cout << "got here" << std::endl;
+std::cout << "got here 1" << std::endl;
     std::unique_ptr<polymorphic_latticedata::LatticeData> ldp = polymorphic_latticedata::ReadHdf(ldgroup);
 #ifndef NDEBUG
     cout << "ReadVesselList3d read " << endl;
     ldp->print(cout);
 #endif
+std::cout << "got here 2" << std::endl;
     //std::unique_ptr<VesselList3d> vl_local;
     //vl_local.reset(new VesselList3d(ldp));
     //vl_local->Init(*ldp);
     vl = std::unique_ptr<VesselList3d> (new VesselList3d());
     vl->Init(ldp);
-  
+  std::cout << "got here 3" << std::endl;
     
 #ifndef NDEBUG
     VESSEL_INTEGRITY_CHECK_SWITCH(vl->IntegrityCheck();)
 #endif
 
     ReadHdfGraph(vesselgroup, vl.get());
-    
+    std::cout << "got here 4" << std::endl;
     //this magic can only be done on a lattice
     float original_grid_scale_override = params.get<float>("scale override", -1.);
+	std::cout << "got here 5" << std::endl;
     if (original_grid_scale_override>0.)
     {
       throw std::runtime_error("vessel scale override not implemented");
       //ldp->Scale() = original_grid_scale_override;
     }
+	std::cout << "got here 6" << std::endl;
     // subdivide the grid to other lattice spacing
     if (grid_scale > 0)
     {
@@ -547,6 +550,7 @@ std::cout << "got here" << std::endl;
   }
   else
   {
+  std::cout << "got here 7" << std::endl;
     //WORLD: no lattice data needed
     //std::unique_ptr<LatticeData> ldp;
     vl = std::shared_ptr<VesselList3d>(new VesselList3d());
