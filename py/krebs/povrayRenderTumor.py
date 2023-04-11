@@ -87,7 +87,7 @@ def addBulkTissueTumor(epv, tumorgroup, options):
       }""" % (value_bounds[0], (value_bounds[1]-value_bounds[0]), voldata_cells.name)
     #style = " texture { pigment { color rgb<1,0.8,0.3> }  finish { specular 0.3 }}"
     #epv.addIsosurface(voldata_ls, 0., lambda : style, clip, style)
-    epv.addIsosurface(voldata_ls, 0., lambda : style, None, style)
+    epv.addIsosurface(voldata_ls, 0., lambda : style, None, [style])
 
 
 
