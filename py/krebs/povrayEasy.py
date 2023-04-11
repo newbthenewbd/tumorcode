@@ -570,7 +570,7 @@ class EasyPovRayRender(object):
     if np.isnan(threshold) or np.isinf(threshold):
       threshold = -1.
     o = pv.Isosurface(
-      pv.Function('-%s(x,y,z)' % (volumedata.name)),
+      pv.Function(['-%s(x,y,z)' % (volumedata.name)]),
       ['max_gradient', volumedata.max_grad],
       pv.ContainedBy(
           pv.Box(
