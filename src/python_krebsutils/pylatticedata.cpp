@@ -250,6 +250,7 @@ void write_lattice_data_to_hdf(py::object py_h5grp, const std::string &name, con
 
 void write_lattice_data_to_hdf_by_filename(const string fn, const string path, const PyLd *cpp_py_ld)
 {
+  try {
   H5::H5File *writeToFile = new H5::H5File(fn, H5F_ACC_RDWR);
   H5::Group g = writeToFile->openGroup(path);
   //cpp_py_ld->get().WriteHdf(g);
@@ -257,6 +258,9 @@ void write_lattice_data_to_hdf_by_filename(const string fn, const string path, c
   //h5cpp::Group g = PythonToCppGroup(py_h5grp);
   //h5cpp::Group g_ld = g.create_group(name);
   //cpp_py_ld->get().WriteHdf(g_ld);
+  } catch(H5::Exception &e) {
+    e.printErrorStack();
+  }
 }
 
 void SetupFieldLattice(const FloatBBox3 &wbbox, int dim, float spacing, float safety_spacing, LatticeDataQuad3d &ld);
