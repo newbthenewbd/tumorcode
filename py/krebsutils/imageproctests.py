@@ -162,5 +162,5 @@ def run():
   #testcorrelation()
   
 if __name__ == '__main__':
-  print(("using PIL version: %s" % PIL.VERSION))
+  print(("using PIL version: %s" % PIL.__version__))
   run()
