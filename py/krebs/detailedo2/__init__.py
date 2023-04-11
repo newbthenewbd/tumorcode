@@ -168,8 +168,8 @@ def readParameters(po2group):
 #    for aKey in po2group.parent.parent['parameters/o2'].attrs.keys():
 #      temp = po2group.parent.parent['parameters/o2'].attrs[aKey]
     ''' in old dataset, the parameters were stored as groups'''
-    for aKey in list(po2group.parent.parent['parameters/o2'].keys()):
-      temp = po2group.parent.parent['parameters/o2'][aKey]
+    for aKey in list(po2group.parent.parent.parent['parameters/o2'].keys()):
+      temp = po2group.parent.parent.parent['parameters/o2'][aKey]
       if (type(temp) == type(str())):
         returnDict[aKey] = temp
       if ( not type(temp) == type(str())) and not str(aKey) == 'calcflow' and not str(aKey) =='name':
