@@ -618,7 +618,7 @@ static Eigen::Matrix<float, rows, 1> LinearInterpolation(float xeval, const DynA
 //#if BOOST_VERSION>106300
 //#else
 // may be a measurement class can come back later when it makes more sense to store persistent data between analysis steps
-py::object PySampleVessels(py::object py_vesselgroup, py::object py_tumorgroup, py::dict py_parameters, nm::array py_vesselpo2, nm::array py_po2field, const LatticeDataQuad3d &field_ld, float sample_len)
+py::object PySampleVessels(py::object py_vesselgroup, py::object py_tumorgroup, py::dict py_parameters, np::ndarray py_vesselpo2, np::ndarray py_po2field, const LatticeDataQuad3d &field_ld, float sample_len)
 {
   bool world = false;
   //h5cpp::Group vesselgroup = PythonToCppGroup(py_vesselgroup);
@@ -635,7 +635,7 @@ py::object PySampleVessels(py::object py_vesselgroup, py::object py_tumorgroup, 
   //h5cpp::Group tumorgroup;
   if (!py_tumorgroup.is_none())
   {
-    tumorgroup = PythonToCppGroup(py_tumorgroup);
+    //tumorgroup = PythonToCppGroup(py_tumorgroup);
   }
   SetupTissuePhases(phases, grid, mtboxes, tumorgroup);//filling
   
