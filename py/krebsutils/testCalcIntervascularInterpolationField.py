@@ -23,7 +23,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import os, sys
 import numpy as np
 import h5py
-import extensions
 
 from matplotlib import pyplot
 
