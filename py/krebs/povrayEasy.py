@@ -889,7 +889,8 @@ def CreateScene2(vesselgroup, epv, graph, options):
 #          options.tumor_clip=('zslice', -100*trafo.w, 100*trafo.w)
 #          epv.setCamera((0,0,cam_distance_factor*1.05), lookat = (0,0,0), fov = cam_fov, up = 'y')
       else:
-        options.imageFileName += '_topdown_'
+        #options.imageFileName += '_topdown_'
+        options.imageFileName = 'topdown_' +options.imageFileName
         epv.setCamera((0,0,cam_distance_factor*0.5*(zsize*trafo.w+2.)), (0,0,0), cam_fov, up = 'y')
     elif cam in ('pie_only_cells', 'pie_only_vessels'):
       options.imageFileName += '_pie_vbl_'
