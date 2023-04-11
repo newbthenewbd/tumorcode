@@ -30,7 +30,7 @@ import qsub
 
 
 def runs_on_client(filename):
-  import krebs.plotIff
+  import krebs.plotIff as plotIff
   import myutils
   import h5py
   dataman = myutils.DataManager(100, krebs.plotIff.GetDataManDataInstances())  

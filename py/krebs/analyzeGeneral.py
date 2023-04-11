@@ -34,7 +34,7 @@ import math
 import collections
 
 import krebs.analyzeBloodVolumeSimple as anaBloodV
-import krebs.plotBulkTissue
+import krebs.plotBulkTissue as plotBulkTissue
 
 """ for bin ing the MVD experimental calculation """
 def suggest_bins_from_world(ld):

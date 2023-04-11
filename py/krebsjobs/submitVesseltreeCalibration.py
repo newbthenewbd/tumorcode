@@ -37,7 +37,7 @@ import qsub
 import copy
 import myutils
 import krebsutils
-import krebs.analyzeBloodFlow
+import krebs.analyzeBloodFlow as analyzeBloodFlow
 import h5py
 import numpy as np
 

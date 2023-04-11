@@ -27,7 +27,7 @@ import h5py
 import math
 import pprint
 import vtk
-import krebs.vtkcommon
+import krebs.vtkcommon as vtkcommon
 import posixpath
 from mystruct import Struct
 

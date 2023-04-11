@@ -39,8 +39,8 @@ import krebsutils as ku
 import qsub
 import h5py
 import myutils
-import krebs.analyzeGeneral
-import krebs.plotIff
+import krebs.analyzeGeneral as analyzeGeneral
+import krebs.plotIff as plotIff
 
 import pydicom
 def std_example():

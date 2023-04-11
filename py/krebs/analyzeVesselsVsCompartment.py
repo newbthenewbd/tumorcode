@@ -35,8 +35,8 @@ import myutils
 from matplotlib.pylab import * 
 import matplotlib.pyplot as plt
 
-import krebs.analyzeGeneral
-import krebs.analyzeBloodFlowResistance
+import krebs.analyzeGeneral as analyzeGeneral
+import krebs.analyzeBloodFlowResistance as analyzeBloodFlowResistance
 
 def DoReadIn(filenames, pattern, fn_measure):
     #read in lots of stuff

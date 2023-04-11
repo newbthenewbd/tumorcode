@@ -41,10 +41,10 @@ import math
 import collections
 import itertools
 
-import krebs.detailedo2
-import krebs.detailedo2Analysis
-import krebs.analyzeGeneral
-import krebs.analyzeBloodFlow
+import krebs.detailedo2 as detailedo2
+import krebs.detailedo2Analysis as detailedo2Analysis
+import krebs.analyzeGeneral as analyzeGeneral
+import krebs.analyzeBloodFlow as analyzeBloodFlow
 import qsub
 
 import matplotlib.pyplot

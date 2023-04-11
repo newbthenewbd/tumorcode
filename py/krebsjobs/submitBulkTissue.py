@@ -33,7 +33,7 @@ import numpy as np
 import myutils
 import krebsutils #---> creates multiprocessor environment,also in __init__ tumor
 import krebs
-import krebs.tumors
+import krebs.tumors as tumors
 
 import krebsjobs.parameters.parameterSetsBulkTissueTumor as parameterSets
 from krebsjobs import PrepareConfigurationForSubmission

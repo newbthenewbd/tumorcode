@@ -55,10 +55,10 @@ import third_party.ffmpy
 import collections
 import shutil
 
-#import krebs.povrayRenderVessels
+#import krebs.povrayRenderVessels as povrayRenderVessels
 from krebs.povrayRenderVessels import  addVesselTree, cm_redblue
 from krebs.povrayEasy import *
-import krebs.povrayRenderSettings
+import krebs.povrayRenderSettings as povrayRenderSettings
 from krebsjobs.submitPovrayRender import RenderJob  
 from krebsjobs.submitPovrayRender import clientfunc
 

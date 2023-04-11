@@ -42,10 +42,10 @@ import krebs.detailedo2 as detailedo2
 import krebsjobs.parameters.parameterSetsO2
 import krebsjobs.submitFakeTum
 import krebsjobs.parameters.parameterSetsBulkTissueTumor
-import krebs.povrayRenderOxygenDetailed
-import krebs.analyzeTissueOxygen
+import krebs.povrayRenderOxygenDetailed as povrayRenderOxygenDetailed
+import krebs.analyzeTissueOxygen as analyzeTissueOxygen
 
-import krebs.tumors
+import krebs.tumors as tumors
 
 
 def worker_on_client(vessel_fn, tumor_parameters, o2_parameter_set_name, num_threads):

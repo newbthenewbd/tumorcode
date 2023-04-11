@@ -46,11 +46,11 @@ if (identifycluster.getname()=='snowden' or identifycluster.getname()=='durga'):
 import matplotlib.pyplot as pyplot
 import mpl_utils
 
-import krebs.quantities
+import krebs.quantities as quantities
 import myutils
-import krebs.analyzeGeneral
+import krebs.analyzeGeneral as analyzeGeneral
 
-import krebs.detailedo2Analysis
+import krebs.detailedo2Analysis as detailedo2Analysis
 
 
 def ComputeIsosurfaceBloodFlow(dataman, vesselgroup, nodalLevel, level):

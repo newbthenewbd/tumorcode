@@ -27,7 +27,7 @@ if __name__ == '__main__':
 import os, sys
 from os.path import join, basename, dirname, splitext
 import krebsutils
-import krebs.extractVtkFields
+import krebs.extractVtkFields as extractVtkFields
 import pprint
 import numpy as np
 import h5py

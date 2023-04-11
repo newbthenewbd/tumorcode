@@ -51,7 +51,7 @@ import matplotlib
 import matplotlib.pyplot as pyplot
 import mpl_utils
 
-import krebs.plotVessels
+import krebs.plotVessels as plotVessels
 
 
 ##############################################################################

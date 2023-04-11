@@ -29,8 +29,8 @@ import glob
 #from pprint import pprint
 import myutils
 import mpl_utils
-import krebs.plotBulkTissue1d
-import krebs.plotBulkTissue2d
+import krebs.plotBulkTissue1d as plotBulkTissue1d
+import krebs.plotBulkTissue2d as plotBulkTissue2d
 
 exe = '/home/mwelter/tumorcode/buildopt/tum-bulktissue-no-vessels'
 #exe = '/home/mwelter/tumorcode/build/src/programs/tum-bulktissue-no-vessels'

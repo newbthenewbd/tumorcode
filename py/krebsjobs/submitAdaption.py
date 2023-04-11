@@ -38,7 +38,7 @@ import string
 import cProfile
 
 import krebs
-import krebs.adaption
+import krebs.adaption as adaption
 
 import krebsjobs.parameters
 from krebsjobs.parameters import parameterSetsAdaption

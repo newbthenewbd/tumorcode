@@ -42,9 +42,9 @@ from os.path import basename, splitext
 
 import krebsutils
 import numpy as np
-import krebs.povrayRenderVessels
+import krebs.povrayRenderVessels as povrayRenderVessels
 #from povrayRenderVessels import *
-import krebs.povrayEasy
+import krebs.povrayEasy as povrayEasy
 import myutils
 import math
 import copy

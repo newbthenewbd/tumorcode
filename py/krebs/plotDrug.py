@@ -51,9 +51,9 @@ import myutils
 from krebs.plotBulkTissue import commonOutputName, contour, imslice, imshow, colorbar
 from mpl_utils import PageWriter
 from krebs.plotIff import LabelFactory, ColorMaps, fig_numbering
-import krebs.analyzeGeneral
+import krebs.analyzeGeneral as analyzeGeneral
 
-import krebs.plotIff
+import krebs.plotIff as plotIff
 
 
 import matplotlib

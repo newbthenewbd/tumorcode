@@ -33,7 +33,7 @@ import h5py
 import numpy as np
 import krebsutils
 import krebs
-import krebs.tumors
+import krebs.tumors as tumors
 from copy import deepcopy
 from dicttoinfo import dicttoinfo, Vec
 from myutils import f2s

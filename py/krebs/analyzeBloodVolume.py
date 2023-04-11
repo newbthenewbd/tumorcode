@@ -43,7 +43,7 @@ import mpl_utils
 
 import myutils
 
-import krebs.analyzeGeneral
+import krebs.analyzeGeneral as analyzeGeneral
 
 
 

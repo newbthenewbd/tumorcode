@@ -27,7 +27,7 @@ if __name__ == '__main__':
   sys.path.append(join(dirname(__file__),'..'))
 import h5py
 import numpy as np
-import krebs.vtkcommon
+import krebs.vtkcommon as vtkcommon
 import extensions # for asarray with h5py support
 import krebsutils
 import math
@@ -39,9 +39,9 @@ from collections import defaultdict
 from pprint import pprint
 
 #from plotBulkTissue import plotBulkTissue.commonOutputName, LabelFactory, colorbar, contour, imslice, imshow, ColorMaps
-import krebs.plotBulkTissue
+import krebs.plotBulkTissue as plotBulkTissue
 
-import krebs.plotIff
+import krebs.plotIff as plotIff
 
 from matplotlib.ticker import MaxNLocator
 import matplotlib
@@ -58,7 +58,8 @@ a4size = mpl_utils.a4size
 gridcolor = (0.7,0.7,0.7)
 f2s = lambda x: myutils.f2s(x, latex=True)
 
-import krebs.extractVtkFields, krebs.plotVessels
+import krebs.extractVtkFields as extractVtkFields
+import krebs.plotVessels as plotVessels
 
 bins_rad = np.arange(0, 20000, 30.)
 bins_dist = np.arange(-10000., 10000., 30.)

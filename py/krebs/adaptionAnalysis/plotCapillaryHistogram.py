@@ -52,7 +52,7 @@ from krebs.quantities import Prettyfier
 from krebs.plotVessels import *
 from krebs.plotVesselsAdaption import getVesselTypes
 from krebs.analyzeMurray import *
-import krebs.analyzeGeneral
+import krebs.analyzeGeneral as analyzeGeneral
 
 from scipy.optimize import fsolve
 from scipy.optimize import minimize_scalar
@@ -588,7 +588,7 @@ def DoIt_single(filenames, options):
   
   groups_with_adaption = [f['/adaption/vessels_after_adaption'] for f in files]
 
-  import krebs.analyzeGeneral
+  import krebs.analyzeGeneral as analyzeGeneral
   dataman = myutils.DataManager(20, [ analyzeGeneral.DataBasicVessel(), analyzeGeneral.DataVesselSamples(), analyzeGeneral.DataVesselGlobal()])
   with mpl_utils.PdfWriter(fn_measure+'flow_hist.pdf') as pdfpages:
     if 1:

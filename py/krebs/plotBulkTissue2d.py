@@ -53,8 +53,8 @@ import matplotlib
 import matplotlib.pyplot as pyplot
 import mpl_utils
 
-import krebs.analyzeGeneral
-import krebs.povrayRenderTumor
+import krebs.analyzeGeneral as analyzeGeneral
+import krebs.povrayRenderTumor as povrayRenderTumor
 from scipy.optimize import leastsq
 
 

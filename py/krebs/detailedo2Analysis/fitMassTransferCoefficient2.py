@@ -36,7 +36,7 @@ import math
 from copy import copy, deepcopy
 from collections import namedtuple
 f2l = myutils.f2l
-#import krebs.detailedo2Analysis
+#import krebs.detailedo2Analysis as detailedo2Analysis
 
 import matplotlib
 import matplotlib.cm

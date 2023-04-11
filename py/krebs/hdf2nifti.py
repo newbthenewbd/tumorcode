@@ -40,8 +40,8 @@ import krebsutils as ku
 import qsub
 import h5py
 import myutils
-import krebs.analyzeGeneral
-import krebs.plotIff
+import krebs.analyzeGeneral as analyzeGeneral
+import krebs.plotIff as plotIff
 import krebs.detailedo2Analysis as o2analysis
 import pydicom
 

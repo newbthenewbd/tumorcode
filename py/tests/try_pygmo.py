@@ -13,7 +13,7 @@ if identifycluster.name == 'snowden':
 #import dicttoinfo
 #import myutils
 #import h5py
-import krebs.adaption
+import krebs.adaption as adaption
 #import itertools
 #import time
 #import string
