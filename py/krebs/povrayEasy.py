@@ -323,7 +323,7 @@ class EasyPovRayRender(object):
     '''color come with matplotlib text style
         we have to transform to RGB here
     '''
-    color = matplotlib.colors.to_rgb(color)
+    color = matplotlib.colors.to_rgb(str(color))
     pv.Background(color=Vec3(color)).write(self.pvfile)
 
   def addPlane(self, pos, normal, color):

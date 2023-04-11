@@ -383,7 +383,7 @@ if (__name__ == '__main__'):
             colored_slice = False,
             out_alpha = True,
             num_threads = 2,
-            background = '0.8',
+            background = 0.8,
             #ambient_color = (0.5, 0.5, 0.5),
             ambient_color = (0.3, 0.3, 0.3),
           )

@@ -113,7 +113,7 @@ image = dict(
       #res = (1800, 1800), # 75 mm 600 dpi
       #aa=4,
       res=(1024, 1024), aa=1,
-      background = '1.0',
+      background = 1.,
       out_alpha=False,
       num_threads=3,
 )
@@ -135,7 +135,7 @@ vessels = dict(
       cam='topdown_slice',
       #cam = 'topdown',
       colored_slice = True,
-      background = '1.0',
+      background = 1.,
       #ambient_color = (0.5, 0.5, 0.5),
       ambient_color = (0.3, 0.3, 0.3),
 )
@@ -150,7 +150,7 @@ dbg_vessels = dict(
       out_alpha=False,
       num_threads=7,
       debug=True,
-      background = '0.0',
+      background = 0.0,
       colorfactory = colorfactory_vessel_debug,
       noOverlay = True,
       #colorfactory = colorfactory,
@@ -165,7 +165,7 @@ iff = dict(
     #aa = 1,
     dpi = 320,
     num_threads=5,
-    background = '1.0',
+    background = 1.0,
     out_alpha=False,
     colored_slice=True,
     ambient_color=(0.5, 0.5, 0.5),
@@ -181,5 +181,5 @@ figure_plos_vessels = dict(
   cam = 'topdown_slice',
   dpi = 700,
   out_alpha=False,
-  background = '1.0',
+  background = 1.0,
 )

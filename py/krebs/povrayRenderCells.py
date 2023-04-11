@@ -157,9 +157,9 @@ def addVBLCells(epv, quantity , cell_hdf_group, options):
           rgb_colors_of_cells[i] = (1,0,0,0)
         if data == 6:
           #dead
-          if options.background == '1.0':
+          if options.background == 1.0:
             rgb_colors_of_cells[i] = (0.,0.,0.,0.)
-          elif options.background == '0.0':
+          elif options.background == 0.0:
             rgb_colors_of_cells[i] = (0.75,0.75,0.75,0)
           else:
             inv_val = 1.0 - options.background
