@@ -614,14 +614,14 @@ static Eigen::Matrix<float, rows, 1> LinearInterpolation(float xeval, const DynA
   return (1.-f)*r0 + f*r1;
 }
 
-#if 0// not H5Cpp ready
-#if BOOST_VERSION>106300
-#else
+//#if 0// not H5Cpp ready
+//#if BOOST_VERSION>106300
+//#else
 // may be a measurement class can come back later when it makes more sense to store persistent data between analysis steps
 py::object PySampleVessels(py::object py_vesselgroup, py::object py_tumorgroup, py::dict py_parameters, nm::array py_vesselpo2, nm::array py_po2field, const LatticeDataQuad3d &field_ld, float sample_len)
 {
   bool world = false;
-  h5cpp::Group vesselgroup = PythonToCppGroup(py_vesselgroup);
+  //h5cpp::Group vesselgroup = PythonToCppGroup(py_vesselgroup);
   std::auto_ptr<VesselList3d> vl_ = ReadVesselList3d(vesselgroup, make_ptree("filter",false));
   const VesselList3d &vl = *vl_;
   
@@ -632,7 +632,7 @@ py::object PySampleVessels(py::object py_vesselgroup, py::object py_tumorgroup, 
   DomainDecomposition mtboxes(MakeMtBoxGrid(grid.Box(), Int3(32, 32, 32)));
   
   TissuePhases phases;//Declaration
-  h5cpp::Group tumorgroup;
+  //h5cpp::Group tumorgroup;
   if (!py_tumorgroup.is_none())
   {
     tumorgroup = PythonToCppGroup(py_tumorgroup);
@@ -702,8 +702,8 @@ py::object PySampleVessels(py::object py_vesselgroup, py::object py_tumorgroup, 
 
   return py::make_tuple(samples, fluxes);
 }
-#endif
-#endif
+//#endif
+//#endif
 
 #if 0//not H5Cpp ready
 #if BOOST_VERSION>106300
