@@ -44,6 +44,7 @@ import numbers
 import collections.abc
 from math import hypot,sqrt, sin, cos, atan2
 getattr = getattr  # copy builtin to global for speed
+from numpy.distutils.misc_util import is_sequence
 
 
 __all__ = ["Vec2","Vec3"]
@@ -53,7 +54,8 @@ def isNumberType(obj):
     return isinstance(obj, numbers.Number)
 
 def isSequenceType(obj):
-    return isinstance(obj, collections.abc.Sequence)
+    #return isinstance(obj, collections.abc.Sequence)
+    return is_sequence(obj)
 
 
 class Vec2(object):
