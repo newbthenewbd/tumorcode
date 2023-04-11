@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # -*- coding: utf-8 -*-
 
 def test_multi():
-  ''''
+  '''
   got:
     Exception KeyError: KeyError(140317151476224,) in 'h5py._objects.ObjectID.__dealloc__' ignored
 Exception KeyError: KeyError(140317151476224,) in 'h5py._objects.ObjectID.__dealloc__' ignored
@@ -35,7 +35,7 @@ __' ignored
   File "/usr/lib64/python3.7/multiprocessing/process.py", line 258, in _bootstrap
 
 in pso.py  
-  ''''
+  '''
   import multiprocessing
   mp_pool = multiprocessing.Pool(2)
   fx = np.array(mp_pool.map(obj, x))
