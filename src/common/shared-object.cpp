@@ -471,18 +471,15 @@ int FindDistanceToJunction( const Vessel* vstart, int posOnVess, const VesselNod
 
 std::shared_ptr<VesselList3d> ReadVesselList3d(const H5::Group &vesselgroup, const ptree &params)
 {
-std::cout << "got here -3" << std::endl;
   float grid_scale = params.get<float>("scale subdivide", -1.);
-  std::cout << "got here -2" << std::endl;
   bool filter_uncirculated = params.get<bool>("filter", false);
-  std::cout << "got here -1" << std::endl;
+  
   std::shared_ptr<VesselList3d> vl;
   typedef polymorphic_latticedata::LatticeData LatticeData;
   string type_of_vessel_network;
-  std::cout << "got here 0" << std::endl;
   readAttrFromH5(vesselgroup, string("CLASS"), type_of_vessel_network);
   
-std::cout << "got here 1" << std::endl;
+
   if(type_of_vessel_network == "GRAPH")
   {
 #ifdef DEBUG
@@ -492,7 +489,6 @@ std::cout << "got here 1" << std::endl;
      * Access "lattice" group .
      */
     H5::Group ldgroup;
-	std::cout << "got here 2" << std::endl;
     try
     {
       ldgroup = vesselgroup.openGroup("lattice");
@@ -502,7 +498,7 @@ std::cout << "got here 1" << std::endl;
       e.printErrorStack();
       cout << "could not find lattice group in ReadVesselList3d" << endl;
     }
-std::cout << "got here 3" << std::endl;
+
     std::unique_ptr<polymorphic_latticedata::LatticeData> ldp = polymorphic_latticedata::ReadHdf(ldgroup);
 #ifndef NDEBUG
     cout << "ReadVesselList3d read " << endl;
