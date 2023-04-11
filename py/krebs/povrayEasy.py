@@ -289,15 +289,15 @@ class EasyPovRayRender(object):
         angle = fov,
         location = Vec3(pos),
         look_at = Vec3(lookat),
-        up = "<0,1,0>",
-        right = "<-%f,0,0>" % ratio
+        up = ["<0,1,0>"],
+        right = ["<-%f,0,0>" % ratio]
     )
     up_vec = kwargs.pop("up", None)
     if up_vec: # is not None: #'up_vec' in self.params: 
       #up_vec = self.params.up_vec
       a['sky'] = up_vec
     pv.Camera(
-      projection,
+      [projection],
       **a
     ).write(self.pvfile)
 
