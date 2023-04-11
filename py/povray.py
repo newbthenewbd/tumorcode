@@ -55,12 +55,12 @@ class File:
       if isinstance(item,str):
         lines = item.splitlines()
         for l in lines:
-            self.writeln(l)
+            self.writeln(str(l))
       else:
         item.write(self)
   def writeln(self,s=""):
     #print "  "*self.__indent+s
-    self.file.write(str.encode("  "*self.__indent)+s.encode()+str.encode('\n'))
+    self.file.write("  "*self.__indent+s+'\n')
 
 class Vector:
   def __init__(self,*args):
