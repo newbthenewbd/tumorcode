@@ -35,8 +35,8 @@ import myutils
 import math
 import krebs.quantities as quantities
 
-from . import matplotlib
-from . import matplotlib.pyplot as pyplot
+import matplotlib
+import matplotlib.pyplot as pyplot
 
 #from Marieb Human Anatomy & Physiology,
 #blood pressure [mmHg]
