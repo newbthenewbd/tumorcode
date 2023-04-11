@@ -876,7 +876,7 @@ struct DetailedO2ParamsFromPy
       bool isEverythingInDictAString;
       isEverythingInDictAString=false;
       // Remember AttributeError for later comparison
-      py::object attributeError = py::import("exceptions").attr("AttributeError");
+      //py::object attributeError = py::import("exceptions").attr("AttributeError");
       try
       {
         std::unique_ptr<std::string> buffer(new std::string("42"));
