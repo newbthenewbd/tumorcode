@@ -64,7 +64,7 @@ def getPovrayVersion():
   #print("posOfLabel is: %s" % posOfLabel)
   major = err[len(label) + posOfLabel]
   minor = err[len(label) + posOfLabel+2]
-  return major, minor
+  return str(major), str(minor)
   
 def CallPovrayAndOptionallyMakeMPLPlot(epv, cm, label, options):
     if options.noOverlay:
