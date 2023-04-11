@@ -29,7 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 import numpy as np
-import krebsutils as krebs
+import ..krebsutils as krebs
 import math
 import collections
 
