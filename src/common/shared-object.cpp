@@ -498,7 +498,7 @@ std::shared_ptr<VesselList3d> ReadVesselList3d(const H5::Group &vesselgroup, con
       e.printErrorStack();
       cout << "could not find lattice group in ReadVesselList3d" << endl;
     }
-
+std::cout << "got here" << std::endl;
     std::unique_ptr<polymorphic_latticedata::LatticeData> ldp = polymorphic_latticedata::ReadHdf(ldgroup);
 #ifndef NDEBUG
     cout << "ReadVesselList3d read " << endl;

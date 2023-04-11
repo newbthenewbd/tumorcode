@@ -160,15 +160,11 @@ static void PyComputePO2(py::dict &py_parameters, py::object &py_bfparams)
   try
   {
     vesselInputFile =  H5::H5File( s.params.input_file_name , H5F_ACC_RDONLY);
-	std::cout << "got here 1" << std::endl;
     H5::Group vesselgroup = vesselInputFile.openGroup(string("/") + s.params.input_group_path);
-	std::cout << "got here 2" << std::endl;
     s.vl = ReadVesselList3d(vesselgroup, make_ptree("filter",false));
-	std::cout << "got here 3" << std::endl;
     //boost::replace_all(output_file_name, "/", "_");
     //s.replace(s.find("$name"), sizeof("$name") - 1, "Somename");
     output_file_name = std::regex_replace(output_file_name, std::regex(string("/")), string("_"));
-	std::cout << "got here 4" << std::endl;
     o2File = H5::H5File( output_file_name, H5F_ACC_TRUNC );
 #ifndef NDEBUG
     std::cout << &o2File << std::endl;
