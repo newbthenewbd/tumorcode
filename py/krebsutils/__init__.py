@@ -43,7 +43,7 @@ if isUbuntu:
 
 # leaks a bit of memory each time it is imported!
 from scipy.ndimage.interpolation import geometric_transform
-print(sys.path)
+
 if sys.flags.debug:
   libkrebs = __import__('libkrebs_d', globals(), locals())
 else:
