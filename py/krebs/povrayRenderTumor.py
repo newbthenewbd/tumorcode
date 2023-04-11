@@ -71,7 +71,7 @@ def addBulkTissueTumor(epv, tumorgroup, options):
     voldata_cells = epv.declareVolumeData(data, ld.GetWorldBox())
 
     value_bounds = voldata_cells.value_bounds
-    style = """
+    style = ["""
       texture {
         pigment {
           function { %f + %f*%s(x,y,z) }
@@ -84,10 +84,10 @@ def addBulkTissueTumor(epv, tumorgroup, options):
         finish { 
           specular 0.3
         }
-      }""" % (value_bounds[0], (value_bounds[1]-value_bounds[0]), voldata_cells.name)
+      }""" % (value_bounds[0], (value_bounds[1]-value_bounds[0]), voldata_cells.name)]
     #style = " texture { pigment { color rgb<1,0.8,0.3> }  finish { specular 0.3 }}"
     #epv.addIsosurface(voldata_ls, 0., lambda : style, clip, style)
-    epv.addIsosurface(voldata_ls, 0., lambda : style, None, [style])
+    epv.addIsosurface(voldata_ls, 0., lambda : style, None, style)
 
 
 
