@@ -323,7 +323,7 @@ class EasyPovRayRender(object):
     '''color come with matplotlib text style
         we have to transform to RGB here
     '''
-    color = matplotlib.colors.to_rgb(str(color))
+    color = matplotlib.colors.to_rgb(color)
     pv.Background(color=Vec3(color)).write(self.pvfile)
 
   def addPlane(self, pos, normal, color):
@@ -703,7 +703,7 @@ def OverwriteImageWithColorbar(options,image_fn, cm, label, output_filename, col
   rc('xtick', color = fontcolor)
   rc('ytick', color = fontcolor)
   rc('axes', facecolor = fontcolor)
-  rc('savefig', facecolor = options.background, edgecolor = 'none')
+  rc('savefig', facecolor = str(options.background), edgecolor = 'none')
   #rc('font', size = 10.)
   if options.out_alpha:
     rc('savefig', facecolor = 'none', edgecolor = 'none') # no background so transparency is preserved no matter what the config file settings are
@@ -843,7 +843,7 @@ def CreateScene2(vesselgroup, epv, graph, options):
   wbbox = options.wbbox
   trafo = calc_centering_normalization_trafo(wbbox)
   zsize = (wbbox[5]-wbbox[4])
-  epv.setBackground(options.background)
+  epv.setBackground(str(options.background))
   cam = options.cam
   cam_distance_factor = options.cam_distance_multiplier
   
