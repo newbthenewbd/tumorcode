@@ -32,9 +32,9 @@ import math
 import collections
 
 
-from . import matplotlib
-from . import matplotlib.cm
-from . import matplotlib.pyplot as pyplot
+import matplotlib
+import matplotlib.cm
+import matplotlib.pyplot as pyplot
 import mpl_utils
 
 
