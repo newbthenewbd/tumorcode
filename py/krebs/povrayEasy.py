@@ -461,8 +461,8 @@ class EasyPovRayRender(object):
     vd.name = os.path.splitext(os.path.basename(vd.filename))[0].upper()
     pv.Declare(vd.name, pv.Function(
         pv.Pattern(
-        str('density_file df3 "%s"' % vd.filename),
-        str('interpolate 1'),
+        'density_file df3 "%s"' % vd.filename,
+        'interpolate 1',
         ['scale', (wb[:,1]-wb[:,0])],
         ['translate', (wb[:,0])],
       )
