@@ -325,7 +325,7 @@ if hasNumpy:
         x,y,z = array.shape
         a, b = value_bounds
 
-        array = np.clip(((array-a)/(b-a))*max_uint32, 0, max_float_which_converts_to_less_or_equal_than_max_uint32(np.uint32))
+        array = np.clip(((array-a)/(b-a))*max_uint32, 0, max_float_which_converts_to_less_or_equal_than_max_uint32(np.float64))
         array = np.asarray(array, dtype=np.uint32)
 
 #        import matplotlib.pyplot as pyplot
