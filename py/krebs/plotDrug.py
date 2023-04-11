@@ -35,7 +35,7 @@ import itertools
 from scipy.optimize import leastsq
 import collections
 import glob
-import md5
+import hashlib
 import pickle
 import pprint
 import qsub
@@ -557,7 +557,7 @@ class DataDrugAverages2(object):
             return r
 
 
-        identifier = md5.new(pickle.dumps(tuple(f.filename for f in files)+(regionid, quantity))).hexdigest()
+        identifier = hashlib.md5(pickle.dumps(tuple(f.filename for f in files)+(regionid, quantity))).hexdigest()
         return myutils.hdf_data_caching(read, write, favg, ('drug_delivery_histogram', identifier), (0,2))
 
 
