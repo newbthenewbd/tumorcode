@@ -213,7 +213,7 @@ if __name__ == '__main__':
   print('-----------  looking for files  ----------')
   thegroups = []
   for filename in filenames:
-    f = h5files.open(filename)
+    f = h5py.File(filename)
     print('opened -- ', filename,'/', end=' ')
     paths_before = myutils.walkh5(f['.'], pattern_before)
     paths_after  = myutils.walkh5(f['.'], pattern_after)
@@ -229,7 +229,7 @@ if __name__ == '__main__':
   outputbasename, _ = splitext(prefix+suffix)  
   
   fn_measure = join(dirname(outputbasename), 'common-mvd-grad-map-cache.h5')
-  f_measure = h5files.open(fn_measure, 'a')
+  f_measure = h5py.File(fn_measure, 'a')
   
   def cachelocation(dataname, vesselgroup, tumorgroup, version):
     path = myutils.splitPath(posixpath.join(splitext(basename(vesselgroup.file.filename))[0], vesselgroup.name.strip(posixpath.sep)))+(dataname,)
@@ -317,7 +317,7 @@ if __name__ == '__main__':
       maxMVD = max(maxMVD, np.amax(mvd))
       extents = fieldLd.worldBox[:4]*1.0e-3
       picz.append((vesselgroup_before.file.filename, mask, mvd, grad, extents))
-    h5files.closeall()
+    #h5files.closeall()
 
     picz = list(reversed(picz))
     with mpl_utils.PageWriter(outputbasename+'_mvd-grad-picz.pdf', fileformats = ['svg']) as pdfwriter:
