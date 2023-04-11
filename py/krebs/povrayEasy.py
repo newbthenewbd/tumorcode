@@ -258,7 +258,7 @@ class EasyPovRayRender(object):
       alpha = ""
     num_threads = self.params.num_threads
     major, minor = getPovrayVersion()
-    if minor.isdigit() and minor>=7:
+    if minor.isdigit() and int(minor)>=7:
       num_threads = ("+WT%i" % num_threads) if num_threads>1 else ""
     else:
       num_threads = ""
