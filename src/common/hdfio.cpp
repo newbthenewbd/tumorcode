@@ -127,6 +127,9 @@ void readAttrFromH5(const H5::H5Object &g, const string &attr_name, T &output_bu
 template<>
 void readAttrFromH5<string>(const H5::H5Object &g, const string &attr_name, string &output_buffer)
 { 
+  // Set up read buffer for attribute
+  H5std_string strreadbuf ("");
+  
   // Create attribute and write to it
   try
   {
@@ -137,9 +140,6 @@ void readAttrFromH5<string>(const H5::H5Object &g, const string &attr_name, stri
 
     // Create new string datatype for attribute
     H5::StrType strdatatype(H5::PredType::C_S1, H5T_VARIABLE); // of length 256 characters
-
-    // Set up read buffer for attribute
-    H5std_string strreadbuf ("");
 
     att_to_read.read(strdatatype, strreadbuf);
   }
