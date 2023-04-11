@@ -174,6 +174,9 @@ static void PyComputePO2(py::dict &py_parameters, py::object &py_bfparams)
   catch( H5::FileIException &error )
   {
     error.printErrorStack();
+  }catch(std::exception &ex)
+  {
+    std::cout << ex.what();
   }
     
   // THIIIIRYYYYY, filter muss = false sein sonst stimmt in der Ausgabe in der Hdf5 Datei die Anzahl der Vessels nicht mehr mit den daten im recomputed_flow Verzeichnis ueberein!
@@ -883,11 +886,11 @@ struct DetailedO2ParamsFromPy
         *buffer = py::extract<std::string>(o["max_iter"]);
         isEverythingInDictAString = true;
       }
-       catch(std::exception &e)
-       {
-         isEverythingInDictAString = false;
-         e.what();
-       }
+//       catch(std::exception &e)
+//       {
+//         isEverythingInDictAString = false;
+//         //e.what();
+//       }
       catch (const py::error_already_set&)
       {
           isEverythingInDictAString = false;
