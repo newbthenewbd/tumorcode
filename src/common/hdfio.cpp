@@ -103,7 +103,7 @@ H5::DataType getH5TypeFromCpp()
   return thisWritingType;
 }
 
-#if H5_VERS_MINOR < 9
+//#if H5_VERS_MINOR < 9
 template<class T>
 void readAttrFromH5(const H5::H5Object &g, const string &attr_name, T &output_buffer)
 {
@@ -122,7 +122,6 @@ void readAttrFromH5(const H5::H5Object &g, const string &attr_name, T &output_bu
     e.printErrorStack();
   }
 }
-#endif
 /** especially strings work differently
  */
 template<>
