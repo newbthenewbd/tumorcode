@@ -886,7 +886,7 @@ struct DetailedO2ParamsFromPy
        catch(std::exception &e)
        {
          isEverythingInDictAString = false;
-         //e.what();
+         e.what();
        }
       catch (const py::error_already_set&)
       {
