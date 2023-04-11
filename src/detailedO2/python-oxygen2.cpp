@@ -196,6 +196,9 @@ static void PyComputePO2(py::dict &py_parameters, py::object &py_bfparams)
   {
     e.printErrorStack();
     cerr << "could not extract blood flow parameters from python... using default values from constructor" << endl;
+  }catch(std::exception &ex)
+  {
+    std::cout << ex.what();
   }
 #ifdef EPETRA_MPI
     std::cout << "EPETRA_MPI flag is set!\n" << std::endl;
@@ -225,6 +228,9 @@ static void PyComputePO2(py::dict &py_parameters, py::object &py_bfparams)
   {
     e.printErrorStack();
     cerr << "could not create vess_recomp " << endl;
+  }catch(std::exception &ex)
+  {
+    std::cout << ex.what();
   }
   
   
