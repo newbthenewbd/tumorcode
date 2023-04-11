@@ -56,12 +56,9 @@ class File:
         lines = item.splitlines()
         for l in lines:
             self.writeln(l)
-      elif isinstance(item,bytes):
-        lines = item.decode().splitlines()
-        for l in lines:
-            self.writeln(l)
       else:
-        item.write(self)
+        #item.write(self)
+        self.file.write(item)
   def writeln(self,s=""):
     #print "  "*self.__indent+s
     self.file.write("  "*self.__indent+s+'\n')

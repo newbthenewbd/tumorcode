@@ -316,7 +316,7 @@ class EasyPovRayRender(object):
 #      else:
 #        jitter = None
     if jitter:
-      ls_args = ls_args + ('jitter',)
+      ls_args = ls_args + (['jitter'],)
     pv.LightSource(*ls_args).write(self.pvfile)
 
   def setBackground(self, color):
