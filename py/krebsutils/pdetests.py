@@ -49,7 +49,7 @@ from dicttoinfo import dicttoinfo, Vec
 try:
   import mpl_utils
   import matplotlib
-  matplotlib.use('Qt4Agg')
+  matplotlib.use('Agg')
   import matplotlib.pyplot as pyplot
   has_matplotlib = True
 except ImportError:

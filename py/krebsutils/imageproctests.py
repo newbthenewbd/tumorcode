@@ -32,7 +32,7 @@ import PIL
 from PIL import Image
 
 import matplotlib
-matplotlib.use('Qt4Agg')
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 

@@ -71,7 +71,7 @@ def generate_unitcell(type):
 
 def plotunitcells(cell, mat, scale):
   import matplotlib
-  matplotlib.use('Qt4Agg')
+  matplotlib.use('Agg')
   from mpl_toolkits.mplot3d import Axes3D
   import matplotlib.pyplot as plt
   pts = []
@@ -144,7 +144,7 @@ def testhcplattice():
       print('%i -> %s = <%.1f, %.1f, %.1f>' % ((i, p)+tuple(wp)))
 
   import matplotlib
-  matplotlib.use('Qt4Agg')
+  matplotlib.use('Agg')
   from mpl_toolkits.mplot3d import Axes3D
   import matplotlib.pyplot as plt
 
