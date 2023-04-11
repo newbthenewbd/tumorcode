@@ -142,9 +142,6 @@ static void PyComputePO2(py::dict &py_parameters, py::object &py_bfparams)
   
   //h5cpp::Group vesselgroup = PythonToCppGroup(py_vesselgroup);
   // this was fn
-  
-  std::cout << "before extracts" << std::endl;
-  
   s.params.input_file_name = py::extract<string>(py_parameters.get("input_file_name", "none"));
   s.params.input_group_path = py::extract<string>(py_parameters.get("input_group_path", "none")); 
   s.params.vessel_group_path = py::extract<string>(py_parameters.get("vessel_group_path", "none"));
@@ -153,9 +150,6 @@ static void PyComputePO2(py::dict &py_parameters, py::object &py_bfparams)
   const string tumor_group_path = py::extract<string>(py_parameters.get("tumor_group_path", "none"));
   const string out_grp_path = py::extract<string>(py_parameters.get("output_group_path", "none"));
   string vesselgroup_path = py::extract<string>(py_parameters.get("vessel_group_path", "none"));
-  
-  std::cout << "after extracts" << std::endl;
-  
   //vesselgroup_path = "/" + vesselgroup_path;
   //input_group_path = "/" + input_group_path;
   //h5cpp::File *o2File = new h5cpp::File(fn,"a");
@@ -166,11 +160,15 @@ static void PyComputePO2(py::dict &py_parameters, py::object &py_bfparams)
   try
   {
     vesselInputFile =  H5::H5File( s.params.input_file_name , H5F_ACC_RDONLY);
+	std::cout << "got here 1" << std::endl;
     H5::Group vesselgroup = vesselInputFile.openGroup(string("/") + s.params.input_group_path);
+	std::cout << "got here 2" << std::endl;
     s.vl = ReadVesselList3d(vesselgroup, make_ptree("filter",false));
+	std::cout << "got here 3" << std::endl;
     //boost::replace_all(output_file_name, "/", "_");
     //s.replace(s.find("$name"), sizeof("$name") - 1, "Somename");
     output_file_name = std::regex_replace(output_file_name, std::regex(string("/")), string("_"));
+	std::cout << "got here 4" << std::endl;
     o2File = H5::H5File( output_file_name, H5F_ACC_TRUNC );
 #ifndef NDEBUG
     std::cout << &o2File << std::endl;
