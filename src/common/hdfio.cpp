@@ -120,6 +120,9 @@ void readAttrFromH5(const H5::H5Object &g, const string &attr_name, T &output_bu
     std::cout << "unable for read: " << attr_name << std::endl;
     std::cout.flush();
     e.printErrorStack();
+  }catch(std::exception &ex)
+  {
+    std::cout << ex.what();
   }
 }
 /** especially strings work differently
