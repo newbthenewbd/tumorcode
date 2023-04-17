@@ -125,12 +125,12 @@ ptree SimpleO2Params::as_ptree() const
     DOPT2(o2_cons_coeff, i);
   }
   
-//   DOPT(o2_level_normal);
-//   for (int i=0; i<3; ++i)
-//   {
-//     DOPT2(o2_range, i);
-//     DOPT2(o2_cons_coeff, i);
-//   }
+   DOPT(o2_level_normal);
+   for (int i=0; i<3; ++i)
+   {
+     DOPT2(o2_range, i);
+     DOPT2(o2_cons_coeff, i);
+   }
   
   AS_PTREE(o2_rel_tumor_source_density);
   AS_PTREE(test_obstacle);
