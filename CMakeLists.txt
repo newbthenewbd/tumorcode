@@ -193,7 +193,7 @@ endif()
 #note there are system without eigen, so let the configure fail here
 find_package(Eigen3 3.2 QUIET)
 #find_package(HDF5 1.8.10 REQUIRED)
-find_package(HDF5 REQUIRED COMPONENTS CXX)
+find_package(HDF5 REQUIRED)
 if(HDF5_IS_PARALLEL)
   message(WARNING "your hdf5 is parallel, you probably need to compile with mpic++")
 endif()
