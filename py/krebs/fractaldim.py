@@ -342,7 +342,7 @@ if __name__=='__main__':
         dflist.append(Df(f[goodArguments.grp_pattern + '/fractaldim/withintumor']))
 
     import matplotlib
-    matplotlib.use('Qt4Agg')
+    matplotlib.use('Agg')
     import matplotlib.pyplot as pyplot
     import mpl_utils
 
