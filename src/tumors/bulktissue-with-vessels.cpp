@@ -29,15 +29,15 @@ BulkTissue::Params::Params()
   DOPT(message, string());
   DOPT(lattice_scale, 30);
   DOPT(gf_production_threshold, 0.1);
-   DOPT(hematocrit_init, 0.45);
-   DOPT(reference_intercapillary_distance, 80);
-   DOPT(o2_level_normal, 0.6);
-   for (int i=0; i<3; ++i)
-   {
-     o2_range[i] = 100.;
-     o2_cons_coeff[i] = 1./my::sqr(o2_range[i]);
-   }
-   capillary_wall_permeability = O2Model::CalcHomogeneousCoeffOxy(o2_cons_coeff[0], o2_level_normal, 4., reference_intercapillary_distance);
+//   DOPT(hematocrit_init, 0.45);
+//   DOPT(reference_intercapillary_distance, 80);
+//   DOPT(o2_level_normal, 0.6);
+//   for (int i=0; i<3; ++i)
+//   {
+//     o2_range[i] = 100.;
+//     o2_cons_coeff[i] = 1./my::sqr(o2_range[i]);
+//   }
+//   capillary_wall_permeability = O2Model::CalcHomogeneousCoeffOxy(o2_cons_coeff[0], o2_level_normal, 4., reference_intercapillary_distance);
   DOPT(create_single_output_file, true);
   DOPT(vessel_volume_exclusion, false);
   vesselfile_ensemble_index = 0;
@@ -77,14 +77,14 @@ void BulkTissue::Params::assign(const ptree& pt)
     DOPT(lattice_scale);
     DOPT(lattice_size);
     DOPT(gf_production_threshold);
-     DOPT(hematocrit_init);
-     DOPT(reference_intercapillary_distance);
-     for (int i=0; i<3; ++i) {
-       boost::property_tree::get(o2_cons_coeff[i], "o2_cons_coeff_"+tissue_name[i], pt);
-       boost::property_tree::get(o2_range[i], "o2_range_"+tissue_name[i], pt);
-     }
-     DOPT(capillary_wall_permeability);
-     DOPT(o2_level_normal);
+//     DOPT(hematocrit_init);
+//     DOPT(reference_intercapillary_distance);
+//     for (int i=0; i<3; ++i) {
+//       boost::property_tree::get(o2_cons_coeff[i], "o2_cons_coeff_"+tissue_name[i], pt);
+//       boost::property_tree::get(o2_range[i], "o2_range_"+tissue_name[i], pt);
+//     }
+//     DOPT(capillary_wall_permeability);
+//     DOPT(o2_level_normal);
     DOPT(create_single_output_file);
     DOPT(vessel_volume_exclusion);
     DOPT(fn_out);
@@ -107,16 +107,16 @@ ptree BulkTissue::Params::as_ptree() const
     DOPT(lattice_scale);
     DOPT(lattice_size);
     DOPT(gf_production_threshold);
-     DOPT(hematocrit_init);
-     DOPT(reference_intercapillary_distance);
-     DOPT(o2_level_normal);
-     DOPT(capillary_wall_permeability);
-     #define DOPT2(name, i) pt.put(#name"_"+tissue_name[i], name[i])
-     for (int i=0; i<3; ++i)
-     {
-       DOPT2(o2_range, i);
-       DOPT2(o2_cons_coeff, i);
-     }
+//     DOPT(hematocrit_init);
+//     DOPT(reference_intercapillary_distance);
+//     DOPT(o2_level_normal);
+//     DOPT(capillary_wall_permeability);
+//     #define DOPT2(name, i) pt.put(#name"_"+tissue_name[i], name[i])
+//     for (int i=0; i<3; ++i)
+//     {
+//       DOPT2(o2_range, i);
+//       DOPT2(o2_cons_coeff, i);
+//     }
     DOPT(create_single_output_file);
     DOPT(vessel_volume_exclusion);
     DOPT(fn_out);
