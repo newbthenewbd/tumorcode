@@ -197,7 +197,7 @@ static void PyComputePO2(string fn, string vesselgroup_path, string tumorgroup_p
   if (py_bfparams)
   {
     bfparams = py::extract<BloodFlowParameters>(py_bfparams);
-    //CalcFlow(*vl, bfparams);
+    CalcFlow(*vl, bfparams);
   }
   else
   {
@@ -232,8 +232,8 @@ static void PyComputePO2(string fn, string vesselgroup_path, string tumorgroup_p
    * MOST IMPORTANT CALL
    * grid is conitnuum grid, mtboxes is decomposition into threads
    */
-  s.run(*vl);
-  //DetailedPO2::ComputePO2(params, *vl, grid, mtboxes, po2field, po2vessels, phases, metadata, world);
+  //s.run(*vl);
+  DetailedPO2::ComputePO2(params, *vl, grid, mtboxes, po2field, po2vessels, phases, metadata, world);
   }
   if (PyErr_Occurred() != NULL) return; // don't save stuff
   
