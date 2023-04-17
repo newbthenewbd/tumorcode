@@ -216,7 +216,7 @@ message(STATUS "running on sytem: ${RELEASE_CODENAME}")
 ## 14.04 trusty
 ## 16.04 xenial
 ## 18.04 bionic
-if( "${RELEASE_CODENAME}" MATCHES "Ubuntuc")
+if( "${RELEASE_CODENAME}" MATCHES "Ubuntu")
   set(Trilinos_LIBRARIES "trilinos_belos;trilinos_belosepetra;trilinos_ml")
 else()
   set(Trilinos_LIBRARIES "belos;belosepetra;ml")
