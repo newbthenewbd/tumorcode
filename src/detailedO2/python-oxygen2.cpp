@@ -705,11 +705,11 @@ void export_oxygen_computation()
   py::def("computeSaturation_", PyComputeSaturation);
   py::def("computeConcentration_", PyComputeConcentration);
   //those are not yet boost::numpy ready
-//  py::def("computeMassTransferCoefficient_", PyComputeMassTransferCoefficient);
-//   py::def("computePO2FromConc_", PyComputePO2FromConc);
-//   py::def("computeO2Uptake", PyComputeUptake);
-//   py::def("sampleVessels", PySampleVessels);
-//   py::def("sampleVesselsWorld", PySampleVesselsWorld);
+  py::def("computeMassTransferCoefficient_", PyComputeMassTransferCoefficient);
+  py::def("computePO2FromConc_", PyComputePO2FromConc);
+  py::def("computeO2Uptake", PyComputeUptake);
+  py::def("sampleVessels", PySampleVessels);
+  py::def("sampleVesselsWorld", PySampleVesselsWorld);
   // just some tests
   py::def("testCalcOxy", TestSaturationCurve);
   py::def("testCalcOxy2", TestSingleVesselPO2Integration);
