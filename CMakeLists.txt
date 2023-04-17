@@ -208,19 +208,19 @@ find_package(Trilinos REQUIRED COMPONENTS Epetra)
 #the find_package load some defaults, but they are too much
 #set(Trilinos_LIBRARIES "${Trilinos_LIBRARIES};belosepetra;ml")
 #under Ubuntu the library is named differently
-execute_process(COMMAND lsb_release -cs
-    OUTPUT_VARIABLE RELEASE_CODENAME
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-message(STATUS "running on sytem: ${RELEASE_CODENAME}")
+#execute_process(COMMAND lsb_release -cs
+#    OUTPUT_VARIABLE RELEASE_CODENAME
+#    OUTPUT_STRIP_TRAILING_WHITESPACE
+#)
+#message(STATUS "running on sytem: ${RELEASE_CODENAME}")
 ## 14.04 trusty
 ## 16.04 xenial
 ## 18.04 bionic
-if( "${RELEASE_CODENAME}" MATCHES "bionic" OR "${RELEASE_CODENAME}" MATCHES "trusty" OR "${RELEASE_CODENAME}" MATCHES "xenial")
+#if( "${RELEASE_CODENAME}" MATCHES "bionic" OR "${RELEASE_CODENAME}" MATCHES "trusty" OR "${RELEASE_CODENAME}" MATCHES "xenial")
   set(Trilinos_LIBRARIES "trilinos_belos;trilinos_belosepetra;trilinos_ml")
-else()
-  set(Trilinos_LIBRARIES "belos;belosepetra;ml")
-endif()
+#else()
+#  set(Trilinos_LIBRARIES "belos;belosepetra;ml")
+#endif()
 
 message(STATUS "Trilinos libs       	= ${Trilinos_LIBRARIES}")
 message(STATUS "Your Trilions depends on: ${Trilinos_TPL_LIST}")
