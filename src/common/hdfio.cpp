@@ -1155,7 +1155,7 @@ INSTANTIATE2(string)
 
 #if H5_VERS_MINOR > 9
   #define INSTANTIATE_H5Cpp_read(T)\
-    template void readAttrFromH5<T>(H5::H5Object &g, const string &name, T &output_buffer);
+    template void readAttrFromH5<T>(const H5::H5Object &g, const string &name, T &output_buffer);
   INSTANTIATE_H5Cpp_read(float)
   INSTANTIATE_H5Cpp_read(Float3)
   INSTANTIATE_H5Cpp_read(double)
