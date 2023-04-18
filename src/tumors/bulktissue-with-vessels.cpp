@@ -50,7 +50,7 @@ void BulkTissue::Params::update_ptree(ptree& dst, const ptree& src)
   for (int i=0; i<3; ++i)
   {
     double range = 0., cons_coeff = 0.;
-    O2Model::assignRangeParam(range, cons_coeff, "_"+tissue_name[i], src.get_child("simple_o2"));
+    O2Model::assignRangeParam(range, cons_coeff, "_"+tissue_name[i], src.get_child("prez_o2"));
     dst.put("o2_range_"+tissue_name[i], range);
     dst.put("o2_cons_coeff_"+tissue_name[i], cons_coeff);
   }
@@ -61,7 +61,7 @@ void BulkTissue::Params::update_ptree(ptree& dst, const ptree& src)
 					      dst.get<double>("o2_cons_coeff_"+tissue_name[TISSUE]),
 					      dst.get<double>("reference_intercapillary_distance"),
 					      4.,
-					      src.get_child("simple_o2"));
+					      src.get_child("prez_o2"));
   dst.put("capillary_wall_permeability", capillary_wall_permeability);
   dst.put("o2_level_normal", o2_level_normal);
 }
@@ -141,7 +141,7 @@ int BulkTissue::NewTumorSim::run(const ptree &pparams)
   all_pt_params.put("fake_height_2d", 200.);
   all_pt_params.put_child("vessels", VesselModel1::Params().as_ptree());
   all_pt_params.put_child("tumor", NewBulkTissueModel::Params().as_ptree());
-  all_pt_params.put_child("simple_o2", O2Model::SimpleO2Params().as_ptree() );
+  all_pt_params.put_child("prez_o2", O2Model::SimpleO2Params().as_ptree() );
 #ifdef USE_ADAPTION
   all_pt_params.put_child("adaption", Adaption::Parameters().as_ptree());
 #endif

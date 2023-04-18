@@ -203,7 +203,7 @@ void run_fakeTumor_mts(const py::str &param_info_str)
   //boost::property_tree::update(destination, source);
   //O2Model::SimpleO2Params simpleO2params;
   ptree simpleO2Settings = s.o2_params.as_ptree();
-  //boost::property_tree::update(simpleO2Settings, pt_params.get_child("simple_o2"));
+  //boost::property_tree::update(simpleO2Settings, pt_params.get_child("prez_o2"));
   // assign params
   s.o2_params.assign(simpleO2Settings);
   s.bfparams.assign(bfSettings);
@@ -294,7 +294,7 @@ void run_bulktissue_no_vessels(const py::str &param_info_str)
     all_pt_params.put_child("tumor", pparams.as_ptree());
     all_pt_params.put_child("calcflow", bfparams.as_ptree());
     all_pt_params.put_child("vessels", vessel_params.as_ptree());
-    all_pt_params.put_child("simple_o2", prezO2params.as_ptree());
+    all_pt_params.put_child("prez_o2", prezO2params.as_ptree());
     //all_pt_params.put_child("adaption", adaption_params.as_ptree());
     cout.rdbuf(my::log().rdbuf());
     {

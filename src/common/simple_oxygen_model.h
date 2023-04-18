@@ -53,10 +53,10 @@ struct SimpleO2Params
          o2_range[3],
          o2_cons_coeff[3],
          o2_rel_tumor_source_density,
-         o2_level_normal,
-         hematocrit_init,
-         reference_intercapillary_distance,
-         capillary_wall_permeability;
+         o2_level_normal;//,
+         //hematocrit_init,
+         //reference_intercapillary_distance,
+         //capillary_wall_permeability;
   int test_obstacle;
   bool use_o2_source_decay;
 };
