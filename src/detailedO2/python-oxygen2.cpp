@@ -197,7 +197,7 @@ static void PyComputePO2(string fn, string vesselgroup_path, string tumorgroup_p
   if (py_bfparams)
   {
     bfparams = py::extract<BloodFlowParameters>(py_bfparams);
-    CalcFlow(*vl, bfparams);
+    //CalcFlow(*vl, bfparams);
   }
   else
   {
