@@ -661,7 +661,7 @@ class DataRadialIff(object):
         r = args[1]
         rnd = np.random.mtrand.RandomState(abs(hash(f.filename)) & (0xffffffff))
         arr = np.asarray(gmeasure[q][args[0]])
-        arr = arr[rnd.randint(0, high = len(arr), size = len(arr)*r)]
+        arr = arr[rnd.randint(0, high = len(arr), size = int(len(arr)*r))]
         return arr
 
     return myutils.hdf_data_caching(read, write, f, ('measurements', 'radial',), (None, 1,))
