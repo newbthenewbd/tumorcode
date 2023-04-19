@@ -22,20 +22,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 h5cpp::Group PythonToCppGroup(const py::object &op_)
 {
-  py::object id_obj1 = py::getattr(op_, "id");
-  py::object id_obj2 = py::getattr(id_obj1, "id");
-  int id = py::extract<int>(id_obj2);
-  return h5cpp::Group(id);
+  if( !op_.is_none() )
+  {
+    py::object id_obj1 = py::getattr(op_, "id");
+    py::object id_obj2 = py::getattr(id_obj1, "id");
+    ssize_t id = py::extract<ssize_t>(id_obj2);
+    return h5cpp::Group(id);
+  }
 }
-
+/*
 h5cpp::Dataset PythonToCppDataset(const py::object &op_)
 {
   py::object id_obj1 = py::getattr(op_, "id");
   py::object id_obj2 = py::getattr(id_obj1, "id");
-  int id = py::extract<int>(id_obj2);
+  ssize_t id = py::extract<ssize_t>(id_obj2);
   return h5cpp::Dataset(id);
 }
-
+*/
 
 using boost::property_tree::ptree;
 
@@ -168,6 +171,11 @@ struct VecFromPy
     }
 };
 
+/* this part uses np::arrayt which in implemented in numpycpp and no longer supported by boost */
+#if BOOST_VERSION>106300
+//to be implemented
+// see BBoxToPy for some inspiration
+#else
 template<class T, int dim>
 struct VecToPy
 {
@@ -175,7 +183,8 @@ struct VecToPy
 
   static PyObject* convert(const V& p)
   {
-    np::ssize_t dims[1] = { dim };
+    Py_ssize_t dims[1] = { dim };
+    
     auto r = np::arrayt<T>(np::zeros(1, dims, np::getItemtype<T>()));
     for (int i=0; i<dim; ++i)
       r[i] = p[i];
@@ -187,7 +196,7 @@ struct VecToPy
     py::to_python_converter<V, VecToPy<T,dim> >();
   }
 };
-
+#endif
 
 void exportH5Converters()
 {
@@ -210,8 +219,22 @@ void exportVectorClassConverters()
   mw_py_impl::VecToPy<bool, 3>::Register();
 }
 
-}
+//template<class T>
+// double checkedExtractFromDict(const py::dict &d, const char* name)
+// {
+//   try
+//   {
+//     return py::extract<double>(d.get(name));
+//   }
+//   catch (const py::error_already_set &e) 
+//   {
+//     std::cerr << format("unable to extract parameter '%s': ") % name;
+//     throw e; // don't every try to handle this!
+//   }
+// }
 
+
+}//namespace mw_py_impl
 
 bool PyCheckAbort()
 {
@@ -220,3 +243,34 @@ bool PyCheckAbort()
   return res != 0;
 }
 
+// static void PyMPI_OPENMPI_dlopen_libmpi(void)
+// {
+// void handle = 0;
+// int mode = RTLD_NOW | RTLD_GLOBAL;
+// /* GNU/Linux and others */
+// #ifdef RTLD_NOLOAD
+// mode |= RTLD_NOLOAD;
+// #endif
+// if (!handle) handle = dlopen("libmpi.so.20", mode);
+// if (!handle) handle = dlopen("libmpi.so.12", mode);
+// if (!handle) handle = dlopen("libmpi.so.1", mode);
+// if (!handle) handle = dlopen("libmpi.so.0", mode);
+// if (!handle) handle = dlopen("libmpi.so", mode);
+// }
+// 
+// static int PyMPI_OPENMPI_MPI_Init(int *argc, char ***argv)
+// {
+// PyMPI_OPENMPI_dlopen_libmpi();
+// return MPI_Init(argc, argv);
+// }
+// #undef MPI_Init
+// #define MPI_Init PyMPI_OPENMPI_MPI_Init
+// 
+// static int PyMPI_OPENMPI_MPI_Init_thread(int *argc, char ***argv,
+// int required, int *provided)
+// {
+// PyMPI_OPENMPI_dlopen_libmpi();
+// return MPI_Init_thread(argc, argv, required, provided);
+// }
+// #undef MPI_Init_thread
+// #define MPI_Init_thread PyMPI_OPENMPI_MPI_Init_thread

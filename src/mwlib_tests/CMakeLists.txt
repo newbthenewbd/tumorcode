@@ -7,7 +7,7 @@ add_executable(test_array test_array.cpp)
 add_executable(test_hdf test_hdf.cpp)
 add_executable(test_lookup_grid test_lookup_grid.cpp)
 
-set(testLibs mwlib hdf5 png tbb)
+set(testLibs mwlib hdf5_openmpi png tbb)
 target_link_libraries(test_array ${testLibs})
 target_link_libraries(test_hdf mwlib ${testLibs} ${myLibs})
 target_link_libraries(test_lookup_grid mwlib ${testLibs})
